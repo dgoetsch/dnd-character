@@ -12,6 +12,7 @@ pub mod persistence;
 pub mod proficiencies;
 pub mod saving_throw;
 pub mod spell_slot;
+pub mod skill;
 
 use ability_score::AbilityScores;
 use class::Classes;

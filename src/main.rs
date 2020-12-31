@@ -1,8 +1,9 @@
 use iced::{Application, Settings};
 
+mod skills;
 mod character;
 mod store;
-pub mod util;
+mod util;
 
 use character::persistence::CharacterPersistenceConfig;
 use character::Character;

@@ -12,7 +12,7 @@ pub struct AbilityScores {
     charisma: AbilityScore,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum Ability {
     Strength,
     Dexterity,
@@ -43,6 +43,19 @@ impl AbilityScores {
             Ability::Wisdom => self.wisdom.clone(),
             Ability::Charisma => self.charisma.clone(),
         }
+    }
+    
+    pub fn with(&self, ability: Ability, score: AbilityScore) -> AbilityScores {
+        let mut new = self.clone();
+        match ability {
+            Ability::Strength => new.strength = score,
+            Ability::Dexterity => new.dexterity  = score,
+            Ability::Constitution => new.constitution  = score,
+            Ability::Intelligence => new.intelligence  = score,
+            Ability::Wisdom => new.wisdom  = score,
+            Ability::Charisma => new.charisma  = score,
+        };
+        new
     }
 
     pub fn view(&mut self) -> Column<Message> {

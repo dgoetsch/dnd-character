@@ -18,7 +18,7 @@ impl Classes {
 
     pub fn view(&mut self) -> Column<Message> {
         let total_level = self.total_level();
-        let proficiency = self.proficiency();
+        let proficiency = self.proficiency_bonus();
         let mut column = Column::new();
 
         if (self.classes.len() > 1) {
@@ -67,7 +67,7 @@ impl Classes {
         self.classes.clone().into_iter().map(|c| c.level).sum()
     }
 
-    fn proficiency(&self) -> isize {
+    pub fn proficiency_bonus(&self) -> isize {
         let total_level = self.total_level();
         if total_level < 5 {
             2
@@ -92,6 +92,10 @@ pub struct Class {
 }
 
 impl Class {
+    pub fn new(name: String, level: isize) -> Class {
+        Class { name, level }
+    }
+
     fn view(&mut self) -> Row<Message> {
         Row::new().push(Text::new(format!("Level {} {}", self.level, self.name)).size(24))
     }
@@ -111,7 +115,7 @@ mod test {
                 })
                 .collect(),
         };
-        assert_eq!(classes.proficiency(), proficiency);
+        assert_eq!(classes.proficiency_bonus(), proficiency);
     }
     #[test]
     fn test_proficiency() {

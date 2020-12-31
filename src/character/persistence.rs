@@ -98,7 +98,7 @@ impl CharacterPersistence {
         let store = CharacterPersistence::store(&config)?;
 
         match store
-            .load("current_hitpoints".to_string())
+            .load("character.json".to_string())
             .await
             .map_err(|e| LoadError::Store(e))
             .and_then(|content| {
@@ -120,7 +120,7 @@ impl CharacterPersistence {
         let store = CharacterPersistence::store(&self.config)?;
 
         store
-            .save("current_hitpoints".to_string(), json)
+            .save("character.json".to_string(), json)
             .await
             .map_err(|e| LoadError::Store(e))
     }
