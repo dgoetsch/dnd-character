@@ -1,7 +1,7 @@
 use crate::character::ability_score::{Ability, AbilityScores};
 use crate::character::class::Classes;
 use crate::character::proficiencies::ProficiencyType;
-use crate::skills::Skill;
+use crate::resources::Skill;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Default)]

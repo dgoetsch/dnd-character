@@ -20,11 +20,19 @@ pub enum LoadError {
 #[derive(Debug, Clone, Default, Serialize, Deserialize, Eq, PartialOrd, PartialEq)]
 pub struct CharacterPersistenceConfig {
     storage_root: String,
+    character_id: String,
 }
 
 impl CharacterPersistenceConfig {
-    pub fn new(storage_root: String) -> CharacterPersistenceConfig {
-        CharacterPersistenceConfig { storage_root }
+    pub fn new(storage_root: String, character_id: String) -> CharacterPersistenceConfig {
+        CharacterPersistenceConfig {
+            storage_root,
+            character_id,
+        }
+    }
+
+    fn store(&self) -> Result<Store, LoadError> {
+        Store::new(self.storage_root.clone()).map_err(|e| LoadError::Store(e))
     }
 }
 
@@ -66,10 +74,6 @@ impl CharacterPersistence {
         }
     }
 
-    fn store(config: &CharacterPersistenceConfig) -> Result<Store, LoadError> {
-        Store::new(config.storage_root.clone()).map_err(|e| LoadError::Store(e))
-    }
-
     fn default_from(config: CharacterPersistenceConfig) -> CharacterPersistence {
         CharacterPersistence {
             config: config,
@@ -95,10 +99,10 @@ impl CharacterPersistence {
     pub async fn load(
         config: CharacterPersistenceConfig,
     ) -> Result<CharacterPersistence, LoadError> {
-        let store = CharacterPersistence::store(&config)?;
-
+        let store = config.store()?;
+        let key = CharacterPersistence::key(config.character_id.clone());
         match store
-            .load("character.json".to_string())
+            .load(key)
             .await
             .map_err(|e| LoadError::Store(e))
             .and_then(|content| {
@@ -114,14 +118,16 @@ impl CharacterPersistence {
     }
 
     pub async fn save(self) -> Result<(), LoadError> {
+        let key = CharacterPersistence::key(self.config.character_id.clone());
         let json =
             serde_json::to_string_pretty(&self).map_err(|e| LoadError::Serialize(e.to_string()))?;
 
-        let store = CharacterPersistence::store(&self.config)?;
+        let store = self.config.store()?;
 
-        store
-            .save("character.json".to_string(), json)
-            .await
-            .map_err(|e| LoadError::Store(e))
+        store.save(key, json).await.map_err(|e| LoadError::Store(e))
+    }
+
+    fn key(character_id: String) -> String {
+        format!("characters/{}.json", character_id)
     }
 }

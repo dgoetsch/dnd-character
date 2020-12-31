@@ -1,0 +1,159 @@
+{
+  "name": {
+      "name": "Vynne"
+  },
+  "description": {
+      "race": "Half-Elf",
+      "size": "Medium",
+      "alignment": {
+          "order": "Chaotic",
+          "morality": "Good"
+      },
+      "speed": 30,
+      "age": 24,
+      "height": {
+          "feet": 5,
+          "inches": 7
+      },
+      "weight": {
+          "lbs": 122,
+          "oz": 8
+      },
+      "hair": "Brown",
+      "eyes": "Red"
+  },
+  "ability_scores": {
+      "strength": {
+          "value": 10
+      },
+      "dexterity": {
+          "value": 14
+      },
+      "constitution": {
+          "value": 19
+      },
+      "intelligence": {
+          "value": 12
+      },
+      "wisdom": {
+          "value": 10
+      },
+      "charisma": {
+          "value": 20
+      }
+  },
+  "classes": [
+      {
+          "name": "Sorcerer",
+          "level": 10
+      }
+  ],
+  "hit_points": {
+      "current_hit_points": 79,
+      "max_hit_points": 79
+  },
+  "saving_throws": {
+      "strength": {
+          "proficiency": 0,
+          "additional_modifier": 0
+      },
+      "dexterity": {
+          "proficiency": 0,
+          "additional_modifier": 0
+      },
+      "constitution": {
+          "proficiency": 4,
+          "additional_modifier": 0
+      },
+      "intelligence": {
+          "proficiency": 0,
+          "additional_modifier": 0
+      },
+      "wisdom": {
+          "proficiency": 0,
+          "additional_modifier": 0
+      },
+      "charisma": {
+          "proficiency": 4,
+          "additional_modifier": 0
+      }
+  },
+  "proficiencies": {
+      "armor": [],
+      "weapons": [
+          {
+              "name": "daggers",
+              "proficiency_type": "Full"
+          }, {
+              "name": "darts",
+              "proficiency_type": "Full"
+          }, {
+              "name": "slings",
+              "proficiency_type": "Full"
+          }, {
+              "name": "quarterstaffs",
+              "proficiency_type": "Full"
+          }, {
+              "name": "light crossbows",
+              "proficiency_type": "Full"
+          }
+      ],
+      "tools": [
+          {
+              "name": "disguise kit",
+              "proficiency_type": "Full"
+          }, {
+              "name": "forgery kit",
+              "proficiency_type": "Full"
+          }
+      ],
+      "languages": [
+          {
+              "name": "Common",
+              "proficiency_type": "Full"
+          }, {
+              "name": "Elvish",
+              "proficiency_type": "Full"
+          }, {
+              "name": "Dwarvish",
+              "proficiency_type": "Full"
+          }
+      ]
+  },
+  "spell_slots": [
+      {
+          "level": 1,
+          "available": 4,
+          "max": 4
+      },
+      {
+          "level": 2,
+          "available": 3,
+          "max": 3
+      },
+      {
+          "level": 3,
+          "available": 3,
+          "max": 3
+      },
+      {
+          "level": 4,
+          "available": 3,
+          "max": 3
+      },
+      {
+          "level": 5,
+          "available": 2,
+          "max": 2
+      },
+      {
+          "level": 6,
+          "available": 1,
+          "max": 1
+      }
+  ],
+  "config": {
+      "storage_root": "store/.characters/.vynne",
+      "character_id": "vynne"
+  }
+}
