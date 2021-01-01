@@ -8,27 +8,6 @@ use iced::{Column, HorizontalAlignment, Length, Row, Text};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-#[derive(Debug, Clone, Default)]
-pub struct SkillState {
-    skills: Vec<Skill>,
-    proficiencies: Vec<Proficiency>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SkillProficiency {
-    name: String,
-    proficiency_type: ProficiencyType,
-}
-
-impl SkillProficiency {
-    fn of(skill: Skill, proficiency_type: ProficiencyType) -> SkillProficiency {
-        SkillProficiency {
-            name: skill.name(),
-            proficiency_type,
-        }
-    }
-}
-
 pub fn view<'a>(
     skills: Vec<Skill>,
     proficiencies: Vec<Proficiency>,
@@ -72,7 +51,7 @@ fn modifier(
 
 #[cfg(test)]
 mod test {
-    use super::{Skill, SkillProficiency};
+    use super::Skill;
     use crate::character::ability_score::{Ability, AbilityScore, AbilityScores};
     use crate::character::class::{Class, Classes};
     use crate::character::proficiencies::ProficiencyType;

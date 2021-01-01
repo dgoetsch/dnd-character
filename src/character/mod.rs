@@ -6,6 +6,7 @@ use iced::{
 pub mod ability_score;
 pub mod class;
 pub mod description;
+pub mod feature;
 pub mod hitpoints;
 pub mod name;
 pub mod persistence;
@@ -14,6 +15,7 @@ pub mod saving_throw;
 pub mod skill;
 pub mod spell_slot;
 pub mod spellcasting;
+
 use crate::character::persistence::LoadData;
 use crate::character::spellcasting::Spellcasting;
 use crate::resources::Resources;
