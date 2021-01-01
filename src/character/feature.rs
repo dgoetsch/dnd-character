@@ -34,7 +34,7 @@ pub enum FeatureMessage {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct FeatureSlot {
     current: isize,
-    max: isize,
+    max: Option<isize>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -45,6 +45,64 @@ pub struct Feature {
     children: Vec<Feature>,
     show_reset_chidren: Option<bool>,
     child_display_orientation: Option<DisplayOrientation>,
+}
+
+impl Feature {
+    pub fn new<T: Into<String>>(name: T) -> Feature {
+        Feature {
+            name: name.into(),
+            description: None,
+            slot: None,
+            children: vec![],
+            show_reset_chidren: None,
+            child_display_orientation: None,
+        }
+    }
+
+    pub fn with_description<T: Into<String>>(&self, description: T) -> Feature {
+        let mut new = self.clone();
+        new.description = Some(description.into());
+        new
+    }
+
+    pub fn with_slot(&self, current: isize, max: Option<isize>) -> Feature {
+        let mut new = self.clone();
+        new.slot = Some(FeatureSlot { current, max });
+        new
+    }
+
+    pub fn with_children(&self, children: Vec<Feature>) -> Feature {
+        let mut new = self.clone();
+        new.children = children;
+        new
+    }
+
+    pub fn add_children(&self, children: Vec<Feature>) -> Feature {
+        let mut new = self.clone();
+        new.children.extend(children);
+        new
+    }
+
+    pub fn enable_reset_children(&self) -> Feature {
+        let mut new = self.clone();
+        new.show_reset_chidren = Some(true);
+        new
+    }
+
+    pub fn disable_reset_children(&self) -> Feature {
+        let mut new = self.clone();
+        new.show_reset_chidren = Some(false);
+        new
+    }
+
+    pub fn with_child_display_orientation(
+        &self,
+        display_orientation: DisplayOrientation,
+    ) -> Feature {
+        let mut new = self.clone();
+        new.child_display_orientation = Some(display_orientation);
+        new
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -211,7 +269,7 @@ impl FeatureState {
                         } = feature;
                         let self_dirty = match slot {
                             Some(slot) => {
-                                slot.current = slot.max;
+                                slot.current = slot.max.unwrap_or(0);
                                 true
                             }
                             None => false,
@@ -245,7 +303,7 @@ impl FeatureState {
                     } = feature;
                     let self_dirty = match slot {
                         Some(slot) => {
-                            slot.current = slot.max;
+                            slot.current = slot.max.unwrap_or(0);
                             true
                         }
                         None => false,
@@ -290,9 +348,11 @@ impl FeatureState {
         match (slot_controls, slot) {
             (Some(slot_controls), Some(slot)) => {
                 let FeatureSlot { current, max } = slot;
-
-                header_row = header_row
-                    .push(Text::new(format!("{} / {}", current.clone(), max.clone())).size(32));
+                header_row = match max {
+                    Some(max) => header_row
+                        .push(Text::new(format!("{} / {}", current.clone(), max.clone())).size(32)),
+                    None => header_row.push(Text::new(format!("{}", current.clone())).size(32)),
+                };
 
                 let FeatureSlotControl {
                     use_slot,
