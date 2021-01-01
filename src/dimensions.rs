@@ -1,0 +1,19 @@
+use crate::character::Message;
+use crate::util::two_column_row;
+use iced::{Row, Text};
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct Weight {
+    lbs: isize,
+    oz: isize,
+}
+
+impl Weight {
+    pub fn view(&mut self) -> Row<Message> {
+        two_column_row(
+            Text::new("Weight"),
+            Text::new(format!("{} lbs, {} oz", self.lbs, self.oz)),
+        )
+    }
+}

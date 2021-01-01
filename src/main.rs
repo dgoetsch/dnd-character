@@ -1,6 +1,7 @@
 use iced::{Application, Settings};
 
 mod character;
+mod dimensions;
 mod resources;
 mod store;
 mod util;

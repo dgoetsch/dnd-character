@@ -1,4 +1,5 @@
 use crate::character::Message;
+use crate::dimensions::Weight;
 use crate::util::two_column_row;
 use iced::{Column, Element, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
 use serde::{Deserialize, Serialize};
@@ -20,12 +21,6 @@ pub struct Description {
 pub struct Height {
     feet: isize,
     inches: isize,
-}
-
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct Weight {
-    lbs: isize,
-    oz: isize,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -142,15 +137,6 @@ impl Height {
         two_column_row(
             Text::new("Height"),
             Text::new(format!("{}' {}\"", self.feet, self.inches)),
-        )
-    }
-}
-
-impl Weight {
-    pub fn view(&mut self) -> Row<Message> {
-        two_column_row(
-            Text::new("Weight"),
-            Text::new(format!("{} lbs, {} oz", self.lbs, self.oz)),
         )
     }
 }

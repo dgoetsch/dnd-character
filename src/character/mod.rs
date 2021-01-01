@@ -6,6 +6,7 @@ use iced::{
 pub mod ability_score;
 pub mod class;
 pub mod description;
+pub mod equipment;
 pub mod feature;
 pub mod hitpoints;
 pub mod name;
