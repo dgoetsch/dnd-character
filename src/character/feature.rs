@@ -1,5 +1,5 @@
 use crate::character::Message;
-use iced::{button, Button, Column, Row, Text};
+use iced::{button, Button, Column, Element, Length, Row, Text};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Default)]
@@ -44,6 +44,19 @@ pub struct Feature {
     slot: Option<FeatureSlot>,
     children: Vec<Feature>,
     show_reset_chidren: Option<bool>,
+    child_display_orientation: Option<DisplayOrientation>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum DisplayOrientation {
+    Columns,
+    Rows,
+}
+
+impl Default for DisplayOrientation {
+    fn default() -> DisplayOrientation {
+        DisplayOrientation::Rows
+    }
 }
 
 impl FeaturesState {
@@ -143,6 +156,7 @@ impl FeatureState {
                             slot,
                             children,
                             show_reset_chidren,
+                            child_display_orientation,
                         } = feature;
                         match slot {
                             Some(slot) => {
@@ -193,6 +207,7 @@ impl FeatureState {
                             slot,
                             children,
                             show_reset_chidren,
+                            child_display_orientation,
                         } = feature;
                         let self_dirty = match slot {
                             Some(slot) => {
@@ -226,6 +241,7 @@ impl FeatureState {
                         slot,
                         children,
                         show_reset_chidren,
+                        child_display_orientation,
                     } = feature;
                     let self_dirty = match slot {
                         Some(slot) => {
@@ -252,11 +268,10 @@ impl FeatureState {
         let mut this_path = parent_path.clone();
         this_path.push(feature.name.clone());
 
-        let mut child_column = Column::new();
+        let mut child_elements = vec![];
         if !children.is_empty() {
-            child_column = child_column.spacing(2);
             for child in children {
-                child_column = child_column.push(child.view(this_path.clone()).padding(4))
+                child_elements.push(child.view(this_path.clone()).padding(4))
             }
         }
 
@@ -266,6 +281,7 @@ impl FeatureState {
             slot,
             children,
             show_reset_chidren,
+            child_display_orientation,
         } = feature;
         let mut header_row = Row::new()
             .spacing(20)
@@ -317,8 +333,24 @@ impl FeatureState {
             None => {}
         }
 
-        column = column.push(child_column);
+        let display_orientation = child_display_orientation
+            .as_ref()
+            .unwrap_or(&DisplayOrientation::Rows)
+            .clone();
 
-        column
+        let child_element: Element<Message> = match display_orientation {
+            DisplayOrientation::Columns => child_elements
+                .into_iter()
+                .fold(Row::new(), |row, child| row.push(child))
+                .into(),
+            DisplayOrientation::Rows => child_elements
+                .into_iter()
+                .fold(Column::new(), |column, child| column.push(child))
+                .into(),
+        };
+
+        column = column.push(child_element);
+
+        column.width(Length::FillPortion(1))
     }
 }
