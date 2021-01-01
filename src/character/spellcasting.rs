@@ -1,7 +1,7 @@
 use crate::character::ability_score::{Ability, AbilityScore, AbilityScores};
 use crate::character::class::{Class, Classes};
 use crate::character::Message;
-use crate::util::two_column_row;
+use crate::util::{format_modifier, two_column_row};
 use iced::{Column, Row, Text};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -33,7 +33,6 @@ impl Spellcasting {
     fn modifier(&self, proficiency_modifier: isize, ability: &AbilityScore) -> isize {
         proficiency_modifier
             + ability.modifier()
-            + 10
             + self.additional_modifiers.values().sum::<isize>()
     }
 
@@ -53,7 +52,10 @@ impl Spellcasting {
             .push(Row::new().push(Text::new(format!("{} spellcasting", self.class)).size(24)))
             .push(two_column_row(
                 Text::new("Modifier").size(16),
-                Text::new(self.modifier(proficiency_modifier, &ability).to_string()).size(16),
+                Text::new(format_modifier(
+                    self.modifier(proficiency_modifier, &ability),
+                ))
+                .size(16),
             ))
             .push(two_column_row(
                 Text::new("Spell Save DC").size(16),
