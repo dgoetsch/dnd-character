@@ -45,12 +45,12 @@
   "classes": [
       {
           "name": "Sorcerer",
-          "level": 10
+          "level": 11
       }
   ],
   "hit_points": {
-      "current_hit_points": 79,
-      "max_hit_points": 79
+      "current_hit_points": 87,
+      "max_hit_points": 87
   },
   "saving_throws": {
       "strength": {
@@ -187,8 +187,8 @@
                 {
                     "name": "Sorcery Points",
                     "slot": {
-                        "current": 10,
-                        "max": 10
+                        "current": 11,
+                        "max": 11
                     },
                     "children": []
                 },

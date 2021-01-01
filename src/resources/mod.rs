@@ -1,16 +1,24 @@
 use crate::character::ability_score::Ability;
+use crate::resources::equipment::Equipment;
+use crate::resources::skill::Skill;
 use serde::{Deserialize, Serialize};
 
+pub mod equipment;
 mod persistence;
+pub mod skill;
 
 #[derive(Debug, Clone, Default)]
 pub struct Resources {
     skills: Vec<Skill>,
+    equipment: Vec<Equipment>,
 }
 
 impl Resources {
     pub fn skills(&self) -> Vec<Skill> {
         self.skills.clone()
+    }
+    pub fn equipment(&self) -> Vec<Equipment> {
+        self.equipment.clone()
     }
 }
 
@@ -27,27 +35,4 @@ pub async fn load(storage_root: String) -> Result<Resources, ResourceError> {
     .await?;
 
     Ok(persistence.resources())
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Skill {
-    name: String,
-    ability: Ability,
-}
-
-impl Skill {
-    pub fn of(name: &str, ability: Ability) -> Skill {
-        Skill {
-            name: name.to_string(),
-            ability: ability,
-        }
-    }
-
-    pub fn name(&self) -> String {
-        self.name.clone()
-    }
-
-    pub fn ability(&self) -> Ability {
-        self.ability.clone()
-    }
 }

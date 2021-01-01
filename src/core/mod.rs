@@ -9,6 +9,12 @@ pub struct Dice {
     sides: isize,
 }
 
+impl Dice {
+    pub fn new(count: isize, sides: isize) -> Dice {
+        Dice { count, sides }
+    }
+}
+
 impl Display for Dice {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}d{}", self.count, self.sides)
@@ -19,6 +25,12 @@ impl Display for Dice {
 pub struct Damage {
     dice: Dice,
     damage_type: DamageType,
+}
+
+impl Damage {
+    pub fn new(dice: Dice, damage_type: DamageType) -> Damage {
+        Damage { dice, damage_type }
+    }
 }
 
 impl Display for Damage {

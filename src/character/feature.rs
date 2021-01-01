@@ -118,6 +118,10 @@ impl Default for DisplayOrientation {
 }
 
 impl FeaturesState {
+    pub fn is_empty(&self) -> bool {
+        self.feature_state.is_empty()
+    }
+
     pub fn persistable(&self) -> Vec<Feature> {
         self.feature_state
             .clone()

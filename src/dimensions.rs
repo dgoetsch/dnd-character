@@ -10,6 +10,10 @@ pub struct Weight {
 }
 
 impl Weight {
+    pub fn new(lbs: isize, oz: isize) -> Weight {
+        Weight { lbs, oz }
+    }
+
     pub fn view(&mut self) -> Row<Message> {
         two_column_row(
             Text::new("Weight"),

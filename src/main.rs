@@ -3,7 +3,6 @@ use iced::{Application, Settings};
 mod character;
 mod core;
 mod dimensions;
-mod equipment;
 mod resources;
 mod store;
 mod util;
