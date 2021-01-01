@@ -180,6 +180,66 @@
           "max": 1
       }
   ],
+    "features": [
+        {
+            "name": "Font of Magic",
+            "children": [
+                {
+                    "name": "Sorcery Points",
+                    "slot": {
+                        "current": 10,
+                        "max": 10
+                    },
+                    "children": []
+                },
+                {
+                    "name": "Meta Magic",
+                    "description": "You can use only one Metamagic option on a spell when you cast it, unless otherwise noted.",
+                    "children": [
+                        {
+                            "name": "Heightened Spell",
+                            "description": "When you cast a spell that forces a creature to make a saving throw to resist its effects, you can spend 3 sorcery points to give one target of the spell disadvantage on its first saving throw made against the spell.",
+                            "children": []
+                        },
+                        {
+                            "name": "Quickened Spell",
+                            "description": "When you cast a spell that has a casting time of 1 action, you can spend 2 sorcery points to change the casting time to 1 bonus action for this casting.",
+                            "children": []
+                        },
+                        {
+                            "name": "Twinned Spell",
+                            "description": "When you cast a spell that targets only one creature and doesn’t have a range of self, you can spend a number of sorcery points equal to the spell’s level to target a second creature in range with the same spell (1 sorcery point if the spell is a cantrip).",
+                            "children": []
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Wild Magic",
+            "children": [
+                {
+                    "name": "Wild Magic Surge",
+                    "description": "Starting when you choose this origin at 1st level, your spellcasting can unleash surges of untamed magic. Immediately after you cast a sorcerer spell of 1st level or higher, the DM can have you roll a d20. If you roll a 1, roll on the Wild Magic Surge table to create a random magical effect.",
+                    "children": []
+                },
+                {
+                    "name": "Tides of chaos",
+                    "slot": {
+                        "current": 1,
+                        "max": 1
+                    },
+                    "description": "Starting at 1st level, you can manipulate the forces of chance and chaos to gain advantage on one attack roll, ability check, or saving throw. Once you do so, you must finish a long rest before you can use this feature again.\n\nAny time before you regain the use of this feature, the DM can have you roll on the Wild Magic Surge table immediately after you cast a sorcerer spell of 1st level or higher. You then regain the use of this feature.",
+                    "children": []
+                },
+                {
+                    "name": "Bend Luck",
+                    "description": "Starting at 6th level, you have the ability to twist fate using your wild magic. When another creature you can see makes an attack roll, an ability check, or a saving throw, you can use your reaction and spend 2 sorcery points to roll 1d4 and apply the number rolled as a bonus or penalty (your choice) to the creature's roll. You can do so after the creature rolls but before any effects of the roll occur.",
+                    "children": []
+                }
+            ]
+        }
+    ],
   "config": {
       "storage_root": "store/.characters/.vynne",
       "character_id": "vynne"

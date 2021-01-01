@@ -3,6 +3,7 @@ use super::State;
 use crate::character::ability_score::AbilityScores;
 use crate::character::class::{Class, Classes};
 use crate::character::description::Description;
+use crate::character::feature::{Feature, FeatureState, FeaturesState};
 use crate::character::hitpoints::HitPoints;
 use crate::character::name::Name;
 use crate::character::proficiencies::Proficiencies;
@@ -45,6 +46,7 @@ impl LoadData {
             saving_throws,
             spellcasting,
             spell_slots,
+            features,
         } = self.character;
 
         State {
@@ -58,6 +60,7 @@ impl LoadData {
             proficiencies: proficiencies,
             spellcasting: spellcasting,
             spell_slots: SpellSlotsState::from(spell_slots),
+            features: FeaturesState::from(features),
             resources: self.resources,
             ..State::default()
         }
@@ -105,6 +108,7 @@ pub struct CharacterPersistence {
     proficiencies: Proficiencies,
     spellcasting: Vec<Spellcasting>,
     spell_slots: Vec<SpellSlot>,
+    features: Vec<Feature>,
     config: CharacterPersistenceConfig,
 }
 
@@ -119,19 +123,21 @@ impl CharacterPersistence {
         proficiencies: Proficiencies,
         spellcasting: Vec<Spellcasting>,
         spell_slots: Vec<SpellSlot>,
+        features: Vec<Feature>,
         config: CharacterPersistenceConfig,
     ) -> CharacterPersistence {
         CharacterPersistence {
-            name: name,
-            description: description,
-            ability_scores: ability_scores,
-            classes: classes,
-            hit_points: hit_points,
-            saving_throws: saving_throws,
-            proficiencies: proficiencies,
-            spellcasting: spellcasting,
-            spell_slots: spell_slots,
-            config: config,
+            name,
+            description,
+            ability_scores,
+            classes,
+            hit_points,
+            saving_throws,
+            proficiencies,
+            spellcasting,
+            spell_slots,
+            features,
+            config,
         }
     }
 

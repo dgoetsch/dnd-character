@@ -24,10 +24,17 @@ pub struct FeatureSlotControl {
 type FeaturePath = Vec<String>;
 type IsDirty = bool;
 type IncludeChildren = bool;
+
 #[derive(Debug, Clone)]
 pub enum FeatureMessage {
     Use(FeaturePath),
     Reset(FeaturePath, IncludeChildren),
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct FeatureSlot {
+    current: isize,
+    max: isize,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -36,11 +43,48 @@ pub struct Feature {
     description: Option<String>,
     slot: Option<FeatureSlot>,
     children: Vec<Feature>,
-    show_reset_chidren: bool,
+    show_reset_chidren: Option<bool>,
+}
+
+impl FeaturesState {
+    pub fn persistable(&self) -> Vec<Feature> {
+        self.feature_state
+            .clone()
+            .into_iter()
+            .map(|f| f.persistable())
+            .collect()
+    }
+
+    pub fn from(features: Vec<Feature>) -> FeaturesState {
+        FeaturesState {
+            feature_state: features.into_iter().map(FeatureState::from).collect(),
+        }
+    }
+
+    pub fn update(&mut self, message: FeatureMessage) -> IsDirty {
+        let FeaturesState { feature_state } = self;
+        let mut dirty = false;
+        for state in feature_state {
+            dirty = state.update(message.clone()) || dirty;
+        }
+        dirty
+    }
+
+    pub fn view(&mut self) -> Column<Message> {
+        let mut column = Column::new().padding(2).spacing(8);
+
+        let FeaturesState { feature_state } = self;
+
+        for state in feature_state {
+            column = column.push(state.view(vec![]));
+        }
+
+        column
+    }
 }
 
 impl FeatureState {
-    fn persistable(&self) -> Feature {
+    pub fn persistable(&self) -> Feature {
         let FeatureState {
             feature,
             slot_controls,
@@ -56,6 +100,12 @@ impl FeatureState {
     }
 
     pub fn from(feature: Feature) -> FeatureState {
+        let slot_controls = if feature.slot.is_some() {
+            Some(FeatureSlotControl::default())
+        } else {
+            None
+        };
+
         FeatureState {
             feature: feature.clone(),
             children: feature
@@ -63,7 +113,7 @@ impl FeatureState {
                 .into_iter()
                 .map(FeatureState::from)
                 .collect(),
-            ..FeatureState::default()
+            slot_controls,
         }
     }
 
@@ -81,8 +131,10 @@ impl FeatureState {
             children,
         } = self;
         let mut path = path.clone();
-        match path.pop() {
+        let head = path.get(0).map(|s| s.clone());
+        match head {
             Some(head) => {
+                path.remove(0);
                 if (feature.name == head) {
                     if (path.is_empty()) {
                         let Feature {
@@ -102,9 +154,7 @@ impl FeatureState {
                     } else {
                         let mut dirty_child = false;
                         for child in children {
-                            if (child.feature.name == head) {
-                                dirty_child = child.use_slot(&path) || dirty_child;
-                            }
+                            dirty_child = child.use_slot(&path) || dirty_child;
                         }
                         dirty_child
                     }
@@ -123,8 +173,10 @@ impl FeatureState {
             children,
         } = self;
         let mut path = path.clone();
-        match path.pop() {
+        let head = path.first().map(|s| s.clone());
+        match head {
             Some(head) => {
+                path.remove(0);
                 if feature.name == head {
                     if path.is_empty() {
                         let mut dirty_children = false;
@@ -215,14 +267,16 @@ impl FeatureState {
             children,
             show_reset_chidren,
         } = feature;
-        let mut header_row = Row::new().push(Text::new(name.clone()).size(24));
+        let mut header_row = Row::new()
+            .spacing(20)
+            .push(Text::new(name.clone()).size(24));
 
         match (slot_controls, slot) {
             (Some(slot_controls), Some(slot)) => {
                 let FeatureSlot { current, max } = slot;
 
                 header_row = header_row
-                    .push(Text::new(format!("{} / {}", current.clone(), max.clone())).size(24));
+                    .push(Text::new(format!("{} / {}", current.clone(), max.clone())).size(32));
 
                 let FeatureSlotControl {
                     use_slot,
@@ -243,7 +297,7 @@ impl FeatureState {
                     .padding(8);
                 header_row = header_row.push(button);
 
-                if *show_reset_chidren {
+                if show_reset_chidren.unwrap_or(false) {
                     let button = Button::new(reset_all, Text::new("Reset All").size(16))
                         .padding(8)
                         .on_press(Message::Feature(FeatureMessage::Reset(
@@ -267,10 +321,4 @@ impl FeatureState {
 
         column
     }
-}
-
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct FeatureSlot {
-    current: isize,
-    max: isize,
 }

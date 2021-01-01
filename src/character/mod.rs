@@ -16,7 +16,7 @@ pub mod skill;
 pub mod spell_slot;
 pub mod spellcasting;
 
-use crate::character::feature::FeatureMessage;
+use crate::character::feature::{FeatureMessage, FeatureState, FeaturesState};
 use crate::character::persistence::LoadData;
 use crate::character::spellcasting::Spellcasting;
 use crate::resources::Resources;
@@ -49,6 +49,7 @@ pub struct State {
     proficiencies: Proficiencies,
     spellcasting: Vec<Spellcasting>,
     spell_slots: SpellSlotsState,
+    features: FeaturesState,
     saving: bool,
     dirty: bool,
     scroll: scrollable::State,
@@ -66,6 +67,7 @@ impl State {
             self.proficiencies.clone(),
             self.spellcasting.clone(),
             self.spell_slots.persistable(),
+            self.features.persistable(),
             self.config.clone(),
         )
     }
@@ -132,7 +134,7 @@ impl Application for Character {
                         state.dirty = state.spell_slots.update(spell_slot_message);
                     }
                     Message::Feature(feature_message) => {
-                        unimplemented!()
+                        state.dirty = state.features.update(feature_message);
                     }
                 }
                 if state.dirty && !state.saving {
@@ -163,6 +165,7 @@ impl Application for Character {
                 proficiencies,
                 spellcasting,
                 spell_slots,
+                features,
                 saving,
                 dirty,
                 scroll,
@@ -206,6 +209,8 @@ impl Application for Character {
                     .padding(20)
                     .width(Length::FillPortion(2));
 
+                let features = features.view();
+
                 let layout = Column::new()
                     .align_items(Align::Start)
                     .push(Row::new().push(name))
@@ -237,7 +242,8 @@ impl Application for Character {
                                     .width(Length::FillPortion(1)),
                             )
                             .push(skill_view.width(Length::FillPortion(1))),
-                    );
+                    )
+                    .push(features);
 
                 Scrollable::new(scroll)
                     .padding(40)
