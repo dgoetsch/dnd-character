@@ -11,9 +11,11 @@ pub mod name;
 pub mod persistence;
 pub mod proficiencies;
 pub mod saving_throw;
-pub mod spell_slot;
 pub mod skill;
+pub mod spell_slot;
 
+use crate::character::persistence::LoadData;
+use crate::resources::Resources;
 use ability_score::AbilityScores;
 use class::Classes;
 use description::Description;
@@ -33,6 +35,7 @@ pub enum Character {
 #[derive(Debug, Clone, Default)]
 pub struct State {
     config: CharacterPersistenceConfig,
+    resources: Resources,
     name: Name,
     description: Description,
     ability_scores: AbilityScores,
@@ -64,7 +67,7 @@ impl State {
 
 #[derive(Debug, Clone)]
 pub enum Message {
-    Loaded(Result<CharacterPersistence, LoadError>),
+    Loaded(Result<LoadData, LoadError>),
     Saved(Result<(), LoadError>),
     HitPoint(hitpoints::HitPointMessage),
     SpellSlot(spell_slot::SpellSlotMessage),
@@ -78,7 +81,7 @@ impl Application for Character {
     fn new(flags: CharacterPersistenceConfig) -> (Character, Command<Message>) {
         (
             Character::Loading(flags.clone()),
-            Command::perform(CharacterPersistence::load(flags), Message::Loaded),
+            Command::perform(flags.load(), Message::Loaded),
         )
     }
 
@@ -140,6 +143,7 @@ impl Application for Character {
             Character::Loading(_) => loading(),
             Character::Loaded(State {
                 config,
+                resources,
                 name,
                 description,
                 ability_scores,
@@ -156,6 +160,14 @@ impl Application for Character {
 
                 let description = description.view().padding(4);
                 let saving_throws = saving_throws.view(ability_scores).padding(4);
+
+                let skill_view = skill::view(
+                    resources.skills(),
+                    proficiencies.skills(),
+                    classes.clone(),
+                    ability_scores.clone(),
+                );
+
                 let ability_scores = ability_scores.view().padding(4);
                 let proficiencies = proficiencies.view().padding(4);
                 let classes = classes.view().padding(4);
@@ -195,7 +207,12 @@ impl Application for Character {
                             ),
                     )
                     .push(Row::new().push(hp_view))
-                    .push(Row::new().push(spell_slot_view));
+                    .push(
+                        Row::new()
+                            .spacing(8)
+                            .push(spell_slot_view.width(Length::FillPortion(1)))
+                            .push(skill_view.width(Length::FillPortion(1))),
+                    );
 
                 Scrollable::new(scroll)
                     .padding(40)

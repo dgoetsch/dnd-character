@@ -8,6 +8,7 @@ use crate::character::name::Name;
 use crate::character::proficiencies::Proficiencies;
 use crate::character::saving_throw::SavingThrows;
 use crate::character::spell_slot::SpellSlotsState;
+use crate::resources::{ResourceError, Resources};
 use crate::store::Store;
 use serde::{Deserialize, Serialize};
 
@@ -15,12 +16,66 @@ use serde::{Deserialize, Serialize};
 pub enum LoadError {
     Store(crate::store::StoreError),
     Serialize(String),
+    Resource(ResourceError),
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, Eq, PartialOrd, PartialEq)]
 pub struct CharacterPersistenceConfig {
     storage_root: String,
     character_id: String,
+}
+
+#[derive(Debug, Default, Clone)]
+pub struct LoadData {
+    resources: Resources,
+    character: CharacterPersistence,
+}
+
+impl LoadData {
+    pub fn to_state(self) -> State {
+        let CharacterPersistence {
+            name,
+            description,
+            ability_scores,
+            config,
+            classes,
+            hit_points,
+            proficiencies,
+            saving_throws,
+            spell_slots,
+        } = self.character;
+
+        State {
+            name: name,
+            description: description,
+            ability_scores: ability_scores,
+            config: config,
+            classes: Classes::from(classes),
+            hit_points: hit_points.to_state(),
+            saving_throws: saving_throws,
+            proficiencies: proficiencies,
+            spell_slots: SpellSlotsState::from(spell_slots),
+            resources: self.resources,
+            ..State::default()
+        }
+    }
+}
+
+impl CharacterPersistenceConfig {
+    pub fn storage_root(&self) -> String {
+        self.storage_root.clone()
+    }
+
+    pub async fn load(self) -> Result<LoadData, LoadError> {
+        let resource = crate::resources::load(self.storage_root());
+        let character = CharacterPersistence::load(self);
+        let resources = resource.await.map_err(LoadError::Resource)?;
+        let character = character.await?;
+        Ok(LoadData {
+            resources,
+            character,
+        })
+    }
 }
 
 impl CharacterPersistenceConfig {
@@ -78,21 +133,6 @@ impl CharacterPersistence {
         CharacterPersistence {
             config: config,
             ..CharacterPersistence::default()
-        }
-    }
-
-    pub fn to_state(self) -> State {
-        State {
-            name: self.name,
-            description: self.description,
-            ability_scores: self.ability_scores,
-            config: self.config,
-            classes: Classes::from(self.classes),
-            hit_points: self.hit_points.to_state(),
-            saving_throws: self.saving_throws,
-            proficiencies: self.proficiencies,
-            spell_slots: SpellSlotsState::from(self.spell_slots),
-            ..State::default()
         }
     }
 

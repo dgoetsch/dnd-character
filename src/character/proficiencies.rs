@@ -1,7 +1,7 @@
+use crate::character::class::Classes;
 use crate::character::Message;
 use iced::{Column, Row, Text};
 use serde::{Deserialize, Serialize};
-use crate::character::class::Classes;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum ProficiencyType {
@@ -21,7 +21,7 @@ impl ProficiencyType {
         match self {
             ProficiencyType::None => 0,
             ProficiencyType::Half => class.proficiency_bonus() / 2,
-            ProficiencyType::Full => class.proficiency_bonus()
+            ProficiencyType::Full => class.proficiency_bonus(),
         }
     }
 }
@@ -29,15 +29,21 @@ impl ProficiencyType {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Proficiency {
     name: String,
-    proficiency_type: ProficiencyType
+    proficiency_type: ProficiencyType,
 }
 
 impl Proficiency {
+    pub fn name(&self) -> String {
+        self.name.clone()
+    }
+    pub fn proficiency_type(&self) -> ProficiencyType {
+        self.proficiency_type.clone()
+    }
     pub fn view(self) -> String {
         match self.proficiency_type {
             ProficiencyType::Full => self.name.clone(),
             ProficiencyType::Half => format!("{} (Half)", self.name),
-            ProficiencyType::None => "".to_string()
+            ProficiencyType::None => "".to_string(),
         }
     }
 }
@@ -48,15 +54,20 @@ pub struct Proficiencies {
     weapons: Vec<Proficiency>,
     tools: Vec<Proficiency>,
     languages: Vec<Proficiency>,
+    skills: Vec<Proficiency>,
 }
 
 impl Proficiencies {
+    pub fn skills(&self) -> Vec<Proficiency> {
+        self.skills.clone()
+    }
     pub fn view(&mut self) -> Column<Message> {
         let Proficiencies {
             armor,
             weapons,
             tools,
-            languages
+            languages,
+            skills,
         } = self;
         Column::new()
             .push(Row::new().push(Text::new("Proficiences & Languages").size(24)))
@@ -74,7 +85,11 @@ impl Proficiencies {
         let text = if (proficiencies.is_empty()) {
             "None".to_string()
         } else {
-            proficiencies.into_iter().map(|p| p.view()).collect::<Vec<String>>().join(", ")
+            proficiencies
+                .into_iter()
+                .map(|p| p.view())
+                .collect::<Vec<String>>()
+                .join(", ")
         };
 
         Row::new().push(Text::new(text).size(16)).padding(2)

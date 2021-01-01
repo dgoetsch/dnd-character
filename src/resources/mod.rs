@@ -8,6 +8,12 @@ pub struct Resources {
     skills: Vec<Skill>,
 }
 
+impl Resources {
+    pub fn skills(&self) -> Vec<Skill> {
+        self.skills.clone()
+    }
+}
+
 #[derive(Debug, Clone, Eq, PartialOrd, PartialEq)]
 pub enum ResourceError {
     Store(crate::store::StoreError),

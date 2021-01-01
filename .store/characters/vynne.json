@@ -118,6 +118,21 @@
               "name": "Dwarvish",
               "proficiency_type": "Full"
           }
+      ],
+      "skills": [
+          {
+              "name": "Investigation",
+              "proficiency_type": "Full"
+          }, {
+              "name": "Perception",
+              "proficiency_type": "Full"
+          }, {
+              "name": "Deception",
+              "proficiency_type": "Full"
+          }, {
+              "name": "Sleight of Hand",
+              "proficiency_type": "Full"
+          }
       ]
   },
   "spell_slots": [

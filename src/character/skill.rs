@@ -1,13 +1,17 @@
 use crate::character::ability_score::{Ability, AbilityScores};
 use crate::character::class::Classes;
-use crate::character::proficiencies::ProficiencyType;
+use crate::character::proficiencies::{Proficiency, ProficiencyType};
+use crate::character::Message;
 use crate::resources::Skill;
+use crate::util::{format_modifier, three_column_row};
+use iced::{Column, HorizontalAlignment, Length, Row, Text};
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 #[derive(Debug, Clone, Default)]
 pub struct SkillState {
     skills: Vec<Skill>,
-    proficiencies: Vec<SkillProficiency>,
+    proficiencies: Vec<Proficiency>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -25,13 +29,45 @@ impl SkillProficiency {
     }
 }
 
+pub fn view<'a>(
+    skills: Vec<Skill>,
+    proficiencies: Vec<Proficiency>,
+    class: Classes,
+    ability_scores: AbilityScores,
+) -> Column<'a, Message> {
+    let mut column = Column::new().push(Row::new().push(Text::new("Skills")));
+
+    let proficiencies = proficiencies
+        .into_iter()
+        .map(|p| (p.name(), p.proficiency_type()))
+        .collect::<HashMap<String, ProficiencyType>>();
+    for skill in skills {
+        let proficiency = proficiencies
+            .get(skill.name().as_str())
+            .unwrap_or(&ProficiencyType::None)
+            .clone();
+        let name = skill.name();
+        let ability = format!("{:?}", skill.ability());
+        let modifier = modifier(skill, proficiency, class.clone(), ability_scores.clone());
+        let row = three_column_row(
+            Text::new(name).size(16),
+            Text::new(ability).size(16),
+            Text::new(format_modifier(modifier)).size(20),
+        )
+        .padding(2);
+
+        column = column.push(row);
+    }
+    column
+}
+
 fn modifier(
     skill: Skill,
-    proficiency: SkillProficiency,
+    proficiency: ProficiencyType,
     class: Classes,
     ability_scores: AbilityScores,
 ) -> isize {
-    proficiency.proficiency_type.modifier(class) + ability_scores.get(skill.ability()).modifier()
+    proficiency.modifier(class) + ability_scores.get(skill.ability()).modifier()
 }
 
 #[cfg(test)]
@@ -67,20 +103,20 @@ mod test {
                 let ability_scores = ability_scores(skill.clone(), score);
                 let expected_ability_score_modifier = ability_score_modifier(score);
 
-                let no_proficiency = SkillProficiency::of(skill.clone(), ProficiencyType::None);
+                let no_proficiency = ProficiencyType::None;
                 let no_proficiency_modifier = super::modifier(skill.clone(), no_proficiency, class.clone(), ability_scores.clone());
 
                 assert_eq!(no_proficiency_modifier, expected_ability_score_modifier,
                            "Expected {} {} to be {} composed of {}({:?} {}) +0 (no proficiency level {})",
                            skill.name().clone(), no_proficiency_modifier, expected_ability_score_modifier, expected_ability_score_modifier, skill.ability().clone(), score, level);
 
-                let half_proficiency = SkillProficiency::of(skill.clone(), ProficiencyType::Half);
+                let half_proficiency = ProficiencyType::Half;
                 let half_proficiency_modifier = super::modifier(skill.clone(), half_proficiency, class.clone(), ability_scores.clone());
                 assert_eq!(half_proficiency_modifier, ability_score_modifier(score) + class.proficiency_bonus() / 2,
                            "Expected {} {} to be {} composed of {}({:?} {}) +{} (half proficiency level {})",
                            skill.name().clone(), half_proficiency_modifier, expected_ability_score_modifier, expected_ability_score_modifier, skill.ability().clone(), score, ProficiencyType::Half.modifier(class.clone()), level);
 
-                let proficiency = SkillProficiency::of(skill.clone(), ProficiencyType::Full);
+                let proficiency = ProficiencyType::Full;
                 let proficiency_modifier = super::modifier(skill.clone(), proficiency, class.clone(), ability_scores.clone());
                 assert_eq!(proficiency_modifier, ability_score_modifier(score) + class.proficiency_bonus(),
                            "Expected {} {} to be {} composed of {}({:?} {}) +{} (full proficiency level {})",
