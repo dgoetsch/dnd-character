@@ -1,7 +1,10 @@
 use crate::character::ability_score::{Ability, AbilityScore, AbilityScores};
+use crate::character::class::Classes;
+use crate::character::proficiencies::{Proficiency, ProficiencyType};
 use crate::character::Message;
 use iced::{Column, Length, Row, Text};
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct SavingThrows {
@@ -24,45 +27,60 @@ impl SavingThrows {
         }
     }
 
-    pub fn view(&mut self, ability_scores: &AbilityScores) -> Column<Message> {
-        Column::new()
-            .push(Row::new().push(Text::new("Saving Throws").size(24)))
-            .push(
-                self.strength
-                    .view("Strength", ability_scores.get(Ability::Strength)),
+    pub fn view<'a>(
+        &mut self,
+        ability_scores: &AbilityScores,
+        proficiencies: Vec<Proficiency>,
+        class: Classes,
+    ) -> Column<'a, Message> {
+        let proficiencies: HashMap<String, isize> = proficiencies
+            .into_iter()
+            .map(|p| {
+                (
+                    p.name().to_lowercase(),
+                    p.proficiency_type().modifier(class.clone()),
+                )
+            })
+            .collect();
+
+        let abilities = vec![
+            Ability::Strength,
+            Ability::Dexterity,
+            Ability::Constitution,
+            Ability::Intelligence,
+            Ability::Wisdom,
+            Ability::Charisma,
+        ];
+        let mut column = Column::new().push(Row::new().push(Text::new("Saving Throws").size(24)));
+        for ability in abilities {
+            column = column.push(
+                self.get(ability.clone()).view(
+                    ability.clone().to_string(),
+                    ability_scores.get(ability.clone()),
+                    proficiencies
+                        .get(ability.to_string().to_lowercase().as_str())
+                        .unwrap_or(&0)
+                        .clone(),
+                ),
             )
-            .push(
-                self.dexterity
-                    .view("Dexterity", ability_scores.get(Ability::Dexterity)),
-            )
-            .push(
-                self.constitution
-                    .view("Constitution", ability_scores.get(Ability::Constitution)),
-            )
-            .push(
-                self.intelligence
-                    .view("Intelligence", ability_scores.get(Ability::Intelligence)),
-            )
-            .push(
-                self.wisdom
-                    .view("Wisdom", ability_scores.get(Ability::Wisdom)),
-            )
-            .push(
-                self.charisma
-                    .view("Charisma", ability_scores.get(Ability::Charisma)),
-            )
+        }
+        column
     }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct SavingThrow {
-    proficiency: isize,
-    additional_modifier: isize,
+    additional_modifiers: HashMap<String, isize>,
 }
 
 impl SavingThrow {
-    pub fn view(&mut self, name: &str, ability_score: AbilityScore) -> Row<Message> {
-        let modifier = self.modifier(ability_score);
+    pub fn view<'a>(
+        self,
+        name: String,
+        ability_score: AbilityScore,
+        proficiency_modifier: isize,
+    ) -> Row<'a, Message> {
+        let modifier = self.modifier(ability_score, proficiency_modifier);
         let modifier = if modifier < 0 {
             format!("{}", modifier)
         } else {
@@ -76,7 +94,9 @@ impl SavingThrow {
             .push(Text::new(modifier).size(24).width(Length::FillPortion(1)))
     }
 
-    pub fn modifier(&self, ability_score: AbilityScore) -> isize {
-        ability_score.modifier() + self.proficiency + self.additional_modifier
+    pub fn modifier(self, ability_score: AbilityScore, proficiency_modifier: isize) -> isize {
+        ability_score.modifier()
+            + proficiency_modifier
+            + self.additional_modifiers.values().sum::<isize>()
     }
 }

@@ -54,28 +54,22 @@
   },
   "saving_throws": {
       "strength": {
-          "proficiency": 0,
-          "additional_modifier": 0
+          "additional_modifiers": {}
       },
       "dexterity": {
-          "proficiency": 0,
-          "additional_modifier": 0
+          "additional_modifiers": {}
       },
       "constitution": {
-          "proficiency": 4,
-          "additional_modifier": 0
+          "additional_modifiers": {}
       },
       "intelligence": {
-          "proficiency": 0,
-          "additional_modifier": 0
+          "additional_modifiers": {}
       },
       "wisdom": {
-          "proficiency": 0,
-          "additional_modifier": 0
+          "additional_modifiers": {}
       },
       "charisma": {
-          "proficiency": 4,
-          "additional_modifier": 0
+          "additional_modifiers": {}
       }
   },
   "proficiencies": {
@@ -133,6 +127,15 @@
               "name": "Sleight of Hand",
               "proficiency_type": "Full"
           }
+      ],
+      "saving_throws": [
+        {
+          "name": "Constitution",
+          "proficiency_type": "Full"
+      }, {
+          "name": "Charisma",
+          "proficiency_type": "Full"
+      }
       ]
   },
   "spell_slots": [

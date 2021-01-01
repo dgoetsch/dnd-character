@@ -159,7 +159,13 @@ impl Application for Character {
                 let name = name.view().padding(4);
 
                 let description = description.view().padding(4);
-                let saving_throws = saving_throws.view(ability_scores).padding(4);
+                let saving_throws = saving_throws
+                    .view(
+                        ability_scores,
+                        proficiencies.saving_throws(),
+                        classes.clone(),
+                    )
+                    .padding(4);
 
                 let skill_view = skill::view(
                     resources.skills(),

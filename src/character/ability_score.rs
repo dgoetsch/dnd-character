@@ -1,6 +1,8 @@
 use super::Message;
 use iced::{Column, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
+use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
+use std::fmt::Display;
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AbilityScores {
@@ -20,6 +22,12 @@ pub enum Ability {
     Intelligence,
     Wisdom,
     Charisma,
+}
+
+impl Display for Ability {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{:?}", self)
+    }
 }
 
 impl AbilityScores {
@@ -44,16 +52,16 @@ impl AbilityScores {
             Ability::Charisma => self.charisma.clone(),
         }
     }
-    
+
     pub fn with(&self, ability: Ability, score: AbilityScore) -> AbilityScores {
         let mut new = self.clone();
         match ability {
             Ability::Strength => new.strength = score,
-            Ability::Dexterity => new.dexterity  = score,
-            Ability::Constitution => new.constitution  = score,
-            Ability::Intelligence => new.intelligence  = score,
-            Ability::Wisdom => new.wisdom  = score,
-            Ability::Charisma => new.charisma  = score,
+            Ability::Dexterity => new.dexterity = score,
+            Ability::Constitution => new.constitution = score,
+            Ability::Intelligence => new.intelligence = score,
+            Ability::Wisdom => new.wisdom = score,
+            Ability::Charisma => new.charisma = score,
         };
         new
     }
