@@ -8,6 +8,7 @@ use crate::character::name::Name;
 use crate::character::proficiencies::Proficiencies;
 use crate::character::saving_throw::SavingThrows;
 use crate::character::spell_slot::SpellSlotsState;
+use crate::character::spellcasting::Spellcasting;
 use crate::resources::{ResourceError, Resources};
 use crate::store::Store;
 use serde::{Deserialize, Serialize};
@@ -42,6 +43,7 @@ impl LoadData {
             hit_points,
             proficiencies,
             saving_throws,
+            spellcasting,
             spell_slots,
         } = self.character;
 
@@ -54,6 +56,7 @@ impl LoadData {
             hit_points: hit_points.to_state(),
             saving_throws: saving_throws,
             proficiencies: proficiencies,
+            spellcasting: spellcasting,
             spell_slots: SpellSlotsState::from(spell_slots),
             resources: self.resources,
             ..State::default()
@@ -100,6 +103,7 @@ pub struct CharacterPersistence {
     hit_points: HitPoints,
     saving_throws: SavingThrows,
     proficiencies: Proficiencies,
+    spellcasting: Vec<Spellcasting>,
     spell_slots: Vec<SpellSlot>,
     config: CharacterPersistenceConfig,
 }
@@ -113,6 +117,7 @@ impl CharacterPersistence {
         hit_points: HitPoints,
         saving_throws: SavingThrows,
         proficiencies: Proficiencies,
+        spellcasting: Vec<Spellcasting>,
         spell_slots: Vec<SpellSlot>,
         config: CharacterPersistenceConfig,
     ) -> CharacterPersistence {
@@ -124,6 +129,7 @@ impl CharacterPersistence {
             hit_points: hit_points,
             saving_throws: saving_throws,
             proficiencies: proficiencies,
+            spellcasting: spellcasting,
             spell_slots: spell_slots,
             config: config,
         }

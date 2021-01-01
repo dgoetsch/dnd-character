@@ -138,6 +138,16 @@
       }
       ]
   },
+  "spellcasting": [
+    {
+      "class": "Sorcerer",
+      "ability": "Charisma",
+      "additional_modifiers": {
+        "Wand of the War Mage": 2
+      },
+      "additional_save_modifiers": {}
+    }
+  ],
   "spell_slots": [
       {
           "level": 1,

@@ -13,8 +13,9 @@ pub mod proficiencies;
 pub mod saving_throw;
 pub mod skill;
 pub mod spell_slot;
-
+pub mod spellcasting;
 use crate::character::persistence::LoadData;
+use crate::character::spellcasting::Spellcasting;
 use crate::resources::Resources;
 use ability_score::AbilityScores;
 use class::Classes;
@@ -43,6 +44,7 @@ pub struct State {
     hit_points: HitPointState,
     saving_throws: SavingThrows,
     proficiencies: Proficiencies,
+    spellcasting: Vec<Spellcasting>,
     spell_slots: SpellSlotsState,
     saving: bool,
     dirty: bool,
@@ -59,6 +61,7 @@ impl State {
             self.hit_points.persistable(),
             self.saving_throws.clone(),
             self.proficiencies.clone(),
+            self.spellcasting.clone(),
             self.spell_slots.persistable(),
             self.config.clone(),
         )
@@ -151,6 +154,7 @@ impl Application for Character {
                 hit_points,
                 saving_throws,
                 proficiencies,
+                spellcasting,
                 spell_slots,
                 saving,
                 dirty,
@@ -173,6 +177,9 @@ impl Application for Character {
                     classes.clone(),
                     ability_scores.clone(),
                 );
+
+                let spellcasting =
+                    spellcasting::view(spellcasting.clone(), classes, ability_scores.clone());
 
                 let ability_scores = ability_scores.view().padding(4);
                 let proficiencies = proficiencies.view().padding(4);
@@ -216,7 +223,12 @@ impl Application for Character {
                     .push(
                         Row::new()
                             .spacing(8)
-                            .push(spell_slot_view.width(Length::FillPortion(1)))
+                            .push(
+                                Column::new()
+                                    .push(spellcasting)
+                                    .push(spell_slot_view)
+                                    .width(Length::FillPortion(1)),
+                            )
                             .push(skill_view.width(Length::FillPortion(1))),
                     );
 
