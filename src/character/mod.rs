@@ -16,6 +16,7 @@ pub mod skill;
 pub mod spell_slot;
 pub mod spellcasting;
 
+use crate::character::feature::FeatureMessage;
 use crate::character::persistence::LoadData;
 use crate::character::spellcasting::Spellcasting;
 use crate::resources::Resources;
@@ -76,6 +77,7 @@ pub enum Message {
     Saved(Result<(), LoadError>),
     HitPoint(hitpoints::HitPointMessage),
     SpellSlot(spell_slot::SpellSlotMessage),
+    Feature(feature::FeatureMessage),
 }
 
 impl Application for Character {
@@ -128,6 +130,9 @@ impl Application for Character {
                     }
                     Message::SpellSlot(spell_slot_message) => {
                         state.dirty = state.spell_slots.update(spell_slot_message);
+                    }
+                    Message::Feature(feature_message) => {
+                        unimplemented!()
                     }
                 }
                 if state.dirty && !state.saving {
