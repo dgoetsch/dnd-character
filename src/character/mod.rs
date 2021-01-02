@@ -142,10 +142,14 @@ impl Application for Character {
                         state.dirty = state.features.update(feature_message);
                     }
                 }
+                println!(
+                    "Performed message, dirty?:{}, saving?:{}",
+                    state.dirty, state.saving
+                );
+
                 if state.dirty && !state.saving {
                     state.dirty = false;
                     state.saving = true;
-
                     let persistant_data = state.persistable();
                     Command::perform(persistant_data.save(), Message::Saved)
                 } else {

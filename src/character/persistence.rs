@@ -179,7 +179,7 @@ impl CharacterPersistence {
         let key = CharacterPersistence::key(self.config.character_id.clone());
         let json =
             serde_json::to_string_pretty(&self).map_err(|e| LoadError::Serialize(e.to_string()))?;
-
+        println!("saving {}", json);
         let store = self.config.store()?;
 
         store.save(key, json).await.map_err(|e| LoadError::Store(e))

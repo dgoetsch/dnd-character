@@ -1,142 +1,153 @@
 {
   "name": {
-      "name": "Vynne"
+    "name": "Vynne"
   },
   "description": {
-      "race": "Half-Elf",
-      "size": "Medium",
-      "alignment": {
-          "order": "Chaotic",
-          "morality": "Good"
-      },
-      "speed": 30,
-      "age": 24,
-      "height": {
-          "feet": 5,
-          "inches": 7
-      },
-      "weight": {
-          "lbs": 122,
-          "oz": 8
-      },
-      "hair": "Brown",
-      "eyes": "Red"
+    "race": "Half-Elf",
+    "size": "Medium",
+    "alignment": {
+      "order": "Chaotic",
+      "morality": "Good"
+    },
+    "speed": 30,
+    "age": 24,
+    "height": {
+      "feet": 5,
+      "inches": 7
+    },
+    "weight": {
+      "lbs": 122,
+      "oz": 8
+    },
+    "hair": "Brown",
+    "eyes": "Red"
   },
   "ability_scores": {
-      "strength": {
-          "value": 10
-      },
-      "dexterity": {
-          "value": 14
-      },
-      "constitution": {
-          "value": 19
-      },
-      "intelligence": {
-          "value": 12
-      },
-      "wisdom": {
-          "value": 10
-      },
-      "charisma": {
-          "value": 20
-      }
+    "strength": {
+      "value": 10
+    },
+    "dexterity": {
+      "value": 14
+    },
+    "constitution": {
+      "value": 19
+    },
+    "intelligence": {
+      "value": 12
+    },
+    "wisdom": {
+      "value": 10
+    },
+    "charisma": {
+      "value": 20
+    }
   },
   "classes": [
-      {
-          "name": "Sorcerer",
-          "level": 11
-      }
+    {
+      "name": "Sorcerer",
+      "level": 11
+    }
   ],
   "hit_points": {
-      "current_hit_points": 87,
-      "max_hit_points": 87
+    "current_hit_points": 87,
+    "max_hit_points": 87
   },
   "saving_throws": {
-      "strength": {
-          "additional_modifiers": {}
-      },
-      "dexterity": {
-          "additional_modifiers": {}
-      },
-      "constitution": {
-          "additional_modifiers": {}
-      },
-      "intelligence": {
-          "additional_modifiers": {}
-      },
-      "wisdom": {
-          "additional_modifiers": {}
-      },
-      "charisma": {
-          "additional_modifiers": {}
-      }
+    "strength": {
+      "additional_modifiers": {}
+    },
+    "dexterity": {
+      "additional_modifiers": {}
+    },
+    "constitution": {
+      "additional_modifiers": {}
+    },
+    "intelligence": {
+      "additional_modifiers": {}
+    },
+    "wisdom": {
+      "additional_modifiers": {}
+    },
+    "charisma": {
+      "additional_modifiers": {}
+    }
   },
   "proficiencies": {
-      "armor": [],
-      "weapons": [
-          {
-              "name": "daggers",
-              "proficiency_type": "Full"
-          }, {
-              "name": "darts",
-              "proficiency_type": "Full"
-          }, {
-              "name": "slings",
-              "proficiency_type": "Full"
-          }, {
-              "name": "quarterstaffs",
-              "proficiency_type": "Full"
-          }, {
-              "name": "light crossbows",
-              "proficiency_type": "Full"
-          }
-      ],
-      "tools": [
-          {
-              "name": "disguise kit",
-              "proficiency_type": "Full"
-          }, {
-              "name": "forgery kit",
-              "proficiency_type": "Full"
-          }
-      ],
-      "languages": [
-          {
-              "name": "Common",
-              "proficiency_type": "Full"
-          }, {
-              "name": "Elvish",
-              "proficiency_type": "Full"
-          }, {
-              "name": "Dwarvish",
-              "proficiency_type": "Full"
-          }
-      ],
-      "skills": [
-          {
-              "name": "Investigation",
-              "proficiency_type": "Full"
-          }, {
-              "name": "Perception",
-              "proficiency_type": "Full"
-          }, {
-              "name": "Deception",
-              "proficiency_type": "Full"
-          }, {
-              "name": "Sleight of Hand",
-              "proficiency_type": "Full"
-          }
-      ],
-      "saving_throws": [
-        {
-          "name": "Constitution",
-          "proficiency_type": "Full"
-      }, {
-          "name": "Charisma",
-          "proficiency_type": "Full"
+    "armor": [],
+    "weapons": [
+      {
+        "name": "daggers",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "darts",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "slings",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "quarterstaffs",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "light crossbows",
+        "proficiency_type": "Full"
       }
-      ]
+    ],
+    "tools": [
+      {
+        "name": "disguise kit",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "forgery kit",
+        "proficiency_type": "Full"
+      }
+    ],
+    "languages": [
+      {
+        "name": "Common",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "Elvish",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "Dwarvish",
+        "proficiency_type": "Full"
+      }
+    ],
+    "skills": [
+      {
+        "name": "Investigation",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "Perception",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "Deception",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "Sleight of Hand",
+        "proficiency_type": "Full"
+      }
+    ],
+    "saving_throws": [
+      {
+        "name": "Constitution",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "Charisma",
+        "proficiency_type": "Full"
+      }
+    ]
   },
   "spellcasting": [
     {
@@ -149,113 +160,146 @@
     }
   ],
   "spell_slots": [
-      {
-          "level": 1,
-          "available": 4,
-          "max": 4
-      },
-      {
-          "level": 2,
-          "available": 3,
-          "max": 3
-      },
-      {
-          "level": 3,
-          "available": 3,
-          "max": 3
-      },
-      {
-          "level": 4,
-          "available": 3,
-          "max": 3
-      },
-      {
-          "level": 5,
-          "available": 2,
-          "max": 2
-      },
-      {
-          "level": 6,
-          "available": 1,
-          "max": 1
-      }
-  ],
-    "inventory": {
-        "equipped": [
-            {
-                "name": "Crossbow, Light",
-                "item_name": "Crossbow, Light"
-            }
-        ],
-        "on_person": [
-            {
-                "name": "Longsword",
-                "item_name": "Longsword"
-            }
-        ]
+    {
+      "level": 1,
+      "available": 4,
+      "max": 4
     },
-    "features": [
+    {
+      "level": 2,
+      "available": 3,
+      "max": 3
+    },
+    {
+      "level": 3,
+      "available": 3,
+      "max": 3
+    },
+    {
+      "level": 4,
+      "available": 3,
+      "max": 3
+    },
+    {
+      "level": 5,
+      "available": 2,
+      "max": 2
+    },
+    {
+      "level": 6,
+      "available": 1,
+      "max": 1
+    }
+  ],
+  "inventory": {
+    "equipped": [
+      {
+        "name": "Crossbow, Light",
+        "item_name": "Crossbow, Light",
+        "features": null
+      }
+    ],
+    "on_person": [
+      {
+        "name": "Longsword",
+        "item_name": "Longsword",
+        "features": null
+      }
+    ]
+  },
+  "features": [
+    {
+      "name": "Font of Magic",
+      "description": null,
+      "slot": null,
+      "children": [
         {
-            "name": "Font of Magic",
-            "children": [
-                {
-                    "name": "Sorcery Points",
-                    "slot": {
-                        "current": 11,
-                        "max": 11
-                    },
-                    "children": []
-                },
-                {
-                    "name": "Meta Magic",
-                    "description": "You can use only one Metamagic option on a spell when you cast it, unless otherwise noted.",
-                    "children": [
-                        {
-                            "name": "Heightened Spell",
-                            "description": "When you cast a spell that forces a creature to make a saving throw to resist its effects, you can spend 3 sorcery points to give one target of the spell disadvantage on its first saving throw made against the spell.",
-                            "children": []
-                        },
-                        {
-                            "name": "Quickened Spell",
-                            "description": "When you cast a spell that has a casting time of 1 action, you can spend 2 sorcery points to change the casting time to 1 bonus action for this casting.",
-                            "children": []
-                        },
-                        {
-                            "name": "Twinned Spell",
-                            "description": "When you cast a spell that targets only one creature and doesn’t have a range of self, you can spend a number of sorcery points equal to the spell’s level to target a second creature in range with the same spell (1 sorcery point if the spell is a cantrip).",
-                            "children": []
-                        }
-                    ]
-                }
-            ]
+          "name": "Sorcery Points",
+          "description": null,
+          "slot": {
+            "current": 11,
+            "max": 11
+          },
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null
         },
         {
-            "name": "Wild Magic",
-            "children": [
-                {
-                    "name": "Wild Magic Surge",
-                    "description": "Starting when you choose this origin at 1st level, your spellcasting can unleash surges of untamed magic. Immediately after you cast a sorcerer spell of 1st level or higher, the DM can have you roll a d20. If you roll a 1, roll on the Wild Magic Surge table to create a random magical effect.",
-                    "children": []
-                },
-                {
-                    "name": "Tides of chaos",
-                    "slot": {
-                        "current": 1,
-                        "max": 1
-                    },
-                    "description": "Starting at 1st level, you can manipulate the forces of chance and chaos to gain advantage on one attack roll, ability check, or saving throw. Once you do so, you must finish a long rest before you can use this feature again.\n\nAny time before you regain the use of this feature, the DM can have you roll on the Wild Magic Surge table immediately after you cast a sorcerer spell of 1st level or higher. You then regain the use of this feature.",
-                    "children": []
-                },
-                {
-                    "name": "Bend Luck",
-                    "description": "Starting at 6th level, you have the ability to twist fate using your wild magic. When another creature you can see makes an attack roll, an ability check, or a saving throw, you can use your reaction and spend 2 sorcery points to roll 1d4 and apply the number rolled as a bonus or penalty (your choice) to the creature's roll. You can do so after the creature rolls but before any effects of the roll occur.",
-                    "children": []
-                }
-            ]
+          "name": "Meta Magic",
+          "description": "You can use only one Metamagic option on a spell when you cast it, unless otherwise noted.",
+          "slot": null,
+          "children": [
+            {
+              "name": "Heightened Spell",
+              "description": "When you cast a spell that forces a creature to make a saving throw to resist its effects, you can spend 3 sorcery points to give one target of the spell disadvantage on its first saving throw made against the spell.",
+              "slot": null,
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null
+            },
+            {
+              "name": "Quickened Spell",
+              "description": "When you cast a spell that has a casting time of 1 action, you can spend 2 sorcery points to change the casting time to 1 bonus action for this casting.",
+              "slot": null,
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null
+            },
+            {
+              "name": "Twinned Spell",
+              "description": "When you cast a spell that targets only one creature and doesn’t have a range of self, you can spend a number of sorcery points equal to the spell’s level to target a second creature in range with the same spell (1 sorcery point if the spell is a cantrip).",
+              "slot": null,
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null
+            }
+          ],
+          "show_reset_chidren": null,
+          "child_display_orientation": null
         }
-    ],
+      ],
+      "show_reset_chidren": null,
+      "child_display_orientation": null
+    },
+    {
+      "name": "Wild Magic",
+      "description": null,
+      "slot": null,
+      "children": [
+        {
+          "name": "Wild Magic Surge",
+          "description": "Starting when you choose this origin at 1st level, your spellcasting can unleash surges of untamed magic. Immediately after you cast a sorcerer spell of 1st level or higher, the DM can have you roll a d20. If you roll a 1, roll on the Wild Magic Surge table to create a random magical effect.",
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null
+        },
+        {
+          "name": "Tides of chaos",
+          "description": "Starting at 1st level, you can manipulate the forces of chance and chaos to gain advantage on one attack roll, ability check, or saving throw. Once you do so, you must finish a long rest before you can use this feature again.\n\nAny time before you regain the use of this feature, the DM can have you roll on the Wild Magic Surge table immediately after you cast a sorcerer spell of 1st level or higher. You then regain the use of this feature.",
+          "slot": {
+            "current": 1,
+            "max": 1
+          },
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null
+        },
+        {
+          "name": "Bend Luck",
+          "description": "Starting at 6th level, you have the ability to twist fate using your wild magic. When another creature you can see makes an attack roll, an ability check, or a saving throw, you can use your reaction and spend 2 sorcery points to roll 1d4 and apply the number rolled as a bonus or penalty (your choice) to the creature's roll. You can do so after the creature rolls but before any effects of the roll occur.",
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null
+        }
+      ],
+      "show_reset_chidren": null,
+      "child_display_orientation": null
+    }
+  ],
   "config": {
-      "storage_root": "store/.characters/.vynne",
-      "character_id": "vynne"
+    "storage_root": ".store/",
+    "character_id": "vynne"
   }
 }
