@@ -1,6 +1,6 @@
-use crate::character::Message;
 use iced::{button, Button, Column, Element, Length, Row, Text};
 use serde::{Deserialize, Serialize};
+use std::fmt::Debug;
 
 #[derive(Debug, Clone, Default)]
 pub struct FeaturesState {
@@ -145,13 +145,17 @@ impl FeaturesState {
         dirty
     }
 
-    pub fn view(&mut self, root_path: Vec<String>) -> Column<Message> {
+    pub fn view<'a, T, F>(&'a mut self, root_path: Vec<String>, f: F) -> Column<'a, T>
+    where
+        T: Debug + Clone + 'a,
+        F: Fn(FeatureMessage) -> T + 'a,
+    {
         let mut column = Column::new().padding(2).spacing(8);
 
         let FeaturesState { feature_state } = self;
 
         for state in feature_state {
-            column = column.push(state.view(root_path.clone()));
+            column = column.push(state.view(root_path.clone(), &f));
         }
 
         column
@@ -320,7 +324,11 @@ impl FeatureState {
         }
     }
 
-    pub fn view(&mut self, parent_path: Vec<String>) -> Column<Message> {
+    pub fn view<'a, T, F>(&'a mut self, parent_path: Vec<String>, f: &F) -> Column<'a, T>
+    where
+        T: Debug + Clone + 'a,
+        F: Fn(FeatureMessage) -> T + 'a,
+    {
         let FeatureState {
             feature,
             slot_controls,
@@ -333,7 +341,7 @@ impl FeatureState {
         let mut child_elements = vec![];
         if !children.is_empty() {
             for child in children {
-                child_elements.push(child.view(this_path.clone()).padding(4))
+                child_elements.push(child.view(this_path.clone(), f).padding(4))
             }
         }
 
@@ -365,25 +373,19 @@ impl FeatureState {
                 } = slot_controls;
 
                 let button = Button::new(use_slot, Text::new("Use").size(16))
-                    .on_press(Message::Feature(FeatureMessage::Use(this_path.clone())))
+                    .on_press(f(FeatureMessage::Use(this_path.clone())))
                     .padding(8);
                 header_row = header_row.push(button);
 
                 let button = Button::new(reset, Text::new("Reset").size(16))
-                    .on_press(Message::Feature(FeatureMessage::Reset(
-                        this_path.clone(),
-                        false,
-                    )))
+                    .on_press(f(FeatureMessage::Reset(this_path.clone(), false)))
                     .padding(8);
                 header_row = header_row.push(button);
 
                 if show_reset_chidren.unwrap_or(false) {
                     let button = Button::new(reset_all, Text::new("Reset All").size(16))
                         .padding(8)
-                        .on_press(Message::Feature(FeatureMessage::Reset(
-                            this_path.clone(),
-                            true,
-                        )));
+                        .on_press(f(FeatureMessage::Reset(this_path.clone(), true)));
                     header_row = header_row.push(button);
                 }
             }
@@ -402,7 +404,7 @@ impl FeatureState {
             .unwrap_or(&DisplayOrientation::Rows)
             .clone();
 
-        let child_element: Element<Message> = match display_orientation {
+        let child_element: Element<T> = match display_orientation {
             DisplayOrientation::Columns => child_elements
                 .into_iter()
                 .fold(Row::new(), |row, child| row.push(child))

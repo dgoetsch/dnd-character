@@ -12,16 +12,16 @@ use proficiencies::Proficiencies;
 use saving_throw::SavingThrows;
 use spell_slot::SpellSlotsState;
 
-use crate::character::feature::{FeatureMessage, FeatureState, FeaturesState};
 use crate::character::inventory::InventoryState;
 use crate::character::persistence::LoadData;
 use crate::character::spellcasting::Spellcasting;
 use crate::core::ability_score::AbilityScores;
+use crate::core::feature;
+use crate::core::feature::{FeatureMessage, FeatureState, FeaturesState};
 use crate::resources::Resources;
 
 pub mod class;
 pub mod description;
-pub mod feature;
 pub mod hitpoints;
 pub mod inventory;
 pub mod name;
@@ -221,7 +221,7 @@ impl Application for Character {
 
                 let inventory = inventory.view(resources.items().clone());
 
-                let features = features.view(vec![]);
+                let features = features.view(vec![], Message::Feature);
 
                 let layout = Column::new()
                     .align_items(Align::Start)

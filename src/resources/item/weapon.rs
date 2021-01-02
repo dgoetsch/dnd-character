@@ -1,5 +1,5 @@
-use crate::character::feature::{Feature, FeaturesState};
 use crate::character::Message;
+use crate::core::feature::{Feature, FeaturesState};
 use crate::core::{display_damage, Damage};
 use crate::dimensions::Weight;
 use crate::util::two_column_row;

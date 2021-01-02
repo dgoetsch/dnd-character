@@ -1,10 +1,12 @@
 use std::fmt::{Display, Formatter};
 
-use crate::util::format_modifier;
 use serde::{Deserialize, Serialize};
+
+use crate::util::format_modifier;
 
 pub mod ability_score;
 pub mod effect;
+pub mod feature;
 
 type DamageType = String;
 

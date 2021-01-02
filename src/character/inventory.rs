@@ -1,5 +1,5 @@
-use crate::character::feature::{Feature, FeaturesState};
 use crate::character::Message;
+use crate::core::feature::{Feature, FeaturesState};
 use crate::resources::item::Item;
 use crate::util::two_column_row;
 use iced::{Column, Row, Text};
@@ -128,7 +128,9 @@ impl InventoryItemState {
             None => {}
         }
         match feature_state {
-            Some(features) => column = column.push(features.view(vec![item.name.clone()])),
+            Some(features) => {
+                column = column.push(features.view(vec![item.name.clone()], Message::Feature))
+            }
             None => {}
         }
 
