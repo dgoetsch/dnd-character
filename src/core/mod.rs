@@ -1,8 +1,10 @@
 use std::fmt::{Display, Formatter};
 
+use crate::util::format_modifier;
 use serde::{Deserialize, Serialize};
 
 pub mod ability_score;
+pub mod effect;
 
 type DamageType = String;
 
@@ -27,18 +29,35 @@ impl Display for Dice {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Damage {
     dice: Dice,
+    additional: Option<isize>,
     damage_type: DamageType,
 }
 
 impl Damage {
-    pub fn new(dice: Dice, damage_type: DamageType) -> Damage {
-        Damage { dice, damage_type }
+    pub fn new(dice: Dice, additional: Option<isize>, damage_type: DamageType) -> Damage {
+        Damage {
+            dice,
+            additional,
+            damage_type,
+        }
     }
 }
 
 impl Display for Damage {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} {}", self.dice.to_string(), self.damage_type)
+        let damage = vec![
+            Some(self.dice.clone())
+                .filter(|d| d.count > 0)
+                .map(|d| d.to_string()),
+            self.additional
+                .map(|additional| format_modifier(additional)),
+        ]
+        .into_iter()
+        .flatten()
+        .collect::<Vec<String>>()
+        .join("");
+
+        write!(f, "{} {}", damage, self.damage_type)
     }
 }
 

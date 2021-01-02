@@ -12,6 +12,9 @@ pub mod weapon;
 
 type ItemType = String;
 type ItemSubType = String;
+
+//TODO add feature
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Item {
     name: String,
@@ -85,11 +88,11 @@ mod test {
         ndn(count, 10)
     }
     fn slashing(dice: Dice) -> Damage {
-        Damage::new(dice, "Slashing".to_string())
+        Damage::new(dice, None, "Slashing".to_string())
     }
 
     fn piercing(dice: Dice) -> Damage {
-        Damage::new(dice, "Piercing".to_string())
+        Damage::new(dice, None, "Piercing".to_string())
     }
     fn versatile(damage: Vec<Damage>) -> WeaponProperty {
         WeaponProperty::Versatile { damage: damage }
