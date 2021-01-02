@@ -28,6 +28,10 @@ impl EffectsState {
             .collect()
     }
 
+    pub fn is_empty(&self) -> bool {
+        self.effects.is_empty()
+    }
+
     pub fn view<'a, T>(&'a mut self) -> Column<'a, T>
     where
         T: Debug + Clone + 'a,

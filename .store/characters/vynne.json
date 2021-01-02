@@ -234,7 +234,8 @@
           },
           "children": [],
           "show_reset_chidren": null,
-          "child_display_orientation": null
+          "child_display_orientation": null,
+          "effects": []
         },
         {
           "name": "Meta Magic",
@@ -247,7 +248,8 @@
               "slot": null,
               "children": [],
               "show_reset_chidren": null,
-              "child_display_orientation": null
+              "child_display_orientation": null,
+              "effects": []
             },
             {
               "name": "Quickened Spell",
@@ -255,7 +257,8 @@
               "slot": null,
               "children": [],
               "show_reset_chidren": null,
-              "child_display_orientation": null
+              "child_display_orientation": null,
+              "effects": []
             },
             {
               "name": "Twinned Spell",
@@ -263,15 +266,18 @@
               "slot": null,
               "children": [],
               "show_reset_chidren": null,
-              "child_display_orientation": null
+              "child_display_orientation": null,
+              "effects": []
             }
           ],
           "show_reset_chidren": null,
-          "child_display_orientation": null
+          "child_display_orientation": null,
+          "effects": []
         }
       ],
       "show_reset_chidren": null,
-      "child_display_orientation": null
+      "child_display_orientation": null,
+      "effects": []
     },
     {
       "name": "Wild Magic",
@@ -284,7 +290,8 @@
           "slot": null,
           "children": [],
           "show_reset_chidren": null,
-          "child_display_orientation": null
+          "child_display_orientation": null,
+          "effects": []
         },
         {
           "name": "Tides of chaos",
@@ -295,7 +302,8 @@
           },
           "children": [],
           "show_reset_chidren": null,
-          "child_display_orientation": null
+          "child_display_orientation": null,
+          "effects": []
         },
         {
           "name": "Bend Luck",
@@ -303,11 +311,13 @@
           "slot": null,
           "children": [],
           "show_reset_chidren": null,
-          "child_display_orientation": null
+          "child_display_orientation": null,
+          "effects": []
         }
       ],
       "show_reset_chidren": null,
-      "child_display_orientation": null
+      "child_display_orientation": null,
+      "effects": []
     }
   ],
   "config": {

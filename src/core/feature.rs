@@ -1,3 +1,4 @@
+use crate::core::effect::{Effect, EffectState, EffectsState};
 use iced::{button, Button, Column, Element, Length, Row, Text};
 use serde::{Deserialize, Serialize};
 use std::fmt::Debug;
@@ -12,6 +13,7 @@ pub struct FeatureState {
     feature: Feature,
     slot_controls: Option<FeatureSlotControl>,
     children: Vec<FeatureState>,
+    effects_state: EffectsState,
 }
 
 #[derive(Debug, Clone, Default)]
@@ -45,6 +47,7 @@ pub struct Feature {
     children: Vec<Feature>,
     show_reset_chidren: Option<bool>,
     child_display_orientation: Option<DisplayOrientation>,
+    effects: Vec<Effect>,
 }
 
 impl Feature {
@@ -56,6 +59,7 @@ impl Feature {
             children: vec![],
             show_reset_chidren: None,
             child_display_orientation: None,
+            effects: vec![],
         }
     }
 
@@ -168,12 +172,15 @@ impl FeatureState {
             feature,
             slot_controls,
             children,
+            effects_state,
         } = self;
         let mut feature = feature.clone();
         feature.children = vec![];
         for child in children {
             feature.children.push(child.persistable())
         }
+
+        feature.effects = effects_state.persistable();
 
         feature
     }
@@ -193,6 +200,7 @@ impl FeatureState {
                 .map(FeatureState::from)
                 .collect(),
             slot_controls,
+            effects_state: EffectsState::from(feature.effects),
         }
     }
 
@@ -208,6 +216,7 @@ impl FeatureState {
             feature,
             slot_controls,
             children,
+            effects_state,
         } = self;
         let mut path = path.clone();
         let head = path.get(0).map(|s| s.clone());
@@ -223,6 +232,7 @@ impl FeatureState {
                             children,
                             show_reset_chidren,
                             child_display_orientation,
+                            effects,
                         } = feature;
                         match slot {
                             Some(slot) => {
@@ -251,6 +261,7 @@ impl FeatureState {
             feature,
             slot_controls,
             children,
+            effects_state,
         } = self;
         let mut path = path.clone();
         let head = path.first().map(|s| s.clone());
@@ -274,6 +285,7 @@ impl FeatureState {
                             children,
                             show_reset_chidren,
                             child_display_orientation,
+                            effects,
                         } = feature;
                         let self_dirty = match slot {
                             Some(slot) => {
@@ -308,6 +320,7 @@ impl FeatureState {
                         children,
                         show_reset_chidren,
                         child_display_orientation,
+                        effects,
                     } = feature;
                     let self_dirty = match slot {
                         Some(slot) => {
@@ -333,6 +346,7 @@ impl FeatureState {
             feature,
             slot_controls,
             children,
+            effects_state,
         } = self;
 
         let mut this_path = parent_path.clone();
@@ -352,6 +366,7 @@ impl FeatureState {
             children,
             show_reset_chidren,
             child_display_orientation,
+            effects,
         } = feature;
         let mut header_row = Row::new()
             .spacing(20)
@@ -397,6 +412,10 @@ impl FeatureState {
         match description {
             Some(description) => column = column.push(Text::new(description.clone()).size(16)),
             None => {}
+        }
+
+        if !effects_state.is_empty() {
+            column = column.push(effects_state.view().padding(2))
         }
 
         let display_orientation = child_display_orientation
