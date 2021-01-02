@@ -108,11 +108,11 @@ impl Description {
         };
         column_2 = match height {
             None => column_2,
-            Some(height) => column_2.push(height.view()),
+            Some(height) => column_2.push(height.clone().view()),
         };
         column_2 = match weight {
             None => column_2,
-            Some(weight) => column_2.push(weight.view()),
+            Some(weight) => column_2.push(weight.clone().view()),
         };
         column_2 = match hair {
             None => column_2,
@@ -133,7 +133,7 @@ impl Description {
 }
 
 impl Height {
-    pub fn view(&mut self) -> Row<Message> {
+    pub fn view<'a>(self) -> Row<'a, Message> {
         two_column_row(
             Text::new("Height"),
             Text::new(format!("{}' {}\"", self.feet, self.inches)),

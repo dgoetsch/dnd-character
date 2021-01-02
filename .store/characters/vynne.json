@@ -180,6 +180,20 @@
           "max": 1
       }
   ],
+    "inventory": {
+        "equipped": [
+            {
+                "name": "Crossbow, Light",
+                "item_name": "Crossbow, Light"
+            }
+        ],
+        "on_person": [
+            {
+                "name": "Longsword",
+                "item_name": "Longsword"
+            }
+        ]
+    },
     "features": [
         {
             "name": "Font of Magic",

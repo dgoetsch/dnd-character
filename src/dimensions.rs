@@ -14,7 +14,7 @@ impl Weight {
         Weight { lbs, oz }
     }
 
-    pub fn view(&mut self) -> Row<Message> {
+    pub fn view<'a>(self) -> Row<'a, Message> {
         two_column_row(
             Text::new("Weight"),
             Text::new(format!("{} lbs, {} oz", self.lbs, self.oz)),

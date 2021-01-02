@@ -145,13 +145,13 @@ impl FeaturesState {
         dirty
     }
 
-    pub fn view(&mut self) -> Column<Message> {
+    pub fn view(&mut self, root_path: Vec<String>) -> Column<Message> {
         let mut column = Column::new().padding(2).spacing(8);
 
         let FeaturesState { feature_state } = self;
 
         for state in feature_state {
-            column = column.push(state.view(vec![]));
+            column = column.push(state.view(root_path.clone()));
         }
 
         column

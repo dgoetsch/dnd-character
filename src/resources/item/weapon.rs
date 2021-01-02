@@ -9,16 +9,16 @@ use std::fmt::{Display, Formatter};
 use WeaponProperty::*;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Attack {
+pub struct Weapon {
     damage: Vec<Damage>,
     properties: Vec<WeaponProperty>,
 }
 
-impl Attack {
-    pub fn new(damage: Vec<Damage>, properties: Vec<WeaponProperty>) -> Attack {
-        Attack { damage, properties }
+impl Weapon {
+    pub fn new(damage: Vec<Damage>, properties: Vec<WeaponProperty>) -> Weapon {
+        Weapon { damage, properties }
     }
-    pub fn view(&self) -> Column<Message> {
+    pub fn view<'a>(self) -> Column<'a, Message> {
         let text = self
             .properties
             .clone()
@@ -30,7 +30,7 @@ impl Attack {
         Column::new()
             .push(two_column_row(
                 Text::new("Damage"),
-                Text::new(display_damage(self.damage.clone())),
+                Text::new(display_damage(self.damage)),
             ))
             .push(two_column_row(Text::new("Properties"), Text::new(text)))
     }
@@ -51,9 +51,7 @@ pub enum WeaponProperty {
         long: isize,
         available: isize,
     },
-    Ammunition {
-        remaining: isize,
-    },
+    Ammunition,
     Reach,
     Loading,
     Light,
@@ -73,7 +71,7 @@ impl Display for WeaponProperty {
                 long,
                 available,
             } => write!(f, "Thrown({}/{})", normal, long),
-            Ammunition { remaining } => write!(f, "Ammunition"),
+            Ammunition => write!(f, "Ammunition"),
             Reach => write!(f, "Reach"),
             Loading => write!(f, "Loading"),
             Light => write!(f, "Light"),

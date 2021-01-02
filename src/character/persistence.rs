@@ -5,6 +5,7 @@ use crate::character::class::{Class, Classes};
 use crate::character::description::Description;
 use crate::character::feature::{Feature, FeatureState, FeaturesState};
 use crate::character::hitpoints::HitPoints;
+use crate::character::inventory::Inventory;
 use crate::character::name::Name;
 use crate::character::proficiencies::Proficiencies;
 use crate::character::saving_throw::SavingThrows;
@@ -46,6 +47,7 @@ impl LoadData {
             saving_throws,
             spellcasting,
             spell_slots,
+            inventory,
             features,
         } = self.character;
 
@@ -60,6 +62,7 @@ impl LoadData {
             proficiencies: proficiencies,
             spellcasting: spellcasting,
             spell_slots: SpellSlotsState::from(spell_slots),
+            inventory: inventory.to_state(),
             features: FeaturesState::from(features),
             resources: self.resources,
             ..State::default()
@@ -108,6 +111,7 @@ pub struct CharacterPersistence {
     proficiencies: Proficiencies,
     spellcasting: Vec<Spellcasting>,
     spell_slots: Vec<SpellSlot>,
+    inventory: Inventory,
     features: Vec<Feature>,
     config: CharacterPersistenceConfig,
 }
@@ -123,6 +127,7 @@ impl CharacterPersistence {
         proficiencies: Proficiencies,
         spellcasting: Vec<Spellcasting>,
         spell_slots: Vec<SpellSlot>,
+        inventory: Inventory,
         features: Vec<Feature>,
         config: CharacterPersistenceConfig,
     ) -> CharacterPersistence {
@@ -136,6 +141,7 @@ impl CharacterPersistence {
             proficiencies,
             spellcasting,
             spell_slots,
+            inventory,
             features,
             config,
         }

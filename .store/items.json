@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Longsword",
+    "weight": {
+      "lbs": 3,
+      "oz": 0
+    },
+    "item_type": "Weapon",
+    "sub_type": "Martial Melee Weapon",
+    "weapon": {
+      "damage": [
+        {
+          "dice": {
+            "count": 1,
+            "sides": 8
+          },
+          "damage_type": "Slashing"
+        }
+      ],
+      "properties": [
+        {
+          "type": "Versatile",
+          "damage": [
+            {
+              "dice": {
+                "count": 1,
+                "sides": 10
+              },
+              "damage_type": "Slashing"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "Crossbow, Light",
+    "weight": {
+      "lbs": 5,
+      "oz": 0
+    },
+    "item_type": "Weapon",
+    "sub_type": "Simple Ranged Weapon",
+    "weapon": {
+      "damage": [
+        {
+          "dice": {
+            "count": 1,
+            "sides": 8
+          },
+          "damage_type": "Piercing"
+        }
+      ],
+      "properties": [
+        {
+          "type": "Ammunition"
+        },
+        {
+          "type": "Loading"
+        },
+        {
+          "type": "Range",
+          "normal": 80,
+          "long": 320
+        },
+        {
+          "type": "TwoHanded"
+        }
+      ]
+    }
+  }
+]

@@ -6,9 +6,9 @@ use iced::{
 pub mod ability_score;
 pub mod class;
 pub mod description;
-pub mod equipment;
 pub mod feature;
 pub mod hitpoints;
+pub mod inventory;
 pub mod name;
 pub mod persistence;
 pub mod proficiencies;
@@ -19,6 +19,7 @@ pub mod spellcasting;
 //TODO experience, ac
 
 use crate::character::feature::{FeatureMessage, FeatureState, FeaturesState};
+use crate::character::inventory::InventoryState;
 use crate::character::persistence::LoadData;
 use crate::character::spellcasting::Spellcasting;
 use crate::resources::Resources;
@@ -51,6 +52,7 @@ pub struct State {
     proficiencies: Proficiencies,
     spellcasting: Vec<Spellcasting>,
     spell_slots: SpellSlotsState,
+    inventory: InventoryState,
     features: FeaturesState,
     saving: bool,
     dirty: bool,
@@ -69,6 +71,7 @@ impl State {
             self.proficiencies.clone(),
             self.spellcasting.clone(),
             self.spell_slots.persistable(),
+            self.inventory.persistable(),
             self.features.persistable(),
             self.config.clone(),
         )
@@ -167,6 +170,7 @@ impl Application for Character {
                 proficiencies,
                 spellcasting,
                 spell_slots,
+                inventory,
                 features,
                 saving,
                 dirty,
@@ -211,7 +215,9 @@ impl Application for Character {
                     .padding(20)
                     .width(Length::FillPortion(2));
 
-                let features = features.view();
+                let inventory = inventory.view(resources.items().clone());
+
+                let features = features.view(vec![]);
 
                 let layout = Column::new()
                     .align_items(Align::Start)
@@ -245,6 +251,7 @@ impl Application for Character {
                             )
                             .push(skill_view.width(Length::FillPortion(1))),
                     )
+                    .push(inventory)
                     .push(features);
 
                 Scrollable::new(scroll)

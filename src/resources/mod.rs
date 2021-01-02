@@ -1,24 +1,24 @@
 use crate::character::ability_score::Ability;
-use crate::resources::equipment::Equipment;
+use crate::resources::item::Item;
 use crate::resources::skill::Skill;
 use serde::{Deserialize, Serialize};
 
-pub mod equipment;
+pub mod item;
 mod persistence;
 pub mod skill;
 
 #[derive(Debug, Clone, Default)]
 pub struct Resources {
     skills: Vec<Skill>,
-    equipment: Vec<Equipment>,
+    items: Vec<Item>,
 }
 
 impl Resources {
     pub fn skills(&self) -> Vec<Skill> {
         self.skills.clone()
     }
-    pub fn equipment(&self) -> Vec<Equipment> {
-        self.equipment.clone()
+    pub fn items(&self) -> Vec<Item> {
+        self.items.clone()
     }
 }
 
