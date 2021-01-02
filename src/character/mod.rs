@@ -31,7 +31,7 @@ pub mod saving_throw;
 pub mod skill;
 pub mod spell_slot;
 pub mod spellcasting;
-//TODO experience, ac
+//TODO experience, ac, attack
 
 #[derive(Debug)]
 pub enum Character {
@@ -142,10 +142,6 @@ impl Application for Character {
                         state.dirty = state.features.update(feature_message);
                     }
                 }
-                println!(
-                    "Performed message, dirty?:{}, saving?:{}",
-                    state.dirty, state.saving
-                );
 
                 if state.dirty && !state.saving {
                     state.dirty = false;

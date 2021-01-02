@@ -1,3 +1,4 @@
+use crate::core::effect::{AbilityScoreBonus, CheckBonus, CheckRoll, Effect};
 use iced::{Column, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
 use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
@@ -30,6 +31,32 @@ impl Display for Ability {
 }
 
 impl AbilityScores {
+    pub fn apply_all(self, modifiers: &Vec<Effect>) -> AbilityScores {
+        let mut scores = self;
+        for modifier in modifiers {
+            scores = scores.apply(modifier.clone());
+        }
+        scores
+    }
+
+    pub fn apply(self, modifier: Effect) -> AbilityScores {
+        match modifier {
+            Effect::Ability { ability, bonus } => {
+                let mut score = self.get(ability.clone());
+                score.value_modifiers.push(bonus);
+                self.with(ability, score)
+            }
+            Effect::Check { bonus, roll } => match roll {
+                CheckRoll::Ability(ability) => {
+                    let mut score = self.get(ability.clone());
+                    score.bonus_modifiers.push(bonus);
+                    self.with(ability, score)
+                }
+                _ => self,
+            },
+            _ => self,
+        }
+    }
     pub fn default() -> AbilityScores {
         AbilityScores {
             strength: AbilityScore::default(),
@@ -80,6 +107,8 @@ impl AbilityScores {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct AbilityScore {
     value: isize,
+    value_modifiers: Vec<AbilityScoreBonus>,
+    bonus_modifiers: Vec<CheckBonus>,
 }
 
 impl Default for AbilityScore {
@@ -122,7 +151,11 @@ impl AbilityScore {
     }
 
     pub fn of(value: isize) -> AbilityScore {
-        AbilityScore { value }
+        AbilityScore {
+            value,
+            value_modifiers: vec![],
+            bonus_modifiers: vec![],
+        }
     }
     pub fn modifier(&self) -> isize {
         if self.value < 10 {

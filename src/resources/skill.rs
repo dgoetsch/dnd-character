@@ -1,9 +1,11 @@
 use crate::core::ability_score::Ability;
 use serde::{Deserialize, Serialize};
 
+pub type SkillName = String;
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Skill {
-    name: String,
+    name: SkillName,
     ability: Ability,
 }
 

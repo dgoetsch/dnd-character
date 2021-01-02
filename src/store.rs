@@ -67,7 +67,7 @@ impl Store {
                 // .read(true)
                 .write(true)
                 .create(true)
-                // .truncate(true)
+                .truncate(true)
                 .open(path)
                 .await
                 .map_err(|e| StoreError::FileError(e.to_string()))?;

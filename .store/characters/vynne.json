@@ -24,22 +24,34 @@
   },
   "ability_scores": {
     "strength": {
-      "value": 10
+      "value": 10,
+      "value_modifiers": [],
+      "bonus_modifiers": []
     },
     "dexterity": {
-      "value": 14
+      "value": 14,
+      "value_modifiers": [],
+      "bonus_modifiers": []
     },
     "constitution": {
-      "value": 19
+      "value": 19,
+      "value_modifiers": [],
+      "bonus_modifiers": []
     },
     "intelligence": {
-      "value": 12
+      "value": 12,
+      "value_modifiers": [],
+      "bonus_modifiers": []
     },
     "wisdom": {
-      "value": 10
+      "value": 10,
+      "value_modifiers": [],
+      "bonus_modifiers": []
     },
     "charisma": {
-      "value": 20
+      "value": 20,
+      "value_modifiers": [],
+      "bonus_modifiers": []
     }
   },
   "classes": [
@@ -49,7 +61,7 @@
     }
   ],
   "hit_points": {
-    "current_hit_points": 81,
+    "current_hit_points": 78,
     "max_hit_points": 87
   },
   "saving_throws": {
@@ -162,7 +174,7 @@
   "spell_slots": [
     {
       "level": 1,
-      "available": 1,
+      "available": 4,
       "max": 4
     },
     {
@@ -217,7 +229,7 @@
           "name": "Sorcery Points",
           "description": null,
           "slot": {
-            "current": 11,
+            "current": 9,
             "max": 11
           },
           "children": [],
@@ -278,7 +290,7 @@
           "name": "Tides of chaos",
           "description": "Starting at 1st level, you can manipulate the forces of chance and chaos to gain advantage on one attack roll, ability check, or saving throw. Once you do so, you must finish a long rest before you can use this feature again.\n\nAny time before you regain the use of this feature, the DM can have you roll on the Wild Magic Surge table immediately after you cast a sorcerer spell of 1st level or higher. You then regain the use of this feature.",
           "slot": {
-            "current": 1,
+            "current": 0,
             "max": 1
           },
           "children": [],
