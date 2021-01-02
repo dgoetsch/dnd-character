@@ -4,9 +4,42 @@ use crate::character::Message;
 use crate::core::ability_score::{
     Ability, AbilityScore, AbilityScores, ModifiedAbilityScore, ModifiedAbilityScores,
 };
+use crate::core::effect::CheckBonus;
 use iced::{Column, Length, Row, Text};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+
+pub struct SavingThrowsState {
+    saving_throws: SavingThrows,
+    strength: SavingThrowState,
+    dexterity: SavingThrowState,
+    constitution: SavingThrowState,
+    intelligence: SavingThrowState,
+    wisdom: SavingThrowState,
+    charisma: SavingThrowState,
+}
+
+pub struct SavingThrowState {
+    effect: Vec<CheckBonus>,
+}
+
+pub struct ModifiedSavingThrows {
+    strength: ModifiedSavingThrow,
+    dexterity: ModifiedSavingThrow,
+    constitution: ModifiedSavingThrow,
+    intelligence: ModifiedSavingThrow,
+    wisdom: ModifiedSavingThrow,
+    charisma: ModifiedSavingThrow,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+pub struct SavingThrow {
+    additional_modifiers: HashMap<String, isize>,
+}
+
+pub struct ModifiedSavingThrow {
+    additional_modifiers: HashMap<String, isize>,
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct SavingThrows {
@@ -68,11 +101,6 @@ impl SavingThrows {
         }
         column
     }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Default)]
-pub struct SavingThrow {
-    additional_modifiers: HashMap<String, isize>,
 }
 
 impl SavingThrow {

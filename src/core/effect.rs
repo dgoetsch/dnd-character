@@ -77,10 +77,24 @@ impl EffectState {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
-#[serde(tag = "type")]
-pub enum CheckBonus {
+pub enum Advantage {
     Advantage,
     Disadvantage,
+}
+
+impl Display for Advantage {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Advantage::Advantage => write!(f, "Advantage"),
+            Advantage::Disadvantage => write!(f, "Disadvantage"),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[serde(tag = "type")]
+pub enum CheckBonus {
+    Advantage(Advantage),
     Modifier(isize),
     Dice(Dice),
 }
@@ -88,8 +102,7 @@ pub enum CheckBonus {
 impl Display for CheckBonus {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            CheckBonus::Advantage => write!(f, "Advantage"),
-            CheckBonus::Disadvantage => write!(f, "Disadvantage"),
+            CheckBonus::Advantage(advantage) => write!(f, "{}", advantage),
             CheckBonus::Modifier(modifier) => write!(f, "{}", format_modifier(modifier.clone())),
             CheckBonus::Dice(dice) => write!(f, "{}", dice.to_string()),
         }
@@ -180,11 +193,8 @@ impl Display for Effect {
                 }
             },
             Effect::Check { bonus, roll } => match bonus {
-                CheckBonus::Advantage => {
-                    write!(f, "Advantage on {}", roll.to_string())
-                }
-                CheckBonus::Disadvantage => {
-                    write!(f, "Disadvantage on {}", roll.to_string())
+                CheckBonus::Advantage(advantage) => {
+                    write!(f, "{} on {}", advantage.to_string(), roll.to_string())
                 }
                 CheckBonus::Modifier(modifier) => {
                     write!(f, "{} to {}", bonus.to_string(), roll.to_string())

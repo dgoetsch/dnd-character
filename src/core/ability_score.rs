@@ -1,4 +1,5 @@
-use crate::core::effect::{AbilityScoreBonus, CheckBonus, CheckRoll, Effect};
+use crate::core::effect::Advantage::Disadvantage;
+use crate::core::effect::{AbilityScoreBonus, Advantage, CheckBonus, CheckRoll, Effect};
 use crate::core::Dice;
 use crate::util::format_modifier;
 use iced::{Column, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
@@ -291,8 +292,12 @@ impl AbilityScoreState {
 
         for bonus_modifier in bonus_modifiers {
             match bonus_modifier {
-                CheckBonus::Advantage => advantage_count = advantage_count + 1,
-                CheckBonus::Disadvantage => disadvantage_count = disadvantage_count + 1,
+                CheckBonus::Advantage(Advantage::Advantage) => {
+                    advantage_count = advantage_count + 1
+                }
+                CheckBonus::Advantage(Advantage::Disadvantage) => {
+                    disadvantage_count = disadvantage_count + 1
+                }
                 CheckBonus::Modifier(bonus) => static_modifiers.push(bonus),
                 CheckBonus::Dice(dice) => bonus_dice.push(dice.clone()),
             }
@@ -301,9 +306,9 @@ impl AbilityScoreState {
         let advantage = if advantage_count == disadvantage_count {
             None
         } else if advantage_count > disadvantage_count {
-            Some(CheckBonus::Advantage.to_string())
+            Some(Advantage::Advantage)
         } else {
-            Some(CheckBonus::Disadvantage.to_string())
+            Some(Advantage::Disadvantage)
         };
 
         let extra_bonus = static_modifiers.into_iter().sum();
@@ -321,7 +326,7 @@ pub struct ModifiedAbilityScore {
     score: AbilityScore,
     bonus: isize,
     dice: Vec<Dice>,
-    advantage: Option<String>,
+    advantage: Option<Advantage>,
 }
 
 impl ModifiedAbilityScore {
