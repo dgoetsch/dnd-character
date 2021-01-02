@@ -2,7 +2,7 @@ use crate::core::ability_score::Ability;
 use crate::core::{Damage, Dice};
 use crate::resources::skill::SkillName;
 use crate::util::format_modifier;
-use iced::{Column, Element, Row, Text};
+use iced::{Column, Element, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
 use serde::{Deserialize, Serialize};
 use std::fmt::{Debug, Display, Formatter};
 
@@ -169,7 +169,7 @@ impl CheckRollModifier {
     }
 
     pub fn dice(&self) -> Vec<Dice> {
-        self.dice().clone()
+        self.dice.clone()
     }
 
     pub fn bonus(&self) -> isize {
@@ -187,6 +187,12 @@ impl CheckRollModifier {
         }
     }
 
+    pub fn with_extra_bonus(&self, bonus: isize) -> CheckRollModifier {
+        let mut new = self.clone();
+        new.bonus = new.bonus + bonus;
+        new
+    }
+
     pub fn view<'a, T: Debug + Clone>(self) -> Element<'a, T> {
         let dice = Some(
             self.dice()
@@ -199,7 +205,6 @@ impl CheckRollModifier {
 
         let bonus = Some(format_modifier(self.bonus())).filter(|s| !s.is_empty());
         let advantage = self.advantage().map(|a| format!("({})", a.to_string()));
-
         let bonus_dice_and_modifier = Some(
             vec![dice, bonus]
                 .into_iter()
@@ -215,7 +220,12 @@ impl CheckRollModifier {
             .collect::<Vec<String>>()
             .join(" ");
 
-        Text::new(text).into()
+        Text::new(text)
+            .size(16)
+            .horizontal_alignment(HorizontalAlignment::Left)
+            .vertical_alignment(VerticalAlignment::Bottom)
+            .width(Length::FillPortion(1))
+            .into()
     }
 }
 

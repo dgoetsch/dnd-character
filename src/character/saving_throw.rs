@@ -4,7 +4,7 @@ use crate::character::Message;
 use crate::core::ability_score::{
     Ability, AbilityScore, AbilityScores, ModifiedAbilityScore, ModifiedAbilityScores,
 };
-use crate::core::effect::CheckBonus;
+use crate::core::effect::{CheckBonus, CheckRollModifier};
 use iced::{Column, Length, Row, Text};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -111,26 +111,25 @@ impl SavingThrow {
         proficiency_modifier: isize,
     ) -> Row<'a, Message> {
         let modifier = self.modifier(ability_score, proficiency_modifier);
-        let modifier = if modifier < 0 {
-            format!("{}", modifier)
-        } else {
-            format!("+{}", modifier)
-        };
-
         Row::new()
             .width(Length::Fill)
             .spacing(2)
             .push(Text::new(name).size(16).width(Length::FillPortion(1)))
-            .push(Text::new(modifier).size(24).width(Length::FillPortion(1)))
+            .push(
+                Column::new()
+                    .push(modifier.view())
+                    .width(Length::FillPortion(1)),
+            )
     }
 
     pub fn modifier(
         self,
         ability_score: ModifiedAbilityScore,
         proficiency_modifier: isize,
-    ) -> isize {
-        ability_score.modifier()
-            + proficiency_modifier
-            + self.additional_modifiers.values().sum::<isize>()
+    ) -> CheckRollModifier {
+        ability_score
+            .modifier()
+            .with_extra_bonus(proficiency_modifier)
+            .with_extra_bonus(self.additional_modifiers.values().sum::<isize>())
     }
 }

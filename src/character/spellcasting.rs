@@ -3,8 +3,9 @@ use crate::character::Message;
 use crate::core::ability_score::{
     Ability, AbilityScore, AbilityScores, ModifiedAbilityScore, ModifiedAbilityScores,
 };
-use crate::util::{format_modifier, two_column_row};
-use iced::{Column, Row, Text};
+use crate::core::effect::CheckRollModifier;
+use crate::util::{format_modifier, two_column_row, two_element_row};
+use iced::{Column, HorizontalAlignment, Row, Text, VerticalAlignment};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -32,15 +33,17 @@ pub struct Spellcasting {
 }
 
 impl Spellcasting {
-    fn modifier(&self, proficiency_modifier: isize, ability: &ModifiedAbilityScore) -> isize {
-        proficiency_modifier
-            + ability.modifier()
-            + self.additional_modifiers.values().sum::<isize>()
+    fn modifier(
+        &self,
+        proficiency_modifier: isize,
+        ability: &ModifiedAbilityScore,
+    ) -> CheckRollModifier {
+        ability.modifier().with_extra_bonus(proficiency_modifier)
     }
 
     fn save_dc(&self, proficiency_modifier: isize, ability: &ModifiedAbilityScore) -> isize {
         proficiency_modifier
-            + ability.modifier()
+            + ability.score().modifier()
             + 8
             + self.additional_save_modifiers.values().sum::<isize>()
     }
@@ -52,12 +55,13 @@ impl Spellcasting {
     ) -> Column<'a, Message> {
         Column::new()
             .push(Row::new().push(Text::new(format!("{} spellcasting", self.class)).size(24)))
-            .push(two_column_row(
-                Text::new("Modifier").size(16),
-                Text::new(format_modifier(
-                    self.modifier(proficiency_modifier, &ability),
-                ))
-                .size(16),
+            .push(two_element_row(
+                Text::new("Modifier")
+                    .horizontal_alignment(HorizontalAlignment::Left)
+                    .vertical_alignment(VerticalAlignment::Bottom)
+                    .size(16)
+                    .into(),
+                self.modifier(proficiency_modifier, &ability).view().into(),
             ))
             .push(two_column_row(
                 Text::new("Spell Save DC").size(16),

@@ -1,8 +1,10 @@
 use crate::core::effect::Advantage::Disadvantage;
-use crate::core::effect::{AbilityScoreBonus, Advantage, CheckBonus, CheckRoll, Effect};
+use crate::core::effect::{
+    AbilityScoreBonus, Advantage, CheckBonus, CheckRoll, CheckRollModifier, Effect,
+};
 use crate::core::Dice;
 use crate::util::format_modifier;
-use iced::{Column, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
+use iced::{Column, Element, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
 use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
 use std::fmt::{Debug, Display};
@@ -200,15 +202,9 @@ impl AbilityScoreState {
         self.bonus_modifiers = vec![];
     }
     pub fn view<T: Debug + Clone>(&mut self, name: &str) -> Row<T> {
-        let ModifiedAbilityScore {
-            score,
-            bonus,
-            dice,
-            advantage,
-        } = self.modified();
+        let ModifiedAbilityScore { score, modifier } = self.modified();
 
         let modified_score = score;
-        let bonus_modifier = bonus;
 
         let name_cell = Text::new(name)
             .size(16)
@@ -231,21 +227,7 @@ impl AbilityScoreState {
             .vertical_alignment(VerticalAlignment::Bottom)
             .width(Length::FillPortion(1));
 
-        let bonus_modifier_text = if bonus_modifier == 0 {
-            format_modifier(modified_score.modifier())
-        } else {
-            format!(
-                "{} (with {})",
-                format_modifier(modified_score.modifier() + bonus_modifier),
-                format_modifier(bonus_modifier)
-            )
-        };
-
-        let bonus_cell = Text::new(bonus_modifier_text)
-            .size(16)
-            .horizontal_alignment(HorizontalAlignment::Left)
-            .vertical_alignment(VerticalAlignment::Bottom)
-            .width(Length::FillPortion(1));
+        let bonus_cell = modifier.with_extra_bonus(modified_score.modifier()).view();
 
         Row::new()
             .width(Length::Fill)
@@ -285,54 +267,23 @@ impl AbilityScoreState {
             None => AbilityScore::of(ability_score.value + score_modifier_total),
         };
 
-        let mut advantage_count = 0;
-        let mut disadvantage_count = 0;
-        let mut static_modifiers = vec![];
-        let mut bonus_dice = vec![];
+        let modifier = CheckRollModifier::from(bonus_modifiers.clone());
 
-        for bonus_modifier in bonus_modifiers {
-            match bonus_modifier {
-                CheckBonus::Advantage(Advantage::Advantage) => {
-                    advantage_count = advantage_count + 1
-                }
-                CheckBonus::Advantage(Advantage::Disadvantage) => {
-                    disadvantage_count = disadvantage_count + 1
-                }
-                CheckBonus::Modifier(bonus) => static_modifiers.push(bonus),
-                CheckBonus::Dice(dice) => bonus_dice.push(dice.clone()),
-            }
-        }
-
-        let advantage = if advantage_count == disadvantage_count {
-            None
-        } else if advantage_count > disadvantage_count {
-            Some(Advantage::Advantage)
-        } else {
-            Some(Advantage::Disadvantage)
-        };
-
-        let extra_bonus = static_modifiers.into_iter().sum();
-
-        ModifiedAbilityScore {
-            score,
-            bonus: extra_bonus,
-            dice: bonus_dice,
-            advantage,
-        }
+        ModifiedAbilityScore { score, modifier }
     }
 }
 #[derive(Debug, Clone)]
 pub struct ModifiedAbilityScore {
     score: AbilityScore,
-    bonus: isize,
-    dice: Vec<Dice>,
-    advantage: Option<Advantage>,
+    modifier: CheckRollModifier,
 }
 
 impl ModifiedAbilityScore {
-    pub fn modifier(&self) -> isize {
-        //TODO this ignores dice and advantage
-        self.score.modifier() + self.bonus
+    pub fn modifier(&self) -> CheckRollModifier {
+        self.modifier.with_extra_bonus(self.score.modifier())
+    }
+    pub fn score(&self) -> AbilityScore {
+        self.score.clone()
     }
 }
 
@@ -353,38 +304,6 @@ impl AbilityScore {
             ability_score: self,
             ..AbilityScoreState::default()
         }
-    }
-    pub fn view<T: Debug + Clone>(self, name: &str) -> Row<T> {
-        let modifier = if self.modifier() < 0 {
-            format!("({})", self.modifier())
-        } else {
-            format!("(+{})", self.modifier())
-        };
-
-        Row::new()
-            .width(Length::Fill)
-            .spacing(4)
-            .push(
-                Text::new(name)
-                    .size(16)
-                    .horizontal_alignment(HorizontalAlignment::Left)
-                    .vertical_alignment(VerticalAlignment::Bottom)
-                    .width(Length::FillPortion(1)),
-            )
-            .push(
-                Text::new(self.value.to_string())
-                    .horizontal_alignment(HorizontalAlignment::Left)
-                    .vertical_alignment(VerticalAlignment::Bottom)
-                    .size(24)
-                    .width(Length::FillPortion(1)),
-            )
-            .push(
-                Text::new(modifier)
-                    .horizontal_alignment(HorizontalAlignment::Left)
-                    .vertical_alignment(VerticalAlignment::Bottom)
-                    .size(24)
-                    .width(Length::FillPortion(1)),
-            )
     }
 
     pub fn of(value: isize) -> AbilityScore {

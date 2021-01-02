@@ -185,9 +185,10 @@ impl Application for Character {
                 scroll,
             }) => {
                 let modified_ability_scores = ability_scores.modified();
-                let name = name.view().padding(4);
 
+                let name = name.view().padding(4);
                 let description = description.view().padding(4);
+
                 let saving_throws = saving_throws
                     .view(
                         &modified_ability_scores,
@@ -210,6 +211,7 @@ impl Application for Character {
                 );
 
                 let ability_scores = ability_scores.view().padding(4);
+
                 let proficiencies = proficiencies.view().padding(4);
                 let classes = classes.view().padding(4);
 

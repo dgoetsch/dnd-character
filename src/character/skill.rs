@@ -2,9 +2,10 @@ use crate::character::class::Classes;
 use crate::character::proficiencies::{Proficiency, ProficiencyType};
 use crate::character::Message;
 use crate::core::ability_score::{Ability, AbilityScores, ModifiedAbilityScores};
+use crate::core::effect::CheckRollModifier;
 use crate::resources::skill::Skill;
-use crate::util::{format_modifier, three_column_row};
-use iced::{Column, HorizontalAlignment, Length, Row, Text};
+use crate::util::{format_modifier, three_column_row, three_element_row};
+use iced::{Column, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -28,10 +29,18 @@ pub fn view<'a>(
         let name = skill.name();
         let ability = format!("{:?}", skill.ability());
         let modifier = modifier(skill, proficiency, class.clone(), ability_scores.clone());
-        let row = three_column_row(
-            Text::new(name).size(16),
-            Text::new(ability).size(16),
-            Text::new(format_modifier(modifier)).size(20),
+        let row = three_element_row(
+            Text::new(name)
+                .size(16)
+                .horizontal_alignment(HorizontalAlignment::Left)
+                .vertical_alignment(VerticalAlignment::Bottom)
+                .into(),
+            Text::new(ability)
+                .size(16)
+                .horizontal_alignment(HorizontalAlignment::Right)
+                .vertical_alignment(VerticalAlignment::Bottom)
+                .into(),
+            modifier.view(),
         )
         .padding(2);
 
@@ -45,8 +54,11 @@ fn modifier(
     proficiency: ProficiencyType,
     class: Classes,
     ability_scores: ModifiedAbilityScores,
-) -> isize {
-    proficiency.modifier(class) + ability_scores.get(skill.ability()).modifier()
+) -> CheckRollModifier {
+    ability_scores
+        .get(skill.ability())
+        .modifier()
+        .with_extra_bonus(proficiency.modifier(class))
 }
 
 #[cfg(test)]
