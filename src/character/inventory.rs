@@ -1,4 +1,5 @@
 use crate::character::Message;
+use crate::core::effect::Effect;
 use crate::core::feature::{Feature, FeaturesState};
 use crate::resources::item::Item;
 use crate::util::two_column_row;
@@ -60,6 +61,18 @@ pub struct InventoryItemState {
 //TODO inventory (number available)
 //TODO modifiers
 impl InventoryState {
+    pub fn effects_from_equipped(&self) -> Vec<Effect> {
+        let InventoryState {
+            equipped,
+            on_person,
+        } = self;
+
+        let mut result = vec![];
+        for item in equipped {
+            result.extend(item.effects());
+        }
+        result
+    }
     pub fn persistable(&self) -> Inventory {
         Inventory {
             equipped: self
@@ -107,6 +120,15 @@ impl InventoryState {
 }
 
 impl InventoryItemState {
+    pub fn effects(&self) -> Vec<Effect> {
+        let InventoryItemState { item, features } = self;
+
+        match features {
+            Some(f) => f.effects(),
+            None => vec![],
+        }
+    }
+
     fn persistable(&self) -> InventoryItem {
         self.item.clone()
     }
@@ -130,7 +152,6 @@ impl InventoryItemState {
         }
         match feature_state {
             Some(features) => {
-                println!("adding features to {}", name.clone());
                 column = column.push(features.view(vec![item.name.clone()], Message::Feature))
             }
             None => {}

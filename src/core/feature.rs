@@ -122,6 +122,20 @@ impl Default for DisplayOrientation {
 }
 
 impl FeaturesState {
+    pub fn effects(&self) -> Vec<Effect> {
+        let FeaturesState { feature_state } = self;
+        let mut result = vec![];
+        for FeatureState {
+            feature,
+            effects_state,
+            slot_controls,
+            children,
+        } in feature_state
+        {
+            result.extend(effects_state.effect())
+        }
+        result
+    }
     pub fn is_empty(&self) -> bool {
         self.feature_state.is_empty()
     }
@@ -415,7 +429,6 @@ impl FeatureState {
         }
 
         if !effects_state.is_empty() {
-            println!("Adding effects to feature {}", name.clone());
             column = column.push(effects_state.view().padding(2))
         }
 

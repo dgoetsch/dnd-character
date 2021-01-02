@@ -1,6 +1,8 @@
 use crate::character::class::{Class, Classes};
 use crate::character::Message;
-use crate::core::ability_score::{Ability, AbilityScore, AbilityScores};
+use crate::core::ability_score::{
+    Ability, AbilityScore, AbilityScores, ModifiedAbilityScore, ModifiedAbilityScores,
+};
 use crate::util::{format_modifier, two_column_row};
 use iced::{Column, Row, Text};
 use serde::{Deserialize, Serialize};
@@ -9,7 +11,7 @@ use std::collections::HashMap;
 pub fn view<'a>(
     spellcasting: Vec<Spellcasting>,
     class: &Classes,
-    ability_scores: AbilityScores,
+    ability_scores: ModifiedAbilityScores,
 ) -> Column<'a, Message> {
     let mut column = Column::new();
     let proficiency_modifier = class.proficiency_bonus();
@@ -30,13 +32,13 @@ pub struct Spellcasting {
 }
 
 impl Spellcasting {
-    fn modifier(&self, proficiency_modifier: isize, ability: &AbilityScore) -> isize {
+    fn modifier(&self, proficiency_modifier: isize, ability: &ModifiedAbilityScore) -> isize {
         proficiency_modifier
             + ability.modifier()
             + self.additional_modifiers.values().sum::<isize>()
     }
 
-    fn save_dc(&self, proficiency_modifier: isize, ability: &AbilityScore) -> isize {
+    fn save_dc(&self, proficiency_modifier: isize, ability: &ModifiedAbilityScore) -> isize {
         proficiency_modifier
             + ability.modifier()
             + 8
@@ -46,7 +48,7 @@ impl Spellcasting {
     pub fn view<'a>(
         self,
         proficiency_modifier: isize,
-        ability: AbilityScore,
+        ability: ModifiedAbilityScore,
     ) -> Column<'a, Message> {
         Column::new()
             .push(Row::new().push(Text::new(format!("{} spellcasting", self.class)).size(24)))

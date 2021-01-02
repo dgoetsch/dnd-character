@@ -14,6 +14,15 @@ pub struct EffectsState {
 }
 
 impl EffectsState {
+    pub fn effect(&self) -> Vec<Effect> {
+        let EffectsState { effects } = self;
+        let mut result = vec![];
+        for state in effects {
+            result.push(state.effect());
+        }
+        result
+    }
+
     pub fn from(effects: Vec<Effect>) -> EffectsState {
         EffectsState {
             effects: effects.into_iter().map(|e| e.to_state()).collect(),
@@ -51,6 +60,10 @@ pub struct EffectState {
 }
 
 impl EffectState {
+    pub fn effect(&self) -> Effect {
+        self.effect.clone()
+    }
+
     pub fn persistable(&self) -> Effect {
         self.effect.clone()
     }
@@ -67,6 +80,7 @@ impl EffectState {
 #[serde(tag = "type")]
 pub enum CheckBonus {
     Advantage,
+    Disadvantage,
     Modifier(isize),
     Dice(Dice),
 }
@@ -75,6 +89,7 @@ impl Display for CheckBonus {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
             CheckBonus::Advantage => write!(f, "Advantage"),
+            CheckBonus::Disadvantage => write!(f, "Disadvantage"),
             CheckBonus::Modifier(modifier) => write!(f, "{}", format_modifier(modifier.clone())),
             CheckBonus::Dice(dice) => write!(f, "{}", dice.to_string()),
         }
@@ -167,6 +182,9 @@ impl Display for Effect {
             Effect::Check { bonus, roll } => match bonus {
                 CheckBonus::Advantage => {
                     write!(f, "Advantage on {}", roll.to_string())
+                }
+                CheckBonus::Disadvantage => {
+                    write!(f, "Disadvantage on {}", roll.to_string())
                 }
                 CheckBonus::Modifier(modifier) => {
                     write!(f, "{} to {}", bonus.to_string(), roll.to_string())

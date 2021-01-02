@@ -1,7 +1,9 @@
 use crate::character::class::Classes;
 use crate::character::proficiencies::{Proficiency, ProficiencyType};
 use crate::character::Message;
-use crate::core::ability_score::{Ability, AbilityScore, AbilityScores};
+use crate::core::ability_score::{
+    Ability, AbilityScore, AbilityScores, ModifiedAbilityScore, ModifiedAbilityScores,
+};
 use iced::{Column, Length, Row, Text};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -29,7 +31,7 @@ impl SavingThrows {
 
     pub fn view<'a>(
         &mut self,
-        ability_scores: &AbilityScores,
+        ability_scores: &ModifiedAbilityScores,
         proficiencies: Vec<Proficiency>,
         class: Classes,
     ) -> Column<'a, Message> {
@@ -77,7 +79,7 @@ impl SavingThrow {
     pub fn view<'a>(
         self,
         name: String,
-        ability_score: AbilityScore,
+        ability_score: ModifiedAbilityScore,
         proficiency_modifier: isize,
     ) -> Row<'a, Message> {
         let modifier = self.modifier(ability_score, proficiency_modifier);
@@ -94,7 +96,11 @@ impl SavingThrow {
             .push(Text::new(modifier).size(24).width(Length::FillPortion(1)))
     }
 
-    pub fn modifier(self, ability_score: AbilityScore, proficiency_modifier: isize) -> isize {
+    pub fn modifier(
+        self,
+        ability_score: ModifiedAbilityScore,
+        proficiency_modifier: isize,
+    ) -> isize {
         ability_score.modifier()
             + proficiency_modifier
             + self.additional_modifiers.values().sum::<isize>()

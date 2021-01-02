@@ -1,7 +1,7 @@
 use crate::character::class::Classes;
 use crate::character::proficiencies::{Proficiency, ProficiencyType};
 use crate::character::Message;
-use crate::core::ability_score::{Ability, AbilityScores};
+use crate::core::ability_score::{Ability, AbilityScores, ModifiedAbilityScores};
 use crate::resources::skill::Skill;
 use crate::util::{format_modifier, three_column_row};
 use iced::{Column, HorizontalAlignment, Length, Row, Text};
@@ -12,7 +12,7 @@ pub fn view<'a>(
     skills: Vec<Skill>,
     proficiencies: Vec<Proficiency>,
     class: Classes,
-    ability_scores: AbilityScores,
+    ability_scores: ModifiedAbilityScores,
 ) -> Column<'a, Message> {
     let mut column = Column::new().push(Row::new().push(Text::new("Skills")));
 
@@ -44,7 +44,7 @@ fn modifier(
     skill: Skill,
     proficiency: ProficiencyType,
     class: Classes,
-    ability_scores: AbilityScores,
+    ability_scores: ModifiedAbilityScores,
 ) -> isize {
     proficiency.modifier(class) + ability_scores.get(skill.ability()).modifier()
 }

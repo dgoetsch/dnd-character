@@ -15,7 +15,7 @@ use spell_slot::SpellSlotsState;
 use crate::character::inventory::InventoryState;
 use crate::character::persistence::LoadData;
 use crate::character::spellcasting::Spellcasting;
-use crate::core::ability_score::AbilityScores;
+use crate::core::ability_score::{AbilityScores, AbilityScoresState};
 use crate::core::feature;
 use crate::core::feature::{FeatureMessage, FeatureState, FeaturesState};
 use crate::resources::Resources;
@@ -45,7 +45,7 @@ pub struct State {
     resources: Resources,
     name: Name,
     description: Description,
-    ability_scores: AbilityScores,
+    ability_scores: AbilityScoresState,
     classes: Classes,
     hit_points: HitPointState,
     saving_throws: SavingThrows,
@@ -64,7 +64,7 @@ impl State {
         CharacterPersistence::from(
             self.name.clone(),
             self.description.clone(),
-            self.ability_scores.clone(),
+            self.ability_scores.persistable(),
             self.classes.persistable(),
             self.hit_points.persistable(),
             self.saving_throws.clone(),
@@ -85,6 +85,7 @@ pub enum Message {
     HitPoint(hitpoints::HitPointMessage),
     SpellSlot(spell_slot::SpellSlotMessage),
     Feature(feature::FeatureMessage),
+    ResetEffects,
 }
 
 impl Application for Character {
@@ -108,27 +109,34 @@ impl Application for Character {
 
     fn update(&mut self, message: Self::Message) -> Command<Self::Message> {
         match self {
-            Character::Loading(_) => {
-                match message {
-                    Message::Loaded(Ok(loaded)) => {
-                        *self = Character::Loaded(loaded.to_state());
-                    }
-                    Message::Loaded(Err(e)) => {
-                        println!("Encountered error {:?}", e);
-                        *self = Character::Loaded(State::default());
-                    }
-                    unexpected => {
-                        println!(
-                            "Encountered unexpected message while loading {:?}",
-                            unexpected
-                        );
-                    }
+            Character::Loading(_) => match message {
+                Message::Loaded(Ok(loaded)) => {
+                    *self = Character::Loaded(loaded.to_state());
+                    self.update(Message::ResetEffects)
                 }
-                Command::none()
-            }
+                Message::Loaded(Err(e)) => {
+                    println!("Encountered error {:?}", e);
+                    *self = Character::Loaded(State::default());
+                    Command::none()
+                }
+                unexpected => {
+                    println!(
+                        "Encountered unexpected message while loading {:?}",
+                        unexpected
+                    );
+                    Command::none()
+                }
+            },
             Character::Loaded(state) => {
                 match message {
-                    Message::Loaded(_) => (),
+                    Message::ResetEffects => {
+                        let mut active_effects = state.features.effects();
+                        active_effects.extend(state.inventory.effects_from_equipped());
+
+                        println!("applying {:?} to scores", active_effects);
+                        state.ability_scores.apply_all(&active_effects);
+                    }
+                    Message::Loaded(_) => {}
                     Message::Saved(_) => {
                         state.saving = false;
                     }
@@ -176,12 +184,13 @@ impl Application for Character {
                 dirty,
                 scroll,
             }) => {
+                let modified_ability_scores = ability_scores.modified();
                 let name = name.view().padding(4);
 
                 let description = description.view().padding(4);
                 let saving_throws = saving_throws
                     .view(
-                        ability_scores,
+                        &modified_ability_scores,
                         proficiencies.saving_throws(),
                         classes.clone(),
                     )
@@ -191,11 +200,14 @@ impl Application for Character {
                     resources.skills(),
                     proficiencies.skills(),
                     classes.clone(),
-                    ability_scores.clone(),
+                    modified_ability_scores.clone(),
                 );
 
-                let spellcasting =
-                    spellcasting::view(spellcasting.clone(), classes, ability_scores.clone());
+                let spellcasting = spellcasting::view(
+                    spellcasting.clone(),
+                    classes,
+                    modified_ability_scores.clone(),
+                );
 
                 let ability_scores = ability_scores.view().padding(4);
                 let proficiencies = proficiencies.view().padding(4);

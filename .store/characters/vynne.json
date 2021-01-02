@@ -24,34 +24,22 @@
   },
   "ability_scores": {
     "strength": {
-      "value": 10,
-      "value_modifiers": [],
-      "bonus_modifiers": []
+      "value": 10
     },
     "dexterity": {
-      "value": 14,
-      "value_modifiers": [],
-      "bonus_modifiers": []
+      "value": 14
     },
     "constitution": {
-      "value": 19,
-      "value_modifiers": [],
-      "bonus_modifiers": []
+      "value": 16
     },
     "intelligence": {
-      "value": 12,
-      "value_modifiers": [],
-      "bonus_modifiers": []
+      "value": 12
     },
     "wisdom": {
-      "value": 10,
-      "value_modifiers": [],
-      "bonus_modifiers": []
+      "value": 10
     },
     "charisma": {
-      "value": 20,
-      "value_modifiers": [],
-      "bonus_modifiers": []
+      "value": 20
     }
   },
   "classes": [
@@ -253,7 +241,7 @@
           "name": "Sorcery Points",
           "description": null,
           "slot": {
-            "current": 8,
+            "current": 5,
             "max": 11
           },
           "children": [],

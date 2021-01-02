@@ -54,7 +54,7 @@ impl LoadData {
         State {
             name: name,
             description: description,
-            ability_scores: ability_scores,
+            ability_scores: ability_scores.to_state(),
             config: config,
             classes: Classes::from(classes),
             hit_points: hit_points.to_state(),
