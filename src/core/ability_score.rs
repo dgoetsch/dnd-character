@@ -1,8 +1,7 @@
-use crate::character::Message;
 use iced::{Column, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
 use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
-use std::fmt::Display;
+use std::fmt::{Debug, Display};
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AbilityScores {
@@ -66,7 +65,7 @@ impl AbilityScores {
         new
     }
 
-    pub fn view(&mut self) -> Column<Message> {
+    pub fn view<'a, T: Debug + Clone + 'a>(&'a mut self) -> Column<'a, T> {
         Column::new()
             .push(Row::new().push(Text::new("Ability Scores").size(24)))
             .push(self.strength.view("STR"))
@@ -90,7 +89,7 @@ impl Default for AbilityScore {
 }
 
 impl AbilityScore {
-    pub fn view(&mut self, name: &str) -> Row<Message> {
+    pub fn view<T: Debug + Clone>(&mut self, name: &str) -> Row<T> {
         let modifier = if self.modifier() < 0 {
             format!("({})", self.modifier())
         } else {
