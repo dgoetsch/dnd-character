@@ -36,9 +36,10 @@ impl Inventory {
 
 impl InventoryItem {
     fn to_state(self) -> InventoryItemState {
+        let features = self.features.clone().map(FeaturesState::from);
         InventoryItemState {
             item: self,
-            features: None,
+            features: features,
         }
     }
 }
@@ -129,6 +130,7 @@ impl InventoryItemState {
         }
         match feature_state {
             Some(features) => {
+                println!("adding features to {}", name.clone());
                 column = column.push(features.view(vec![item.name.clone()], Message::Feature))
             }
             None => {}

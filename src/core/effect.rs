@@ -63,7 +63,7 @@ impl EffectState {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(tag = "type")]
 pub enum CheckBonus {
     Advantage,
@@ -81,7 +81,7 @@ impl Display for CheckBonus {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(tag = "type")]
 pub enum CheckRoll {
     SavingThrow(Ability),
@@ -105,7 +105,7 @@ impl Display for CheckRoll {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(tag = "type")]
 pub enum DamageRoll {
     Attack,
@@ -123,14 +123,14 @@ impl Display for DamageRoll {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(tag = "type")]
 pub enum AbilityScoreBonus {
-    Modifier(isize),
-    Become(isize),
+    Modifier { modifier: isize },
+    Become { value: isize },
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(tag = "type")]
 pub enum Effect {
     Ability {
@@ -148,11 +148,6 @@ pub enum Effect {
 }
 
 impl Effect {
-    // pub fn ability_modifier(modifier: isize, ability: Ability) -> Effect {
-    //     let bonus = AbilityScoreBonus::Modifier(modifier);
-    //     Effect::Ability { bonus, ability }
-    // }
-
     pub fn to_state(self) -> EffectState {
         EffectState { effect: self }
     }
@@ -162,10 +157,10 @@ impl Display for Effect {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
             Effect::Ability { bonus, ability } => match bonus {
-                AbilityScoreBonus::Modifier(modifier) => {
+                AbilityScoreBonus::Modifier { modifier } => {
                     write!(f, "{} {:?}", format_modifier(modifier.clone()), ability)
                 }
-                AbilityScoreBonus::Become(value) => {
+                AbilityScoreBonus::Become { value } => {
                     write!(f, "{:?} becomes {}", ability, value)
                 }
             },
@@ -184,5 +179,25 @@ impl Display for Effect {
                 write!(f, "{} to {}", damage.to_string(), roll.to_string())
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    pub fn ability_becomes(value: isize, ability: Ability) -> Effect {
+        let bonus = AbilityScoreBonus::Become { value };
+        Effect::Ability { bonus, ability }
+    }
+
+    #[test]
+    pub fn wand_of_the_war_mage() {
+        let effect = ability_becomes(19, Ability::Constitution);
+        // println!(
+        //     "{}",
+        //     serde_json::to_string_pretty(&effect).unwrap_or("".to_string())
+        // );
+        assert_eq!(effect.to_string(), "Constitution becomes 19".to_string());
     }
 }

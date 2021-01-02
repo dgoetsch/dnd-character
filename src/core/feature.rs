@@ -415,6 +415,7 @@ impl FeatureState {
         }
 
         if !effects_state.is_empty() {
+            println!("Adding effects to feature {}", name.clone());
             column = column.push(effects_state.view().padding(2))
         }
 

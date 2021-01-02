@@ -14,7 +14,7 @@ pub struct AbilityScores {
     charisma: AbilityScore,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 pub enum Ability {
     Strength,
     Dexterity,

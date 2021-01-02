@@ -10,7 +10,7 @@ pub mod feature;
 
 type DamageType = String;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 pub struct Dice {
     count: isize,
     sides: isize,
@@ -28,7 +28,7 @@ impl Display for Dice {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 pub struct Damage {
     dice: Dice,
     additional: Option<isize>,

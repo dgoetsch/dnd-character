@@ -209,6 +209,30 @@
         "name": "Crossbow, Light",
         "item_name": "Crossbow, Light",
         "features": null
+      },
+      {
+        "name": "Amulet of Health",
+        "item_name": "Amulet",
+        "features": [
+          {
+            "name": "Constitution Modifier",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+              {
+                "type": "Ability",
+                "bonus": {
+                  "type": "Become",
+                  "value": 19
+                },
+                "ability": "Constitution"
+              }
+            ]
+          }
+        ]
       }
     ],
     "on_person": [
@@ -229,7 +253,7 @@
           "name": "Sorcery Points",
           "description": null,
           "slot": {
-            "current": 9,
+            "current": 8,
             "max": 11
           },
           "children": [],
