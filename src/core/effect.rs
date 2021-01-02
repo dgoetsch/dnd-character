@@ -120,6 +120,105 @@ pub enum CheckRoll {
     Feature(Vec<String>),
 }
 
+#[derive(Debug, Clone)]
+pub struct CheckRollModifier {
+    bonus: isize,
+    dice: Vec<Dice>,
+    advantage_count: isize,
+    disadvantage_count: isize,
+}
+
+impl CheckRollModifier {
+    pub fn from(bonuses: Vec<CheckBonus>) -> CheckRollModifier {
+        let mut advantage_count = 0;
+        let mut disadvantage_count = 0;
+        let mut static_modifiers = vec![];
+        let mut dice = vec![];
+
+        for bonus in bonuses {
+            match bonus {
+                CheckBonus::Advantage(Advantage::Advantage) => {
+                    advantage_count = advantage_count + 1
+                }
+                CheckBonus::Advantage(Advantage::Disadvantage) => {
+                    disadvantage_count = disadvantage_count + 1
+                }
+                CheckBonus::Modifier(bonus) => static_modifiers.push(bonus),
+                CheckBonus::Dice(some_dice) => dice.push(some_dice.clone()),
+            }
+        }
+
+        let bonus = static_modifiers.into_iter().sum();
+
+        CheckRollModifier {
+            bonus,
+            dice,
+            advantage_count,
+            disadvantage_count,
+        }
+    }
+
+    pub fn advantage(&self) -> Option<Advantage> {
+        if self.advantage_count == self.disadvantage_count {
+            None
+        } else if self.advantage_count > self.disadvantage_count {
+            Some(Advantage::Advantage)
+        } else {
+            Some(Advantage::Disadvantage)
+        }
+    }
+
+    pub fn dice(&self) -> Vec<Dice> {
+        self.dice().clone()
+    }
+
+    pub fn bonus(&self) -> isize {
+        self.bonus
+    }
+
+    pub fn merge(&self, other: CheckRollModifier) -> CheckRollModifier {
+        let mut dice = self.dice.clone();
+        dice.extend(other.dice);
+        CheckRollModifier {
+            bonus: self.bonus + other.bonus,
+            dice: dice,
+            advantage_count: self.advantage_count + other.advantage_count,
+            disadvantage_count: self.disadvantage_count + other.disadvantage_count,
+        }
+    }
+
+    pub fn view<'a, T: Debug + Clone>(self) -> Element<'a, T> {
+        let dice = Some(
+            self.dice()
+                .into_iter()
+                .map(|d| d.to_string())
+                .collect::<Vec<String>>()
+                .join("+"),
+        )
+        .filter(|s| !s.is_empty());
+
+        let bonus = Some(format_modifier(self.bonus())).filter(|s| !s.is_empty());
+        let advantage = self.advantage().map(|a| format!("({})", a.to_string()));
+
+        let bonus_dice_and_modifier = Some(
+            vec![dice, bonus]
+                .into_iter()
+                .flatten()
+                .collect::<Vec<String>>()
+                .join("+"),
+        )
+        .filter(|b| !b.is_empty());
+
+        let text = vec![bonus_dice_and_modifier, advantage]
+            .into_iter()
+            .flatten()
+            .collect::<Vec<String>>()
+            .join(" ");
+
+        Text::new(text).into()
+    }
+}
+
 impl Display for CheckRoll {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
