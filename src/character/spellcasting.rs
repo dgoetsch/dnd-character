@@ -38,7 +38,10 @@ impl Spellcasting {
         proficiency_modifier: isize,
         ability: &ModifiedAbilityScore,
     ) -> CheckRollModifier {
-        ability.modifier().with_extra_bonus(proficiency_modifier)
+        ability
+            .modifier()
+            .with_extra_bonus(proficiency_modifier)
+            .with_extra_bonus(self.additional_modifiers.values().sum::<isize>())
     }
 
     fn save_dc(&self, proficiency_modifier: isize, ability: &ModifiedAbilityScore) -> isize {
