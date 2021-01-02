@@ -3,7 +3,22 @@ use iced::{
     Length, Row, Scrollable, Text,
 };
 
-pub mod ability_score;
+use class::Classes;
+use description::Description;
+use hitpoints::HitPointState;
+use name::Name;
+use persistence::{CharacterPersistence, CharacterPersistenceConfig, LoadError};
+use proficiencies::Proficiencies;
+use saving_throw::SavingThrows;
+use spell_slot::SpellSlotsState;
+
+use crate::character::feature::{FeatureMessage, FeatureState, FeaturesState};
+use crate::character::inventory::InventoryState;
+use crate::character::persistence::LoadData;
+use crate::character::spellcasting::Spellcasting;
+use crate::core::ability_score::AbilityScores;
+use crate::resources::Resources;
+
 pub mod class;
 pub mod description;
 pub mod feature;
@@ -17,21 +32,6 @@ pub mod skill;
 pub mod spell_slot;
 pub mod spellcasting;
 //TODO experience, ac
-
-use crate::character::feature::{FeatureMessage, FeatureState, FeaturesState};
-use crate::character::inventory::InventoryState;
-use crate::character::persistence::LoadData;
-use crate::character::spellcasting::Spellcasting;
-use crate::resources::Resources;
-use ability_score::AbilityScores;
-use class::Classes;
-use description::Description;
-use hitpoints::HitPointState;
-use name::Name;
-use persistence::{CharacterPersistence, CharacterPersistenceConfig, LoadError};
-use proficiencies::Proficiencies;
-use saving_throw::SavingThrows;
-use spell_slot::SpellSlotsState;
 
 #[derive(Debug)]
 pub enum Character {

@@ -1,4 +1,4 @@
-use crate::character::ability_score::Ability;
+use crate::core::ability_score::Ability;
 use crate::resources::item::Item;
 use crate::resources::skill::Skill;
 use serde::{Deserialize, Serialize};

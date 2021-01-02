@@ -1,6 +1,5 @@
 use super::spell_slot::SpellSlot;
 use super::State;
-use crate::character::ability_score::AbilityScores;
 use crate::character::class::{Class, Classes};
 use crate::character::description::Description;
 use crate::character::feature::{Feature, FeatureState, FeaturesState};
@@ -11,6 +10,7 @@ use crate::character::proficiencies::Proficiencies;
 use crate::character::saving_throw::SavingThrows;
 use crate::character::spell_slot::SpellSlotsState;
 use crate::character::spellcasting::Spellcasting;
+use crate::core::ability_score::AbilityScores;
 use crate::resources::{ResourceError, Resources};
 use crate::store::Store;
 use serde::{Deserialize, Serialize};

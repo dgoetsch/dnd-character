@@ -1,7 +1,7 @@
-use crate::character::ability_score::{Ability, AbilityScores};
 use crate::character::class::Classes;
 use crate::character::proficiencies::{Proficiency, ProficiencyType};
 use crate::character::Message;
+use crate::core::ability_score::{Ability, AbilityScores};
 use crate::resources::skill::Skill;
 use crate::util::{format_modifier, three_column_row};
 use iced::{Column, HorizontalAlignment, Length, Row, Text};
@@ -52,9 +52,9 @@ fn modifier(
 #[cfg(test)]
 mod test {
     use super::Skill;
-    use crate::character::ability_score::{Ability, AbilityScore, AbilityScores};
     use crate::character::class::{Class, Classes};
     use crate::character::proficiencies::ProficiencyType;
+    use crate::core::ability_score::{Ability, AbilityScore, AbilityScores};
     use Ability::*;
 
     fn s(name: &str, ability: Ability) -> Skill {

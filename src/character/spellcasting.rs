@@ -1,6 +1,6 @@
-use crate::character::ability_score::{Ability, AbilityScore, AbilityScores};
 use crate::character::class::{Class, Classes};
 use crate::character::Message;
+use crate::core::ability_score::{Ability, AbilityScore, AbilityScores};
 use crate::util::{format_modifier, two_column_row};
 use iced::{Column, Row, Text};
 use serde::{Deserialize, Serialize};

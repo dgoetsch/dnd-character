@@ -1,4 +1,4 @@
-use crate::character::ability_score::Ability;
+use crate::core::ability_score::Ability;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

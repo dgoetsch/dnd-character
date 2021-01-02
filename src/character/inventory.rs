@@ -100,11 +100,6 @@ impl InventoryState {
                 .padding(8)
                 .push(item.view(items.get(&item.item.item_name).map(|e| e.clone())))
         }
-        // let mut column = item.view().padding(2).spacing(2);
-
-        // if !features_state.is_empty() {
-        //     column = column.push(Row::new().push(features_state.view()));
-        // }
 
         column
     }

@@ -1,4 +1,4 @@
-use super::Message;
+use crate::character::Message;
 use iced::{Column, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
 use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
@@ -136,7 +136,7 @@ impl AbilityScore {
 
 #[cfg(test)]
 mod test {
-    use crate::character::ability_score::AbilityScore;
+    use crate::core::ability_score::AbilityScore;
 
     fn assert_modfier(value: isize, modifier: isize) {
         assert_eq!(

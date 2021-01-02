@@ -1,7 +1,7 @@
-use crate::character::ability_score::{Ability, AbilityScore, AbilityScores};
 use crate::character::class::Classes;
 use crate::character::proficiencies::{Proficiency, ProficiencyType};
 use crate::character::Message;
+use crate::core::ability_score::{Ability, AbilityScore, AbilityScores};
 use iced::{Column, Length, Row, Text};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
