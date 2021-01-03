@@ -31,7 +31,8 @@
           ]
         }
       ]
-    }
+    },
+    "proficiencies": [ "longswords", "martial weapons" ]
   },
   {
     "name": "Crossbow, Light",
@@ -67,6 +68,7 @@
           "type": "TwoHanded"
         }
       ]
-    }
+    },
+    "proficiencies": [ "light crossbows", "simple weapons" ]
   }
 ]

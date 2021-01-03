@@ -24,22 +24,12 @@ pub struct Item {
     item_type: ItemType,
     sub_type: ItemType,
     weapon: Option<Weapon>,
+    proficiencies: Vec<String>,
 }
 
 impl Item {
     pub fn name(&self) -> String {
         self.name.clone()
-    }
-    pub fn weapon(name: String, weight: Weight, sub_type: ItemSubType, weapon: Weapon) -> Item {
-        let weapon = Some(weapon);
-        let item_type = "Weapon".to_string();
-        Item {
-            name,
-            weight,
-            item_type,
-            sub_type,
-            weapon,
-        }
     }
     pub fn view<'a>(self) -> Column<'a, Message> {
         let Item {
@@ -48,6 +38,7 @@ impl Item {
             item_type,
             sub_type,
             weapon,
+            proficiencies,
         } = self;
 
         let mut column = Column::new()
@@ -75,7 +66,7 @@ mod test {
     use crate::core::{Damage, Dice};
     use crate::dimensions::Weight;
     use crate::resources::item::weapon::{Weapon, WeaponProperty};
-    use crate::resources::item::Item;
+    use crate::resources::item::{Item, ItemSubType};
 
     fn lbs(lbs: isize) -> Weight {
         Weight::new(lbs, 0)
@@ -123,7 +114,16 @@ mod test {
     }
 
     fn item<T: Into<String>>(name: T, weight: Weight, item_type: T, weapon: Weapon) -> Item {
-        Item::weapon(name.into(), weight, item_type.into(), weapon)
+        let weapon = Some(weapon);
+        let item_type = "Weapon".to_string();
+        Item {
+            name,
+            weight,
+            item_type,
+            sub_type,
+            weapon,
+            proficiencies: vec![],
+        }
     }
 
     #[test]
