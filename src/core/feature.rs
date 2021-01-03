@@ -1,7 +1,8 @@
 use crate::core::effect::{Effect, EffectState, EffectsState};
 use iced::{button, Button, Column, Element, Length, Row, Text};
+use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 
 #[derive(Debug, Clone, Default)]
 pub struct FeaturesState {
@@ -23,10 +24,17 @@ pub struct FeatureSlotControl {
     reset_all: button::State,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 pub struct FeaturePath {
     path: Vec<String>,
     include_children: bool,
+}
+
+impl Display for FeaturePath {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let tail = if self.include_children { "..." } else { "" };
+        write!(f, "{}{}", self.path.join(" "), tail)
+    }
 }
 
 impl FeaturePath {

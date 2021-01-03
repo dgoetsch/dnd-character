@@ -85,7 +85,7 @@ impl Display for CheckRollType {
             CheckRollType::Attack => write!(f, "attack rolls"),
             CheckRollType::SpellAttack => write!(f, "spell attack rolls"),
             CheckRollType::Skill(name) => write!(f, "{} checks", name),
-            CheckRollType::Feature(path) => write!(f, "{}", path.join(" ")),
+            CheckRollType::Feature(path) => write!(f, "{}", path.to_string()),
         }
     }
 }

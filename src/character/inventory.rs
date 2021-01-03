@@ -1,6 +1,9 @@
 use crate::character::Message;
+use crate::core::ability_score::ModifiedAbilityScores;
 use crate::core::effect::Effect;
 use crate::core::feature::{Feature, FeaturePath, FeaturesState};
+use crate::core::roll::{CheckBonus, CheckRoll, CheckRollType, DamageRollScope};
+use crate::core::Damage;
 use crate::resources::item::Item;
 use crate::util::two_column_row;
 use iced::{Column, Row, Text};
@@ -41,6 +44,7 @@ impl InventoryItem {
         InventoryItemState {
             item: self,
             features: features,
+            ..InventoryItemState::default()
         }
     }
 }
@@ -55,6 +59,8 @@ pub struct InventoryState {
 pub struct InventoryItemState {
     item: InventoryItem,
     features: Option<FeaturesState>,
+    attack_bonus: Vec<(FeaturePath, CheckBonus)>,
+    damage_bonus: Vec<(FeaturePath, Damage)>,
 }
 
 // features: Vec<Feature>,
@@ -90,7 +96,11 @@ impl InventoryState {
         }
     }
 
-    pub fn view(&mut self, items: Vec<Item>) -> Column<Message> {
+    pub fn view(
+        &mut self,
+        items: Vec<Item>,
+        ability_scores: ModifiedAbilityScores,
+    ) -> Column<Message> {
         let items: HashMap<String, Item> = items.into_iter().map(|e| (e.name(), e)).collect();
         let InventoryState {
             equipped,
@@ -102,17 +112,19 @@ impl InventoryState {
             .push(Text::new("Equipped").size(24));
 
         for item in equipped {
-            column = column
-                .padding(8)
-                .push(item.view(items.get(&item.item.item_name).map(|e| e.clone())))
+            column = column.padding(8).push(item.view(
+                items.get(&item.item.item_name).map(|e| e.clone()),
+                ability_scores.clone(),
+            ))
         }
 
         column = column.push(Text::new("On Person").size(24));
 
         for item in on_person {
-            column = column
-                .padding(8)
-                .push(item.view(items.get(&item.item.item_name).map(|e| e.clone())))
+            column = column.padding(8).push(item.view(
+                items.get(&item.item.item_name).map(|e| e.clone()),
+                ability_scores.clone(),
+            ))
         }
 
         column
@@ -120,8 +132,40 @@ impl InventoryState {
 }
 
 impl InventoryItemState {
+    pub fn apply_all(&mut self, effects: &Vec<Effect>) {
+        for effect in effects {
+            self.apply(effect.clone())
+        }
+    }
+
+    pub fn apply(&mut self, effect: Effect) {
+        match effect {
+            Effect::Damage { damage, scope } => match scope {
+                DamageRollScope::Attack => self
+                    .damage_bonus
+                    .push((FeaturePath::empty().with_include_children(true), damage)),
+                DamageRollScope::Feature(path) => match path.matches(self.item.name.clone()) {
+                    (true, remaining_path) => self.damage_bonus.push((remaining_path, damage)),
+                    (false, _) => {}
+                },
+                _ => {}
+            },
+            Effect::Check { bonus, roll } => match roll {
+                CheckRollType::Attack => self
+                    .attack_bonus
+                    .push((FeaturePath::empty().with_include_children(true), bonus)),
+                CheckRollType::Feature(path) => match path.matches(self.item.name.clone()) {
+                    (true, remaining_path) => self.attack_bonus.push((remaining_path, bonus)),
+                    (false, _) => {}
+                },
+                _ => {}
+            },
+            _ => {}
+        }
+    }
+
     pub fn effects(&self) -> Vec<Effect> {
-        let InventoryItemState { item, features } = self;
+        let InventoryItemState { features, .. } = self;
 
         match features {
             Some(f) => f.effects(),
@@ -133,9 +177,18 @@ impl InventoryItemState {
         self.item.clone()
     }
 
-    fn view<'a>(&'a mut self, item: Option<Item>) -> Column<'a, Message> {
+    fn view<'a>(
+        &'a mut self,
+        item: Option<Item>,
+        ability_scores: ModifiedAbilityScores,
+    ) -> Column<'a, Message> {
         let item_resource = item;
-        let InventoryItemState { item, features } = self;
+        let InventoryItemState {
+            item,
+            features,
+            damage_bonus,
+            attack_bonus,
+        } = self;
         let feature_state = features;
         let InventoryItem {
             name,
@@ -147,7 +200,28 @@ impl InventoryItemState {
         column = column.push(Row::new().push(Text::new(name.clone())));
 
         match item_resource {
-            Some(item) => column = column.push(item.clone().view()),
+            Some(item) => {
+                column = column.push(item.clone().view());
+                for attack in item.attacks(ability_scores).unwrap_or(vec![]) {
+                    let mut attack = attack.clone();
+                    for (path, damage) in damage_bonus.clone() {
+                        match attack.matches(path) {
+                            (true, _) => attack = attack.with_extra_damage(damage),
+                            _ => {}
+                        }
+                    }
+                    let mut check_bonuses = vec![];
+
+                    for (path, check) in attack_bonus.clone() {
+                        match attack.matches(path) {
+                            (true, _) => check_bonuses.push(check),
+                            _ => {}
+                        }
+                    }
+                    attack = attack.with_extra_check(CheckRoll::from(check_bonuses));
+                    column = column.push(attack.view())
+                }
+            }
             None => {}
         }
         match feature_state {

@@ -204,7 +204,7 @@ impl Application for Character {
                     modified_ability_scores.clone(),
                 );
 
-                let spellcasting = spellcasting.view(modified_ability_scores);
+                let spellcasting = spellcasting.view(modified_ability_scores.clone());
 
                 let ability_scores = ability_scores.view().padding(4);
 
@@ -225,7 +225,7 @@ impl Application for Character {
                     .padding(20)
                     .width(Length::FillPortion(2));
 
-                let inventory = inventory.view(resources.items().clone());
+                let inventory = inventory.view(resources.items().clone(), modified_ability_scores);
 
                 let features = features.view(FeaturePath::empty(), Message::Feature);
 

@@ -1,4 +1,6 @@
 use crate::character::Message;
+use crate::core::ability_score::ModifiedAbilityScores;
+use crate::core::attack::WeaponAttack;
 use crate::core::feature::{Feature, FeaturesState};
 use crate::dimensions::Weight;
 use crate::resources::item::weapon::Weapon;
@@ -62,6 +64,9 @@ impl Item {
         }
 
         column
+    }
+    pub fn attacks(&self, ability_scores: ModifiedAbilityScores) -> Option<Vec<WeaponAttack>> {
+        self.weapon.clone().map(|w| w.attacks(ability_scores))
     }
 }
 

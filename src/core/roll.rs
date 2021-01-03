@@ -1,4 +1,5 @@
 use crate::core::ability_score::Ability;
+use crate::core::feature::FeaturePath;
 use crate::core::{Damage, Dice};
 use crate::resources::skill::SkillName;
 use crate::util::format_modifier;
@@ -47,7 +48,7 @@ pub enum CheckRollType {
     Attack,
     SpellAttack,
     Skill(SkillName),
-    Feature(Vec<String>),
+    Feature(FeaturePath),
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
@@ -55,7 +56,7 @@ pub enum CheckRollType {
 pub enum DamageRollScope {
     Attack,
     Spell,
-    Feature(Vec<String>),
+    Feature(FeaturePath),
 }
 
 impl Display for DamageRollScope {
@@ -63,7 +64,7 @@ impl Display for DamageRollScope {
         match self {
             DamageRollScope::Attack => write!(f, "Attack Damage"),
             DamageRollScope::Spell => write!(f, "Spell Damage"),
-            DamageRollScope::Feature(path) => write!(f, "Damage from {}", path.join(" ")),
+            DamageRollScope::Feature(path) => write!(f, "Damage from {}", path.to_string()),
         }
     }
 }
@@ -102,6 +103,23 @@ impl DamageRoll {
         let mut damage = self.damage.clone();
         damage.push(additional);
         DamageRoll { damage }
+    }
+
+    pub fn view<'a, T: Debug + Clone>(self) -> Element<'a, T> {
+        let damage = self
+            .damage
+            .into_iter()
+            .map(|d| d.to_string())
+            .filter(|s| !s.is_empty())
+            .collect::<Vec<String>>()
+            .join(" + ");
+
+        Text::new(damage)
+            .size(16)
+            .horizontal_alignment(HorizontalAlignment::Left)
+            .vertical_alignment(VerticalAlignment::Bottom)
+            .width(Length::FillPortion(1))
+            .into()
     }
 }
 

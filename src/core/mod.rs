@@ -55,12 +55,13 @@ impl Display for Damage {
                 .filter(|d| d.count > 0)
                 .map(|d| d.to_string()),
             self.additional
+                .filter(|a| *a != 0)
                 .map(|additional| format_modifier(additional)),
         ]
         .into_iter()
         .flatten()
         .collect::<Vec<String>>()
-        .join("");
+        .join("+");
 
         write!(f, "{} {}", damage, self.damage_type)
     }
