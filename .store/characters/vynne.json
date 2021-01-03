@@ -274,7 +274,7 @@
           "name": "Sorcery Points",
           "description": null,
           "slot": {
-            "current": 5,
+            "current": 9,
             "max": 11
           },
           "children": [],

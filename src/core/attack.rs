@@ -55,4 +55,10 @@ impl WeaponAttack {
         attack.damage = attack.damage.with_extra_damage(additional);
         attack
     }
+
+    fn with_extra_check(&self, additional: CheckRoll) -> WeaponAttack {
+        let mut attack = self.clone();
+        attack.attack = attack.attack.merge(additional);
+        attack
+    }
 }
