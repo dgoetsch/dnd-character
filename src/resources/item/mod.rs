@@ -1,3 +1,4 @@
+use crate::character::proficiencies::{Proficiency, ProficiencyType};
 use crate::character::Message;
 use crate::core::ability_score::ModifiedAbilityScores;
 use crate::core::attack::WeaponAttack;
@@ -8,6 +9,7 @@ use crate::util::two_column_row;
 use iced::{Column, Row, Text};
 use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
+use std::collections::HashSet;
 use std::fmt::Display;
 
 pub mod weapon;
@@ -58,6 +60,20 @@ impl Item {
     }
     pub fn attacks(&self, ability_scores: ModifiedAbilityScores) -> Option<Vec<WeaponAttack>> {
         self.weapon.clone().map(|w| w.attacks(ability_scores))
+    }
+
+    pub fn proficiency_for(&self, proficiencies: &Vec<Proficiency>) -> ProficiencyType {
+        let item_proficiencies = &self
+            .proficiencies
+            .clone()
+            .into_iter()
+            .collect::<HashSet<String>>();
+        for proficiency in proficiencies {
+            if (item_proficiencies.contains(&proficiency.name())) {
+                return proficiency.proficiency_type();
+            }
+        }
+        return ProficiencyType::None;
     }
 }
 

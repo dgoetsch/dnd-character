@@ -208,6 +208,13 @@ impl Application for Character {
 
                 let ability_scores = ability_scores.view().padding(4);
 
+                let inventory = inventory.view(
+                    resources.items().clone(),
+                    modified_ability_scores,
+                    proficiencies,
+                    classes,
+                );
+
                 let proficiencies = proficiencies.view().padding(4);
                 let classes = classes.view().padding(4);
 
@@ -224,8 +231,6 @@ impl Application for Character {
                     .spacing(20)
                     .padding(20)
                     .width(Length::FillPortion(2));
-
-                let inventory = inventory.view(resources.items().clone(), modified_ability_scores);
 
                 let features = features.view(FeaturePath::empty(), Message::Feature);
 

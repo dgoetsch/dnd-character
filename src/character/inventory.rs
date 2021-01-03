@@ -1,3 +1,5 @@
+use crate::character::class::Classes;
+use crate::character::proficiencies::{Proficiencies, Proficiency};
 use crate::character::Message;
 use crate::core::ability_score::ModifiedAbilityScores;
 use crate::core::effect::Effect;
@@ -100,6 +102,8 @@ impl InventoryState {
         &mut self,
         items: Vec<Item>,
         ability_scores: ModifiedAbilityScores,
+        proficiencies: &Proficiencies,
+        classes: &Classes,
     ) -> Column<Message> {
         let items: HashMap<String, Item> = items.into_iter().map(|e| (e.name(), e)).collect();
         let InventoryState {
@@ -107,23 +111,44 @@ impl InventoryState {
             on_person,
         } = self;
 
+        let bonus = classes.proficiency_bonus();
+        let weapon_proficiencies = proficiencies.weapons();
+
         let mut column = Column::new()
             .push(Text::new("Inventory").size(32))
             .push(Text::new("Equipped").size(24));
 
         for item in equipped {
+            let inventory_item = items.get(&item.item.item_name).map(|e| e.clone());
+
+            let proficiency_modifier = match inventory_item.clone() {
+                Some(item) => item
+                    .proficiency_for(&weapon_proficiencies)
+                    .modifier_for_bonus(bonus),
+                _ => 0,
+            };
             column = column.padding(8).push(item.view(
-                items.get(&item.item.item_name).map(|e| e.clone()),
+                inventory_item,
                 ability_scores.clone(),
+                proficiency_modifier,
             ))
         }
 
         column = column.push(Text::new("On Person").size(24));
 
         for item in on_person {
+            let inventory_item = items.get(&item.item.item_name).map(|e| e.clone());
+
+            let proficiency_modifier = match inventory_item.clone() {
+                Some(item) => item
+                    .proficiency_for(&weapon_proficiencies)
+                    .modifier_for_bonus(bonus),
+                _ => 0,
+            };
             column = column.padding(8).push(item.view(
-                items.get(&item.item.item_name).map(|e| e.clone()),
+                inventory_item,
                 ability_scores.clone(),
+                proficiency_modifier,
             ))
         }
 
@@ -181,6 +206,7 @@ impl InventoryItemState {
         &'a mut self,
         item: Option<Item>,
         ability_scores: ModifiedAbilityScores,
+        proficiency_modifier: isize,
     ) -> Column<'a, Message> {
         let item_resource = item;
         let InventoryItemState {
@@ -210,6 +236,7 @@ impl InventoryItemState {
                             _ => {}
                         }
                     }
+
                     let mut check_bonuses = vec![];
 
                     for (path, check) in attack_bonus.clone() {
@@ -218,6 +245,7 @@ impl InventoryItemState {
                             _ => {}
                         }
                     }
+                    check_bonuses.push(CheckBonus::Modifier(proficiency_modifier));
                     attack = attack.with_extra_check(CheckRoll::from(check_bonuses));
                     column = column.push(attack.view())
                 }

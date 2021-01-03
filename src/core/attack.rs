@@ -50,6 +50,7 @@ impl WeaponAttack {
     pub fn matches(&self, featurePath: FeaturePath) -> (bool, FeaturePath) {
         featurePath.matches(self.name.clone())
     }
+
     pub fn with_extra_damage(&self, additional: Damage) -> WeaponAttack {
         let mut attack = self.clone();
         attack.damage = attack.damage.with_extra_damage(additional);

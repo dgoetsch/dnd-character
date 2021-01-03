@@ -17,6 +17,13 @@ impl Default for ProficiencyType {
 }
 
 impl ProficiencyType {
+    pub fn modifier_for_bonus(&self, class_proficiency_bonus: isize) -> isize {
+        match self {
+            ProficiencyType::None => 0,
+            ProficiencyType::Half => class_proficiency_bonus / 2,
+            ProficiencyType::Full => class_proficiency_bonus,
+        }
+    }
     pub fn modifier(&self, class: Classes) -> isize {
         match self {
             ProficiencyType::None => 0,
@@ -64,6 +71,9 @@ impl Proficiencies {
     }
     pub fn saving_throws(&self) -> Vec<Proficiency> {
         self.saving_throws.clone()
+    }
+    pub fn weapons(&self) -> Vec<Proficiency> {
+        self.weapons.clone()
     }
     pub fn view(&mut self) -> Column<Message> {
         let Proficiencies {

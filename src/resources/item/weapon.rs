@@ -100,7 +100,7 @@ impl Weapon {
                 "Melee (Two-Handed)",
                 AttackRange::Melee,
                 strengh_attack_roll.clone(),
-                strength_damage.clone(),
+                DamageRoll::from(damage.clone()).with_modifier(strength_roll.bonus()),
             )),
             _ => {}
         }
