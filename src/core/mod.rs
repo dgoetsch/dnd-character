@@ -8,9 +8,11 @@ pub mod ability_score;
 pub mod attack;
 pub mod effect;
 pub mod feature;
+pub mod roll;
 
 type DamageType = String;
 
+pub struct Roll {}
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 pub struct Dice {
     count: isize,

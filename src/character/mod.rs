@@ -17,7 +17,7 @@ use crate::character::persistence::LoadData;
 use crate::character::spellcasting::{Spellcasting, SpellcastingsState};
 use crate::core::ability_score::{AbilityScores, AbilityScoresState};
 use crate::core::feature;
-use crate::core::feature::{FeatureMessage, FeatureState, FeaturesState};
+use crate::core::feature::{FeatureMessage, FeaturePath, FeatureState, FeaturesState};
 use crate::resources::Resources;
 
 pub mod class;
@@ -227,7 +227,7 @@ impl Application for Character {
 
                 let inventory = inventory.view(resources.items().clone());
 
-                let features = features.view(vec![], Message::Feature);
+                let features = features.view(FeaturePath::empty(), Message::Feature);
 
                 let layout = Column::new()
                     .align_items(Align::Start)

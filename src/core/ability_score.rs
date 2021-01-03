@@ -1,7 +1,5 @@
-use crate::core::effect::Advantage::Disadvantage;
-use crate::core::effect::{
-    AbilityScoreBonus, Advantage, CheckBonus, CheckRoll, CheckRollModifier, Effect,
-};
+use crate::core::effect::Effect;
+use crate::core::roll::{AbilityScoreBonus, Advantage, CheckBonus, CheckRoll, CheckRollType};
 use crate::core::Dice;
 use crate::util::format_modifier;
 use iced::{Column, Element, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
@@ -163,7 +161,7 @@ impl AbilityScoresState {
                 score.value_modifiers.push(bonus);
             }
             Effect::Check { bonus, roll } => match roll {
-                CheckRoll::Ability(ability) => {
+                CheckRollType::Ability(ability) => {
                     let mut score = self.get_mut(ability.clone());
                     score.bonus_modifiers.push(bonus);
                 }
@@ -267,7 +265,7 @@ impl AbilityScoreState {
             None => AbilityScore::of(ability_score.value + score_modifier_total),
         };
 
-        let modifier = CheckRollModifier::from(bonus_modifiers.clone());
+        let modifier = CheckRoll::from(bonus_modifiers.clone());
 
         ModifiedAbilityScore { score, modifier }
     }
@@ -275,11 +273,11 @@ impl AbilityScoreState {
 #[derive(Debug, Clone)]
 pub struct ModifiedAbilityScore {
     score: AbilityScore,
-    modifier: CheckRollModifier,
+    modifier: CheckRoll,
 }
 
 impl ModifiedAbilityScore {
-    pub fn modifier(&self) -> CheckRollModifier {
+    pub fn roll(&self) -> CheckRoll {
         self.modifier.with_extra_bonus(self.score.modifier())
     }
     pub fn score(&self) -> AbilityScore {

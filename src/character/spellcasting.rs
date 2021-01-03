@@ -4,7 +4,8 @@ use crate::character::Message;
 use crate::core::ability_score::{
     Ability, AbilityScore, AbilityScores, ModifiedAbilityScore, ModifiedAbilityScores,
 };
-use crate::core::effect::{CheckBonus, CheckRoll, CheckRollModifier, Effect};
+use crate::core::effect::Effect;
+use crate::core::roll::{CheckBonus, CheckRoll, CheckRollType};
 use crate::util::{format_modifier, two_column_row, two_element_row};
 use iced::{Column, HorizontalAlignment, Row, Text, VerticalAlignment};
 use serde::{Deserialize, Serialize};
@@ -95,7 +96,7 @@ pub struct SpellcastingState {
 #[derive(Debug, Clone)]
 pub struct ModifiedSpellcasting {
     class: String,
-    spellcasting: CheckRollModifier,
+    spellcasting: CheckRoll,
 }
 
 impl SpellcastingState {
@@ -124,7 +125,7 @@ impl SpellcastingState {
     pub fn apply(&mut self, effect: Effect) {
         match effect {
             Effect::Check { bonus, roll } => match roll {
-                CheckRoll::SpellAttack => self.spell_modifiers.push(bonus),
+                CheckRollType::SpellAttack => self.spell_modifiers.push(bonus),
                 _ => {}
             },
             _ => {}
@@ -141,7 +142,7 @@ impl SpellcastingState {
                     self.proficiency_modifier.clone(),
                     &ability_scores.get(self.spellcasting.ability.clone()),
                 )
-                .merge(CheckRollModifier::from(self.spell_modifiers.clone())),
+                .merge(CheckRoll::from(self.spell_modifiers.clone())),
         }
     }
 
@@ -186,7 +187,7 @@ impl ModifiedSpellcasting {
     pub fn class_name(&self) -> String {
         self.class_name().clone()
     }
-    pub fn spell_modifier(&self) -> CheckRollModifier {
+    pub fn spell_modifier(&self) -> CheckRoll {
         self.spellcasting.clone()
     }
 }
@@ -215,13 +216,9 @@ pub struct Spellcasting {
 }
 
 impl Spellcasting {
-    fn modifier(
-        &self,
-        proficiency_modifier: isize,
-        ability: &ModifiedAbilityScore,
-    ) -> CheckRollModifier {
+    fn modifier(&self, proficiency_modifier: isize, ability: &ModifiedAbilityScore) -> CheckRoll {
         ability
-            .modifier()
+            .roll()
             .with_extra_bonus(proficiency_modifier)
             .with_extra_bonus(self.additional_modifiers.values().sum::<isize>())
     }
