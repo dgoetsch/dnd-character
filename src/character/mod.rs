@@ -14,7 +14,7 @@ use spell_slot::SpellSlotsState;
 
 use crate::character::inventory::InventoryState;
 use crate::character::persistence::LoadData;
-use crate::character::spellcasting::Spellcasting;
+use crate::character::spellcasting::{Spellcasting, SpellcastingsState};
 use crate::core::ability_score::{AbilityScores, AbilityScoresState};
 use crate::core::feature;
 use crate::core::feature::{FeatureMessage, FeatureState, FeaturesState};
@@ -50,7 +50,7 @@ pub struct State {
     hit_points: HitPointState,
     saving_throws: SavingThrows,
     proficiencies: Proficiencies,
-    spellcasting: Vec<Spellcasting>,
+    spellcasting: SpellcastingsState,
     spell_slots: SpellSlotsState,
     inventory: InventoryState,
     features: FeaturesState,
@@ -69,7 +69,7 @@ impl State {
             self.hit_points.persistable(),
             self.saving_throws.clone(),
             self.proficiencies.clone(),
-            self.spellcasting.clone(),
+            self.spellcasting.persistable(),
             self.spell_slots.persistable(),
             self.inventory.persistable(),
             self.features.persistable(),
@@ -133,8 +133,8 @@ impl Application for Character {
                         let mut active_effects = state.features.effects();
                         active_effects.extend(state.inventory.effects_from_equipped());
 
-                        println!("applying {:?} to scores", active_effects);
                         state.ability_scores.apply_all(&active_effects);
+                        state.spellcasting.apply_all(&active_effects);
                     }
                     Message::Loaded(_) => {}
                     Message::Saved(_) => {
@@ -204,11 +204,7 @@ impl Application for Character {
                     modified_ability_scores.clone(),
                 );
 
-                let spellcasting = spellcasting::view(
-                    spellcasting.clone(),
-                    classes,
-                    modified_ability_scores.clone(),
-                );
+                let spellcasting = spellcasting.view(modified_ability_scores);
 
                 let ability_scores = ability_scores.view().padding(4);
 

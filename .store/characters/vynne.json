@@ -49,7 +49,7 @@
     }
   ],
   "hit_points": {
-    "current_hit_points": 78,
+    "current_hit_points": 87,
     "max_hit_points": 87
   },
   "saving_throws": {
@@ -153,21 +153,19 @@
     {
       "class": "Sorcerer",
       "ability": "Charisma",
-      "additional_modifiers": {
-        "Wand of the War Mage": 2
-      },
+      "additional_modifiers": {},
       "additional_save_modifiers": {}
     }
   ],
   "spell_slots": [
     {
       "level": 1,
-      "available": 2,
+      "available": 4,
       "max": 4
     },
     {
       "level": 2,
-      "available": 1,
+      "available": 3,
       "max": 3
     },
     {
@@ -194,11 +192,6 @@
   "inventory": {
     "equipped": [
       {
-        "name": "Crossbow, Light",
-        "item_name": "Crossbow, Light",
-        "features": null
-      },
-      {
         "name": "Amulet of Health",
         "item_name": "Amulet",
         "features": [
@@ -221,9 +214,49 @@
             ]
           }
         ]
+      },
+      {
+        "name": "Wand of the War Mage",
+        "item_name": "Arcane Focus",
+        "features": [
+          {
+            "name": "Spell Attack Modifier",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+              {
+                "type": "Check",
+                "bonus": {
+                  "type": "Modifier",
+                  "value": 2
+                },
+                "roll": {
+                  "type": "SpellAttack"
+                }
+              }
+            ]
+          },
+          {
+            "name": "Improved Accuracy",
+            "description": "ignore half cover when making spell attack",
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": []
+          }
+        ]
       }
     ],
     "on_person": [
+      {
+        "name": "Crossbow, Light",
+        "item_name": "Crossbow, Light",
+        "features": null
+      },
       {
         "name": "Longsword",
         "item_name": "Longsword",

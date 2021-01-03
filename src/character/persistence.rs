@@ -8,7 +8,7 @@ use crate::character::name::Name;
 use crate::character::proficiencies::Proficiencies;
 use crate::character::saving_throw::SavingThrows;
 use crate::character::spell_slot::SpellSlotsState;
-use crate::character::spellcasting::Spellcasting;
+use crate::character::spellcasting::{Spellcasting, SpellcastingsState};
 use crate::core::ability_score::AbilityScores;
 use crate::core::feature::{Feature, FeatureState, FeaturesState};
 use crate::resources::{ResourceError, Resources};
@@ -50,13 +50,14 @@ impl LoadData {
             inventory,
             features,
         } = self.character;
-
+        let classes = Classes::from(classes);
+        let spellcasting = SpellcastingsState::from(spellcasting, classes.clone());
         State {
             name: name,
             description: description,
             ability_scores: ability_scores.to_state(),
             config: config,
-            classes: Classes::from(classes),
+            classes: classes,
             hit_points: hit_points.to_state(),
             saving_throws: saving_throws,
             proficiencies: proficiencies,

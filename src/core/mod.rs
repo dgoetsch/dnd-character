@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use crate::util::format_modifier;
 
 pub mod ability_score;
+pub mod attack;
 pub mod effect;
 pub mod feature;
 

@@ -92,7 +92,7 @@ impl Display for Advantage {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
-#[serde(tag = "type")]
+#[serde(tag = "type", content = "value")]
 pub enum CheckBonus {
     Advantage(Advantage),
     Modifier(isize),
@@ -110,7 +110,7 @@ impl Display for CheckBonus {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
-#[serde(tag = "type")]
+#[serde(tag = "type", content = "value")]
 pub enum CheckRoll {
     SavingThrow(Ability),
     Ability(Ability),
@@ -118,6 +118,48 @@ pub enum CheckRoll {
     SpellAttack,
     Skill(SkillName),
     Feature(Vec<String>),
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[serde(tag = "type", content = "value")]
+pub enum DamageRoll {
+    Attack,
+    Spell,
+    Feature(Vec<String>),
+}
+
+impl Display for DamageRoll {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            DamageRoll::Attack => write!(f, "Attack Damage"),
+            DamageRoll::Spell => write!(f, "Spell Damage"),
+            DamageRoll::Feature(path) => write!(f, "Damage from {}", path.join(" ")),
+        }
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[serde(tag = "type")]
+pub enum AbilityScoreBonus {
+    Modifier { modifier: isize },
+    Become { value: isize },
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[serde(tag = "type")]
+pub enum Effect {
+    Ability {
+        bonus: AbilityScoreBonus,
+        ability: Ability,
+    },
+    Check {
+        bonus: CheckBonus,
+        roll: CheckRoll,
+    },
+    Damage {
+        damage: Damage,
+        roll: DamageRoll,
+    },
 }
 
 #[derive(Debug, Clone)]
@@ -240,48 +282,6 @@ impl Display for CheckRoll {
             CheckRoll::Feature(path) => write!(f, "{}", path.join(" ")),
         }
     }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
-#[serde(tag = "type")]
-pub enum DamageRoll {
-    Attack,
-    Spell,
-    Feature(Vec<String>),
-}
-
-impl Display for DamageRoll {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self {
-            DamageRoll::Attack => write!(f, "Attack Damage"),
-            DamageRoll::Spell => write!(f, "Spell Damage"),
-            DamageRoll::Feature(path) => write!(f, "Damage from {}", path.join(" ")),
-        }
-    }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
-#[serde(tag = "type")]
-pub enum AbilityScoreBonus {
-    Modifier { modifier: isize },
-    Become { value: isize },
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
-#[serde(tag = "type")]
-pub enum Effect {
-    Ability {
-        bonus: AbilityScoreBonus,
-        ability: Ability,
-    },
-    Check {
-        bonus: CheckBonus,
-        roll: CheckRoll,
-    },
-    Damage {
-        damage: Damage,
-        roll: DamageRoll,
-    },
 }
 
 impl Effect {
