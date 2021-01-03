@@ -69,6 +69,20 @@ pub struct InventoryItemState {
 //TODO inventory (number available)
 //TODO modifiers
 impl InventoryState {
+    pub fn apply_all(&mut self, effects: &Vec<Effect>) {
+        let InventoryState {
+            equipped,
+            on_person,
+        } = self;
+
+        for state in equipped {
+            state.apply_all(effects)
+        }
+
+        for state in on_person {
+            state.apply_all(effects)
+        }
+    }
     pub fn effects_from_equipped(&self) -> Vec<Effect> {
         let InventoryState {
             equipped,

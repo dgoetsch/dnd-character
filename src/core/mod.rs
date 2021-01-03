@@ -61,7 +61,7 @@ impl Display for Damage {
         .into_iter()
         .flatten()
         .collect::<Vec<String>>()
-        .join("+");
+        .join("");
 
         write!(f, "{} {}", damage, self.damage_type)
     }

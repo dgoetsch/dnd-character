@@ -135,6 +135,7 @@ impl Application for Character {
 
                         state.ability_scores.apply_all(&active_effects);
                         state.spellcasting.apply_all(&active_effects);
+                        state.inventory.apply_all(&active_effects);
                     }
                     Message::Loaded(_) => {}
                     Message::Saved(_) => {

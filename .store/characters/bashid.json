@@ -1,0 +1,410 @@
+{
+  "name": {
+    "name": "Bashid"
+  },
+  "description": {
+    "race": "Dragonborn (Brass)",
+    "size": "Medium",
+    "alignment": {
+      "order": "Chaotic",
+      "morality": "Good"
+    },
+    "speed": 30,
+    "age": 19,
+    "height": {
+      "feet": 6,
+      "inches": 5
+    },
+    "weight": {
+      "lbs": 311,
+      "oz": 0
+    },
+    "hair": "",
+    "eyes": "Red"
+  },
+  "ability_scores": {
+    "strength": {
+      "value": 18
+    },
+    "dexterity": {
+      "value": 14
+    },
+    "constitution": {
+      "value": 16
+    },
+    "intelligence": {
+      "value": 11
+    },
+    "wisdom": {
+      "value": 12
+    },
+    "charisma": {
+      "value": 13
+    }
+  },
+  "classes": [
+    {
+      "name": "Fighter",
+      "level": 11
+    }
+  ],
+  "hit_points": {
+    "current_hit_points": 101,
+    "max_hit_points": 101
+  },
+  "saving_throws": {
+    "strength": {
+      "additional_modifiers": {}
+    },
+    "dexterity": {
+      "additional_modifiers": {}
+    },
+    "constitution": {
+      "additional_modifiers": {}
+    },
+    "intelligence": {
+      "additional_modifiers": {}
+    },
+    "wisdom": {
+      "additional_modifiers": {}
+    },
+    "charisma": {
+      "additional_modifiers": {}
+    }
+  },
+  "proficiencies": {
+    "armor": [
+      {
+        "name": "all armor",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "shields",
+        "proficiency_type": "Full"
+      }
+    ],
+    "weapons": [
+      {
+        "name": "simple weapons",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "martial weapons",
+        "proficiency_type": "Full"
+      }
+    ],
+    "tools": [],
+    "languages": [
+      {
+        "name": "Common",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "Draconic",
+        "proficiency_type": "Full"
+      }
+    ],
+    "skills": [
+      {
+        "name": "Insight",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "Perception",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "Intimidation",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "Animal Handling",
+        "proficiency_type": "Full"
+      }
+    ],
+    "saving_throws": [
+      {
+        "name": "Constitution",
+        "proficiency_type": "Full"
+      },
+      {
+        "name": "Strength",
+        "proficiency_type": "Full"
+      }
+    ]
+  },
+  "spellcasting": [],
+  "spell_slots": [],
+  "inventory": {
+    "equipped": [
+      {
+        "name": "Dragon slayer",
+        "item_name": "Longsword",
+        "features": [
+          {
+            "name": "+1",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+              {
+                "type": "Check",
+                "bonus": {
+                  "type": "Modifier",
+                  "value": 1
+                },
+                "roll": {
+                  "type": "Feature",
+                  "value": {
+                    "path": [
+                      "Dragon slayer"
+                    ],
+                    "include_children": true
+                  }
+                }
+              },
+              {
+                "type": "Damage",
+                "damage": {
+                  "dice": {
+                    "count": 0,
+                    "sides": 0
+                  },
+                  "additional": 1,
+                  "damage_type": "Magical"
+                },
+                "scope": {
+                  "type": "Feature",
+                  "value": {
+                    "path": [
+                      "Dragon slayer"
+                    ],
+                    "include_children": true
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "Dragons",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+              {
+                "type": "Damage",
+                "damage": {
+                  "dice": {
+                    "count": 3,
+                    "sides": 6
+                  },
+                  "additional": null,
+                  "damage_type": "Magical"
+                },
+                "scope": {
+                  "type": "Feature",
+                  "value": {
+                    "path": [
+                      "Dragon slayer",
+                      "Dragons"
+                    ],
+                    "include_children": true
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "on_person": []
+  },
+  "features": [
+    {
+      "name": "Second Wind",
+      "description": "regain 1d10 + fighter level hitpoiints on my turn (bonus action)",
+      "slot": {
+        "current": 0,
+        "max": 1
+      },
+      "children": [],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": []
+    },
+    {
+      "name": "Action Surge",
+      "description": "additional action / short rest",
+      "slot": {
+        "current": 0,
+        "max": 1
+      },
+      "children": [],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": []
+    },
+    {
+      "name": "Indominable",
+      "description": "reroll 1 failed save / long rest. must use re-roll",
+      "slot": {
+        "current": 1,
+        "max": 1
+      },
+      "children": [],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": []
+    },
+    {
+      "name": "Extra Attack (x2)",
+      "description": "2 extra attacks / attack action (total of 3)",
+      "slot": null,
+      "children": [],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": []
+    },
+    {
+      "name": "Fighting Style",
+      "description": null,
+      "slot": null,
+      "children": [
+        {
+          "name": "Protection",
+          "description": "When a creature you can see attacks a target other than you that is within 5 feet of you, you can use your reaction to impose disadvantage on the attack roll. You must be wielding a shield.",
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": []
+        }
+      ],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": []
+    },
+    {
+      "name": "Martial Archetype: Battle Master",
+      "description": null,
+      "slot": null,
+      "children": [
+        {
+          "name": "Combat Superiority",
+          "description": null,
+          "slot": null,
+          "children": [
+            {
+              "name": "Superiority Dice",
+              "description": null,
+              "slot": {
+                "current": 5,
+                "max": 7
+              },
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": []
+            },
+            {
+              "name": "Maneuvers",
+              "description": null,
+              "slot": null,
+              "children": [
+                {
+                  "name": "Maneuvering Attack",
+                  "description": "When you hit a creature with a weapon attack, you can expend one superiority die to maneuver one of your comrades into a more advantageous position. You add the superiority die to the attack's damage roll, and you choose a friendly creature who can see or hear you. That creature can use its reaction to move up to half its speed without provoking opportunity attacks from the target of your attack.",
+                  "slot": null,
+                  "children": [],
+                  "show_reset_chidren": null,
+                  "child_display_orientation": null,
+                  "effects": []
+                },
+                {
+                  "name": "Disarming Attack",
+                  "description": "When you hit a creature with a weapon attack, you can expend one superiority die to attempt to disarm the target, forcing it to drop one item of your choice that it's holding. You add the superiority die to the attack's damage roll, and the target must make a Strength saving throw. On a failed save, it drops the object you choose. The object lands at its feet.",
+                  "slot": null,
+                  "children": [],
+                  "show_reset_chidren": null,
+                  "child_display_orientation": null,
+                  "effects": []
+                },
+                {
+                  "name": "Distracting Strike",
+                  "description": "When you hit a creature with a weapon attack, you can expend one superiority die to distract the creature, giving your allies an opening. You add the superiority die to the attack's damage roll. The next attack roll against the target by an attacker other than you has advantage if the attack is made before the start of your next turn.",
+                  "slot": null,
+                  "children": [],
+                  "show_reset_chidren": null,
+                  "child_display_orientation": null,
+                  "effects": []
+                },
+                {
+                  "name": "Goading Attack",
+                  "description": "When you hit a creature with a weapon attack, you can expend one superiority die to attempt to goad the target into attacking you. You add the superiority die to the attack's damage roll, and the target must make a Wisdom saving throw. On a failed save, the target has disadvantage on all attack rolls against targets other than you until the end of your next turn.",
+                  "slot": null,
+                  "children": [],
+                  "show_reset_chidren": null,
+                  "child_display_orientation": null,
+                  "effects": []
+                },
+                {
+                  "name": "Pushing Attack",
+                  "description": "When you hit a creature with a weapon attack, you can expend one superiority die to attempt to drive the target back. You add the superiority die to the attack's damage roll, and if the target is Large or smaller, it must make a Strength saving throw. On a failed save, you push the target up to 15 feet away from you.",
+                  "slot": null,
+                  "children": [],
+                  "show_reset_chidren": null,
+                  "child_display_orientation": null,
+                  "effects": []
+                },
+                {
+                  "name": "Riposte",
+                  "description": "When a creature misses you with a melee attack, you can use your reaction and expend one superiority die to make a melee weapon attack against the creature. If you hit, you add the superiority die to the attack's damage roll.",
+                  "slot": null,
+                  "children": [],
+                  "show_reset_chidren": null,
+                  "child_display_orientation": null,
+                  "effects": []
+                },
+                {
+                  "name": "Precision Attack",
+                  "description": "When you make a weapon attack roll against a creature, you can expend one superiority die to add it to the roll. You can use this maneuver before or after making the attack roll, but before any effects of the attack are applied.",
+                  "slot": null,
+                  "children": [],
+                  "show_reset_chidren": null,
+                  "child_display_orientation": null,
+                  "effects": []
+                }
+              ],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": []
+            }
+          ],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": []
+        },
+        {
+          "name": "Know Your Enemy",
+          "description": "Starting at 7th level, if you spend at least 1 minute observing or interacting with another creature outside combat, you can learn certain information about its capabilities compared to your own. The DM tells you if the creature is your equal, superior, or inferior in regard to two of the following characteristics of your choice: Strength score, Dexterity score, Constitution score, Armor Class, Current hit points, Total class levels, if any, Fighter class levels, if any",
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": []
+        }
+      ],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": []
+    }
+  ],
+  "config": {
+    "storage_root": ".store/",
+    "character_id": "bashid"
+  }
+}

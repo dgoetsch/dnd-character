@@ -51,6 +51,19 @@ pub enum CheckRollType {
     Feature(FeaturePath),
 }
 
+impl Display for CheckRollType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            CheckRollType::SavingThrow(ability) => write!(f, "{:?} saving throws", ability),
+            CheckRollType::Ability(ability) => write!(f, "{:?} checks", ability),
+            CheckRollType::Attack => write!(f, "attack rolls"),
+            CheckRollType::SpellAttack => write!(f, "spell attack rolls"),
+            CheckRollType::Skill(name) => write!(f, "{} checks", name),
+            CheckRollType::Feature(path) => write!(f, "{}", path.to_string()),
+        }
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(tag = "type", content = "value")]
 pub enum DamageRollScope {
