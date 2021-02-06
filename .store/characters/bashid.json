@@ -49,8 +49,8 @@
     }
   ],
   "hit_points": {
-    "current_hit_points": 101,
-    "max_hit_points": 101
+    "current_hit_points": 110,
+    "max_hit_points": 110
   },
   "saving_throws": {
     "strength": {
@@ -219,6 +219,30 @@
             ]
           }
         ]
+      },
+      {
+        "name": "Belt of Fire Giant Strength",
+        "item_name": "Belt",
+        "features": [
+          {
+            "name": "Strength Modifier",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+              {
+                "type": "Ability",
+                "bonus": {
+                  "type": "Become",
+                  "value": 25
+                },
+                "ability": "Strength"
+              }
+            ]
+          }
+        ]
       }
     ],
     "on_person": []
@@ -228,7 +252,7 @@
       "name": "Second Wind",
       "description": "regain 1d10 + fighter level hitpoiints on my turn (bonus action)",
       "slot": {
-        "current": 0,
+        "current": 1,
         "max": 1
       },
       "children": [],
@@ -240,7 +264,7 @@
       "name": "Action Surge",
       "description": "additional action / short rest",
       "slot": {
-        "current": 0,
+        "current": 1,
         "max": 1
       },
       "children": [],
@@ -302,7 +326,7 @@
               "name": "Superiority Dice",
               "description": null,
               "slot": {
-                "current": 5,
+                "current": 7,
                 "max": 7
               },
               "children": [],

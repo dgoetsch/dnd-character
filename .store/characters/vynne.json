@@ -49,8 +49,8 @@
     }
   ],
   "hit_points": {
-    "current_hit_points": 81,
-    "max_hit_points": 87
+    "current_hit_points": 95,
+    "max_hit_points": 95
   },
   "saving_throws": {
     "strength": {
@@ -255,18 +255,7 @@
         ]
       }
     ],
-    "on_person": [
-      {
-        "name": "Crossbow, Light",
-        "item_name": "Crossbow, Light",
-        "features": null
-      },
-      {
-        "name": "Longsword",
-        "item_name": "Longsword",
-        "features": null
-      }
-    ]
+    "on_person": []
   },
   "features": [
     {
@@ -278,8 +267,8 @@
           "name": "Sorcery Points",
           "description": null,
           "slot": {
-            "current": 9,
-            "max": 11
+            "current": 12,
+            "max": 12
           },
           "children": [],
           "show_reset_chidren": null,
@@ -346,7 +335,7 @@
           "name": "Tides of chaos",
           "description": "Starting at 1st level, you can manipulate the forces of chance and chaos to gain advantage on one attack roll, ability check, or saving throw. Once you do so, you must finish a long rest before you can use this feature again.\n\nAny time before you regain the use of this feature, the DM can have you roll on the Wild Magic Surge table immediately after you cast a sorcerer spell of 1st level or higher. You then regain the use of this feature.",
           "slot": {
-            "current": 0,
+            "current": 1,
             "max": 1
           },
           "children": [],
