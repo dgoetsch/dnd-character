@@ -3,7 +3,8 @@ use crate::character::proficiencies::{Proficiencies, Proficiency};
 use crate::character::Message;
 use crate::core::ability_score::ModifiedAbilityScores;
 use crate::core::effect::Effect;
-use crate::core::feature::{Feature, FeaturePath, FeaturesState};
+use crate::core::feature::{Feature, FeaturesState};
+use crate::core::feature_path::FeaturePath;
 use crate::core::roll::{CheckBonus, CheckRoll, CheckRollType, DamageRollScope};
 use crate::core::Damage;
 use crate::resources::item::Item;
@@ -268,8 +269,9 @@ impl InventoryItemState {
         }
         match feature_state {
             Some(features) => {
-                column = column
-                    .push(features.view(FeaturePath::of(vec![item.name.clone()]), Message::Feature))
+                column = column.push(
+                    features.view(FeaturePath::of(vec![item.name.clone()]), &Message::Feature),
+                )
             }
             None => {}
         }

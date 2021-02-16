@@ -45,12 +45,12 @@
   "classes": [
     {
       "name": "Sorcerer",
-      "level": 11
+      "level": 14
     }
   ],
   "hit_points": {
-    "current_hit_points": 95,
-    "max_hit_points": 95
+    "current_hit_points": 54,
+    "max_hit_points": 103
   },
   "saving_throws": {
     "strength": {
@@ -164,31 +164,36 @@
   "spell_slots": [
     {
       "level": 1,
-      "available": 4,
+      "available": 0,
       "max": 4
     },
     {
       "level": 2,
-      "available": 3,
+      "available": 0,
       "max": 3
     },
     {
       "level": 3,
-      "available": 2,
+      "available": 1,
       "max": 3
     },
     {
       "level": 4,
-      "available": 3,
+      "available": 1,
       "max": 3
     },
     {
       "level": 5,
-      "available": 2,
+      "available": 1,
       "max": 2
     },
     {
       "level": 6,
+      "available": 1,
+      "max": 1
+    },
+    {
+      "level": 7,
       "available": 1,
       "max": 1
     }
@@ -267,8 +272,8 @@
           "name": "Sorcery Points",
           "description": null,
           "slot": {
-            "current": 12,
-            "max": 12
+            "current": 4,
+            "max": 13
           },
           "children": [],
           "show_reset_chidren": null,

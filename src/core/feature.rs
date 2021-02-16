@@ -1,7 +1,11 @@
+use super::feature_path::FeaturePath;
 use crate::core::effect::{Effect, EffectState, EffectsState};
+use crate::core::slot::{FromSlotCommand, Slot, SlotCommand, SlotState};
+use iced::futures::StreamExt;
 use iced::{button, Button, Column, Element, Length, Row, Text};
 use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
+use std::borrow::Borrow;
 use std::fmt::{Debug, Display};
 
 #[derive(Debug, Clone, Default)]
@@ -12,112 +16,23 @@ pub struct FeaturesState {
 #[derive(Debug, Clone, Default)]
 pub struct FeatureState {
     feature: Feature,
-    slot_controls: Option<FeatureSlotControl>,
+    slot_state: Option<SlotState>,
     children: Vec<FeatureState>,
     effects_state: EffectsState,
-}
-
-#[derive(Debug, Clone, Default)]
-pub struct FeatureSlotControl {
-    use_slot: button::State,
-    reset: button::State,
-    reset_all: button::State,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
-pub struct FeaturePath {
-    path: Vec<String>,
-    include_children: bool,
-}
-
-impl Display for FeaturePath {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let tail = if self.include_children { "..." } else { "" };
-        write!(f, "{}{}", self.path.join(" "), tail)
-    }
-}
-
-impl FeaturePath {
-    pub fn of(path: Vec<String>) -> FeaturePath {
-        FeaturePath {
-            path,
-            include_children: false,
-        }
-    }
-    pub fn empty() -> FeaturePath {
-        FeaturePath {
-            path: vec![],
-            include_children: false,
-        }
-    }
-    pub fn matches(&self, feature: String) -> (bool, FeaturePath) {
-        let mut path = self.path.clone();
-        let head = path.get(0).map(|s| s.clone());
-        match head {
-            Some(head) => {
-                path.remove(0);
-                if (feature == head) {
-                    (
-                        true,
-                        FeaturePath {
-                            path,
-                            include_children: self.include_children,
-                        },
-                    )
-                } else {
-                    (
-                        false,
-                        FeaturePath {
-                            path: vec![],
-                            include_children: false,
-                        },
-                    )
-                }
-            }
-            None => (self.include_children, self.clone()),
-        }
-    }
-
-    pub fn is_empty(&self) -> bool {
-        self.path.is_empty()
-    }
-
-    pub fn with_child(&self, child: String) -> FeaturePath {
-        let mut path = self.path.clone();
-        path.push(child);
-        FeaturePath {
-            path,
-            include_children: self.include_children,
-        }
-    }
-
-    pub fn with_include_children(&self, include: bool) -> FeaturePath {
-        FeaturePath {
-            path: self.path.clone(),
-            include_children: include,
-        }
-    }
 }
 
 type IsDirty = bool;
 
 #[derive(Debug, Clone)]
 pub enum FeatureMessage {
-    Use(FeaturePath),
-    Reset(FeaturePath),
-}
-
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct FeatureSlot {
-    current: isize,
-    max: Option<isize>,
+    Slot(FeaturePath, SlotCommand),
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Feature {
     name: String,
     description: Option<String>,
-    slot: Option<FeatureSlot>,
+    slot: Option<Slot>,
     children: Vec<Feature>,
     show_reset_chidren: Option<bool>,
     child_display_orientation: Option<DisplayOrientation>,
@@ -145,7 +60,7 @@ impl Feature {
 
     pub fn with_slot(&self, current: isize, max: Option<isize>) -> Feature {
         let mut new = self.clone();
-        new.slot = Some(FeatureSlot { current, max });
+        new.slot = Some(Slot::new(current, max));
         new
     }
 
@@ -202,7 +117,7 @@ impl FeaturesState {
         for FeatureState {
             feature,
             effects_state,
-            slot_controls,
+            slot_state,
             children,
         } in feature_state
         {
@@ -237,17 +152,17 @@ impl FeaturesState {
         dirty
     }
 
-    pub fn view<'a, T, F>(&'a mut self, root_path: FeaturePath, f: F) -> Column<'a, T>
+    pub fn view<'a, T, F>(&'a mut self, root_path: FeaturePath, f: &'a F) -> Column<'a, T>
     where
         T: Debug + Clone + 'a,
-        F: Fn(FeatureMessage) -> T + 'a,
+        F: Fn(FeatureMessage) -> T + 'a + Copy,
     {
         let mut column = Column::new().padding(2).spacing(8);
 
         let FeaturesState { feature_state } = self;
 
         for state in feature_state {
-            column = column.push(state.view(root_path.clone(), &f));
+            column = column.push(state.view(root_path.clone(), f));
         }
 
         column
@@ -258,7 +173,7 @@ impl FeatureState {
     pub fn persistable(&self) -> Feature {
         let FeatureState {
             feature,
-            slot_controls,
+            slot_state,
             children,
             effects_state,
         } = self;
@@ -268,17 +183,18 @@ impl FeatureState {
             feature.children.push(child.persistable())
         }
 
+        match slot_state {
+            Some(slot_state) => feature.slot = Some(slot_state.persistable()),
+            None => {}
+        }
+
         feature.effects = effects_state.persistable();
 
         feature
     }
 
     pub fn from(feature: Feature) -> FeatureState {
-        let slot_controls = if feature.slot.is_some() {
-            Some(FeatureSlotControl::default())
-        } else {
-            None
-        };
+        let slot_state = feature.slot.clone().map(SlotState::from);
 
         FeatureState {
             feature: feature.clone(),
@@ -287,61 +203,81 @@ impl FeatureState {
                 .into_iter()
                 .map(FeatureState::from)
                 .collect(),
-            slot_controls,
+            slot_state,
             effects_state: EffectsState::from(feature.effects),
         }
     }
 
     pub fn update(&mut self, message: FeatureMessage) -> IsDirty {
         match message {
-            FeatureMessage::Use(path) => self.use_slot(&path),
-            FeatureMessage::Reset(path) => self.reset(&path),
-        }
-    }
-
-    fn use_slot(&mut self, path: &FeaturePath) -> IsDirty {
-        let FeatureState {
-            feature,
-            slot_controls,
-            children,
-            effects_state,
-        } = self;
-        let mut path = path.clone();
-        match path.matches(feature.name.clone()) {
-            (true, remaining) => {
-                if (remaining.is_empty()) {
-                    let Feature {
-                        name,
-                        description,
-                        slot,
-                        children,
-                        show_reset_chidren,
-                        child_display_orientation,
-                        effects,
-                    } = feature;
+            FeatureMessage::Slot(path, command) => {
+                self.apply_all(&vec![(path, &|feature_state: &mut FeatureState| {
+                    let slot = &mut feature_state.slot_state;
                     match slot {
-                        Some(slot) => {
-                            slot.current = slot.current - 1;
-                            true
-                        }
+                        Some(slot) => slot.update(command.clone()),
                         None => false,
                     }
-                } else {
-                    let mut dirty_child = false;
-                    for child in children {
-                        dirty_child = child.use_slot(&remaining) || dirty_child;
-                    }
-                    dirty_child
-                }
+                })])
             }
-            (false, _) => false,
         }
     }
 
-    fn reset(&mut self, path: &FeaturePath) -> IsDirty {
+    fn apply_all<F>(&mut self, actions: &Vec<(FeaturePath, &F)>) -> IsDirty
+    where
+        F: Fn(&mut FeatureState) -> IsDirty,
+    {
+        let matching_paths = actions
+            .clone()
+            .into_iter()
+            .map(|(path, f)| (path.matches(self.feature.name.clone()), f))
+            .filter(|((matched, _), _)| *matched)
+            .map(|((_, remaining), f)| (remaining, f))
+            .collect::<Vec<(FeaturePath, &F)>>();
+
+        if !matching_paths.is_empty() {
+            let (matched_self, mut apply_to_children): (
+                Vec<(FeaturePath, &F)>,
+                Vec<(FeaturePath, &F)>,
+            ) = matching_paths.into_iter().partition(|(p, _)| p.is_empty());
+
+            let mut dirty_self = false;
+            for (_, f) in matched_self.clone() {
+                dirty_self = f(self) || dirty_self;
+            }
+            let mut dirty_children = false;
+
+            let matches_self_and_children = matched_self
+                .clone()
+                .into_iter()
+                .filter(|(path, f)| path.include_children())
+                .collect::<Vec<(FeaturePath, &F)>>();
+
+            apply_to_children.extend(matches_self_and_children);
+            if (!apply_to_children.is_empty()) {
+                let FeatureState {
+                    feature,
+                    slot_state,
+                    children,
+                    effects_state,
+                } = self;
+                for child in children {
+                    dirty_children = child.apply_all(&apply_to_children) || dirty_children;
+                }
+            }
+
+            dirty_self || dirty_children
+        } else {
+            false
+        }
+    }
+
+    fn apply<F>(&mut self, path: &FeaturePath, f: &F) -> IsDirty
+    where
+        F: Fn(&mut FeatureState) -> IsDirty,
+    {
         let FeatureState {
             feature,
-            slot_controls,
+            slot_state,
             children,
             effects_state,
         } = self;
@@ -350,54 +286,39 @@ impl FeatureState {
             (true, remaining) => {
                 if remaining.is_empty() {
                     let mut dirty_children = false;
-                    if remaining.include_children {
+                    if remaining.include_children() {
                         for child in children {
-                            dirty_children = child.reset(&remaining) || dirty_children;
+                            dirty_children = child.apply(&remaining, f) || dirty_children;
                         }
                     }
 
-                    let Feature {
-                        name,
-                        description,
-                        slot,
-                        children,
-                        show_reset_chidren,
-                        child_display_orientation,
-                        effects,
-                    } = feature;
-                    let self_dirty = match slot {
-                        Some(slot) => {
-                            slot.current = slot.max.unwrap_or(0);
-                            true
-                        }
-                        None => false,
-                    };
+                    let self_dirty = f(self);
                     self_dirty || dirty_children
                 } else {
                     let mut dirty_child = false;
                     for child in children {
-                        dirty_child = child.reset(&remaining) || dirty_child;
+                        dirty_child = child.apply(&remaining, f) || dirty_child;
                     }
                     dirty_child
                 }
             }
-            (false, _) => false,
+            (false, remaining) => false,
         }
     }
 
-    pub fn view<'a, T, F>(&'a mut self, parent_path: FeaturePath, f: &F) -> Column<'a, T>
+    pub fn view<'a, T, F>(&'a mut self, parent_path: FeaturePath, f: &'a F) -> Column<'a, T>
     where
         T: Debug + Clone + 'a,
-        F: Fn(FeatureMessage) -> T + 'a,
+        F: Fn(FeatureMessage) -> T + 'a + Copy,
     {
         let FeatureState {
             feature,
-            slot_controls,
+            slot_state,
             children,
             effects_state,
         } = self;
 
-        let mut this_path = parent_path.with_child(feature.name.clone());
+        let this_path = parent_path.with_child(feature.name.clone());
 
         let mut child_elements = vec![];
         if !children.is_empty() {
@@ -415,50 +336,12 @@ impl FeatureState {
             child_display_orientation,
             effects,
         } = feature;
-        let mut header_row = Row::new()
+        let slot_path = this_path.clone();
+        let mut header_row: Row<'a, T> = Row::new()
             .spacing(20)
             .push(Text::new(name.clone()).size(24));
 
-        match (slot_controls, slot) {
-            (Some(slot_controls), Some(slot)) => {
-                let FeatureSlot { current, max } = slot;
-                header_row = match max {
-                    Some(max) => header_row
-                        .push(Text::new(format!("{} / {}", current.clone(), max.clone())).size(32)),
-                    None => header_row.push(Text::new(format!("{}", current.clone())).size(32)),
-                };
-
-                let FeatureSlotControl {
-                    use_slot,
-                    reset,
-                    reset_all,
-                } = slot_controls;
-
-                let button = Button::new(use_slot, Text::new("Use").size(16))
-                    .on_press(f(FeatureMessage::Use(
-                        this_path.with_include_children(false),
-                    )))
-                    .padding(8);
-                header_row = header_row.push(button);
-
-                let button = Button::new(reset, Text::new("Reset").size(16))
-                    .on_press(f(FeatureMessage::Reset(
-                        this_path.clone().with_include_children(false),
-                    )))
-                    .padding(8);
-                header_row = header_row.push(button);
-
-                if show_reset_chidren.unwrap_or(false) {
-                    let button = Button::new(reset_all, Text::new("Reset All").size(16))
-                        .padding(8)
-                        .on_press(f(FeatureMessage::Reset(
-                            this_path.with_include_children(true),
-                        )));
-                    header_row = header_row.push(button);
-                }
-            }
-            _ => {}
-        };
+        header_row = header_row.push(FeatureState::slot_view(slot_state, &slot_path, f));
 
         let mut column = Column::new().push(header_row);
 
@@ -490,5 +373,21 @@ impl FeatureState {
         column = column.push(child_element);
 
         column.width(Length::FillPortion(1))
+    }
+
+    fn slot_view<'a, 'b, T, F>(
+        slot_state: &'a mut Option<SlotState>,
+        slot_path: &FeaturePath,
+        f: &'b F,
+    ) -> Column<'a, T>
+    where
+        T: Debug + Clone + 'a,
+        F: Fn(FeatureMessage) -> T + 'b,
+    {
+        match slot_state {
+            Some(slot_state) => slot_state
+                .view(&|command: SlotCommand| f(FeatureMessage::Slot(slot_path.clone(), command))),
+            _ => Column::new(),
+        }
     }
 }

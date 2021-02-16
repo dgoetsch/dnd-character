@@ -1,5 +1,5 @@
 use crate::core::ability_score::Ability;
-use crate::core::feature::FeaturePath;
+use crate::core::feature_path::FeaturePath;
 use crate::core::{Damage, Dice};
 use crate::resources::skill::SkillName;
 use crate::util::format_modifier;

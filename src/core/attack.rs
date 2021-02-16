@@ -1,6 +1,6 @@
 use crate::core::ability_score::ModifiedAbilityScores;
 use crate::core::effect::Effect;
-use crate::core::feature::FeaturePath;
+use crate::core::feature_path::FeaturePath;
 use crate::core::roll::{CheckRoll, DamageRoll, DamageRollScope};
 use crate::core::Damage;
 use crate::util::two_element_row;
