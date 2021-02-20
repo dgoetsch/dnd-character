@@ -49,7 +49,7 @@
     }
   ],
   "hit_points": {
-    "current_hit_points": 102,
+    "current_hit_points": 119,
     "max_hit_points": 119
   },
   "saving_throws": {
@@ -276,7 +276,7 @@
       "name": "Indominable",
       "description": "reroll 1 failed save / long rest. must use re-roll",
       "slot": {
-        "current": 0,
+        "current": 1,
         "max": 1
       },
       "children": [],
