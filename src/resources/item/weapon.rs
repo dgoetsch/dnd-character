@@ -1,11 +1,11 @@
 use crate::character::proficiencies::{Proficiency, ProficiencyType};
 use crate::character::Message;
 use crate::core::ability_score::{Ability, ModifiedAbilityScore, ModifiedAbilityScores};
-use crate::core::attack::{AttackRange, WeaponAttack};
+use crate::core::attack::{Attack, AttackRange};
 use crate::core::effect::Effect;
 use crate::core::feature::{Feature, FeaturesState};
-use crate::core::roll::{CheckRoll, DamageRoll};
-use crate::core::{display_damage, Damage};
+use crate::core::roll::check::CheckRoll;
+use crate::core::roll::damage::{display_damage, Damage, DamageRoll};
 use crate::dimensions::Weight;
 use crate::util::two_column_row;
 use iced::{Column, Row, Text};
@@ -20,7 +20,7 @@ pub struct Weapon {
 }
 
 impl Weapon {
-    pub fn attacks(&self, ability_scores: ModifiedAbilityScores) -> Vec<WeaponAttack> {
+    pub fn attacks(&self, ability_scores: ModifiedAbilityScores) -> Vec<Attack> {
         let Weapon { damage, properties } = self;
 
         let mut range = None;
@@ -62,13 +62,13 @@ impl Weapon {
 
         let mut rolls = vec![];
         match range {
-            Some(range) => rolls.push(WeaponAttack::new(
+            Some(range) => rolls.push(Attack::new(
                 "Range",
                 range,
                 dexterity_attack_roll.clone(),
                 dexterity_damage.clone(),
             )),
-            None => rolls.push(WeaponAttack::new(
+            None => rolls.push(Attack::new(
                 "Melee",
                 AttackRange::Melee,
                 strengh_attack_roll.clone(),
@@ -77,7 +77,7 @@ impl Weapon {
         }
 
         match thrown {
-            Some(range) => rolls.push(WeaponAttack::new(
+            Some(range) => rolls.push(Attack::new(
                 "Throw",
                 range,
                 dexterity_attack_roll.clone(),
@@ -87,7 +87,7 @@ impl Weapon {
         }
 
         if finesse {
-            rolls.push(WeaponAttack::new(
+            rolls.push(Attack::new(
                 "Melee (Finesse)",
                 AttackRange::Melee,
                 dexterity_attack_roll.clone(),
@@ -96,7 +96,7 @@ impl Weapon {
         }
 
         match versatile {
-            Some(damage) => rolls.push(WeaponAttack::new(
+            Some(damage) => rolls.push(Attack::new(
                 "Melee (Two-Handed)",
                 AttackRange::Melee,
                 strengh_attack_roll.clone(),

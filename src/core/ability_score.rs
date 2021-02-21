@@ -1,11 +1,18 @@
 use crate::core::effect::Effect;
-use crate::core::roll::{AbilityScoreBonus, Advantage, CheckBonus, CheckRoll, CheckRollType};
-use crate::core::Dice;
+use crate::core::roll::check::{Advantage, CheckBonus, CheckRoll, CheckRollType};
+use crate::core::roll::Dice;
 use crate::util::format_modifier;
 use iced::{Column, Element, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
 use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
 use std::fmt::{Debug, Display};
+
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[serde(tag = "type")]
+pub enum AbilityScoreBonus {
+    Modifier { modifier: isize },
+    Become { value: isize },
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct AbilityScores {

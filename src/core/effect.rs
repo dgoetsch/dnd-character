@@ -1,6 +1,7 @@
-use crate::core::ability_score::Ability;
-use crate::core::roll::{AbilityScoreBonus, CheckBonus, CheckRollType, DamageRollScope};
-use crate::core::{Damage, Dice};
+use crate::core::ability_score::{Ability, AbilityScoreBonus};
+use crate::core::roll::check::{CheckBonus, CheckRollType};
+use crate::core::roll::damage::{Damage, DamageRollScope};
+use crate::core::roll::Dice;
 use crate::resources::skill::SkillName;
 use crate::util::format_modifier;
 use iced::{Column, Element, HorizontalAlignment, Length, Row, Text, VerticalAlignment};

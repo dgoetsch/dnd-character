@@ -2,7 +2,7 @@ use crate::character::class::Classes;
 use crate::character::proficiencies::{Proficiency, ProficiencyType};
 use crate::character::Message;
 use crate::core::ability_score::{Ability, AbilityScores, ModifiedAbilityScores};
-use crate::core::roll::CheckRoll;
+use crate::core::roll::check::CheckRoll;
 use crate::resources::skill::Skill;
 use crate::util::{format_modifier, three_column_row, three_element_row};
 use iced::{Column, HorizontalAlignment, Length, Row, Text, VerticalAlignment};

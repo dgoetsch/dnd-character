@@ -4,7 +4,7 @@ use crate::character::Message;
 use crate::core::ability_score::{
     Ability, AbilityScore, AbilityScores, ModifiedAbilityScore, ModifiedAbilityScores,
 };
-use crate::core::roll::{CheckBonus, CheckRoll};
+use crate::core::roll::check::{CheckBonus, CheckRoll};
 use iced::{Column, Length, Row, Text};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;

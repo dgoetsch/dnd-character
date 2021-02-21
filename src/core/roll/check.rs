@@ -1,11 +1,36 @@
 use crate::core::ability_score::Ability;
 use crate::core::feature_path::FeaturePath;
-use crate::core::{Damage, Dice};
+use crate::core::roll::Dice;
 use crate::resources::skill::SkillName;
 use crate::util::format_modifier;
 use iced::{Column, Element, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
 use serde::{Deserialize, Serialize};
 use std::fmt::{Debug, Display, Formatter};
+
+// pub struct Roll {
+//     components: Vec<RollComponent>,
+//     roll_type: RollType
+// }
+//
+// pub enum RollComponent {
+//     Advantage(Advantage),
+//     Modifier(isize),
+//     Dice(Dice)
+// }
+//
+
+//
+// #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+// #[serde(tag = "type", content = "value")]
+// pub enum RollType {
+//     SavingThrow(Ability),
+//     Ability(Ability),
+//     Attack,
+//     SpellAttack,
+//     Skill(SkillName),
+//     Feature(FeaturePath),
+//     Damage(DamageType)
+// }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 pub enum Advantage {
@@ -61,78 +86,6 @@ impl Display for CheckRollType {
             CheckRollType::Skill(name) => write!(f, "{} checks", name),
             CheckRollType::Feature(path) => write!(f, "{}", path.to_string()),
         }
-    }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
-#[serde(tag = "type", content = "value")]
-pub enum DamageRollScope {
-    Attack,
-    Spell,
-    Feature(FeaturePath),
-}
-
-impl Display for DamageRollScope {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self {
-            DamageRollScope::Attack => write!(f, "Attack Damage"),
-            DamageRollScope::Spell => write!(f, "Spell Damage"),
-            DamageRollScope::Feature(path) => write!(f, "Damage from {}", path.to_string()),
-        }
-    }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
-#[serde(tag = "type")]
-pub enum AbilityScoreBonus {
-    Modifier { modifier: isize },
-    Become { value: isize },
-}
-
-#[derive(Debug, Clone)]
-pub struct DamageRoll {
-    damage: Vec<Damage>,
-}
-
-impl DamageRoll {
-    pub fn from(damage: Vec<Damage>) -> DamageRoll {
-        DamageRoll { damage }
-    }
-
-    pub fn with_modifier(&self, modifier: isize) -> DamageRoll {
-        let mut damage = self.damage.clone();
-        match damage.first_mut() {
-            Some(head) => head.additional = Some(modifier + head.additional.unwrap_or(0)),
-            None => damage.push(Damage::new(
-                Dice::new(0, 0),
-                Some(modifier),
-                "Unknown".to_string(),
-            )),
-        };
-        DamageRoll { damage }
-    }
-
-    pub fn with_extra_damage(&self, additional: Damage) -> DamageRoll {
-        let mut damage = self.damage.clone();
-        damage.push(additional);
-        DamageRoll { damage }
-    }
-
-    pub fn view<'a, T: Debug + Clone>(self) -> Element<'a, T> {
-        let damage = self
-            .damage
-            .into_iter()
-            .map(|d| d.to_string())
-            .filter(|s| !s.is_empty())
-            .collect::<Vec<String>>()
-            .join(" + ");
-
-        Text::new(damage)
-            .size(16)
-            .horizontal_alignment(HorizontalAlignment::Left)
-            .vertical_alignment(VerticalAlignment::Bottom)
-            .width(Length::FillPortion(1))
-            .into()
     }
 }
 

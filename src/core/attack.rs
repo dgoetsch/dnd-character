@@ -1,8 +1,9 @@
 use crate::core::ability_score::ModifiedAbilityScores;
 use crate::core::effect::Effect;
 use crate::core::feature_path::FeaturePath;
-use crate::core::roll::{CheckRoll, DamageRoll, DamageRollScope};
-use crate::core::Damage;
+use crate::core::roll::check::{CheckBonus, CheckRoll, CheckRollType};
+use crate::core::roll::damage::{Damage, DamageRoll, DamageRollScope};
+
 use crate::util::two_element_row;
 use iced::{Column, HorizontalAlignment, Row, Text, VerticalAlignment};
 use serde::export::fmt::Debug;
@@ -25,22 +26,21 @@ impl Display for AttackRange {
 }
 
 #[derive(Debug, Clone)]
-pub struct WeaponAttack {
+pub struct Attack {
     name: String,
     range: AttackRange,
     attack: CheckRoll,
     damage: DamageRoll,
 }
 
-//Can probably just make this "attack" and use a type
-impl WeaponAttack {
+impl Attack {
     pub fn new<T: Into<String>>(
         name: T,
         range: AttackRange,
         attack: CheckRoll,
         damage: DamageRoll,
-    ) -> WeaponAttack {
-        WeaponAttack {
+    ) -> Attack {
+        Attack {
             name: name.into(),
             range,
             attack,
@@ -51,13 +51,13 @@ impl WeaponAttack {
         featurePath.matches(self.name.clone())
     }
 
-    pub fn with_extra_damage(&self, additional: Damage) -> WeaponAttack {
+    pub fn with_extra_damage(&self, additional: Damage) -> Attack {
         let mut attack = self.clone();
         attack.damage = attack.damage.with_extra_damage(additional);
         attack
     }
 
-    pub fn with_extra_check(&self, additional: CheckRoll) -> WeaponAttack {
+    pub fn with_extra_check(&self, additional: CheckRoll) -> Attack {
         let mut attack = self.clone();
         attack.attack = attack.attack.merge(additional);
         attack

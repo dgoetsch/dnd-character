@@ -5,7 +5,7 @@ use crate::core::ability_score::{
     Ability, AbilityScore, AbilityScores, ModifiedAbilityScore, ModifiedAbilityScores,
 };
 use crate::core::effect::Effect;
-use crate::core::roll::{CheckBonus, CheckRoll, CheckRollType};
+use crate::core::roll::check::{CheckBonus, CheckRoll, CheckRollType};
 use crate::util::{format_modifier, two_column_row, two_element_row};
 use iced::{Column, HorizontalAlignment, Row, Text, VerticalAlignment};
 use serde::{Deserialize, Serialize};
