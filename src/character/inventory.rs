@@ -142,11 +142,9 @@ impl InventoryState {
                     .modifier_for_bonus(bonus),
                 _ => 0,
             };
-            column = column.padding(8).push(item.view(
-                inventory_item,
-                ability_scores,
-                proficiency_modifier,
-            ))
+            column = column
+                .padding(8)
+                .push(item.view(inventory_item, ability_scores, classes))
         }
 
         column = column.push(Text::new("On Person").size(24));
@@ -160,11 +158,9 @@ impl InventoryState {
                     .modifier_for_bonus(bonus),
                 _ => 0,
             };
-            column = column.padding(8).push(item.view(
-                inventory_item,
-                ability_scores,
-                proficiency_modifier,
-            ))
+            column = column
+                .padding(8)
+                .push(item.view(inventory_item, ability_scores, classes))
         }
 
         column
@@ -217,11 +213,11 @@ impl InventoryItemState {
         self.item.clone()
     }
 
-    fn view<'a, 'b>(
+    fn view<'a, 'b, 'c>(
         &'a mut self,
         item: Option<Item>,
         ability_scores: &'b ModifiedAbilityScores,
-        proficiency_modifier: isize,
+        classes: &'c Classes,
     ) -> Column<'a, Message> {
         let item_resource = item;
         let InventoryItemState {
@@ -260,7 +256,7 @@ impl InventoryItemState {
                             _ => {}
                         }
                     }
-                    check_bonuses.push(CheckBonus::Modifier(proficiency_modifier));
+                    check_bonuses.push(CheckBonus::Modifier(classes.proficiency_bonus()));
                     attack = attack.with_extra_check(CheckRoll::from(check_bonuses));
                     column = column.push(attack.view())
                 }
@@ -272,6 +268,7 @@ impl InventoryItemState {
                 column = column.push(features.view(
                     FeaturePath::of(vec![item.name.clone()]),
                     &ability_scores.ability_scores(),
+                    classes,
                     &Message::Feature,
                 ))
             }

@@ -1,4 +1,5 @@
 use super::feature_path::FeaturePath;
+use crate::character::class::Classes;
 use crate::core::ability_score::AbilityScores;
 use crate::core::effect::{Effect, EffectState, EffectsState};
 use crate::core::roll::{Roll, RollScope, RollState};
@@ -165,10 +166,11 @@ impl FeaturesState {
         dirty
     }
 
-    pub fn view<'a, 'b, T, F>(
+    pub fn view<'a, 'b, 'c, T, F>(
         &'a mut self,
         root_path: FeaturePath,
         ability_scores: &'b AbilityScores,
+        classes: &'c Classes,
         f: &'a F,
     ) -> Column<'a, T>
     where
@@ -180,7 +182,7 @@ impl FeaturesState {
         let FeaturesState { feature_state } = self;
 
         for state in feature_state {
-            column = column.push(state.view(root_path.clone(), ability_scores, f));
+            column = column.push(state.view(root_path.clone(), ability_scores, classes, f));
         }
 
         column
@@ -362,10 +364,11 @@ impl FeatureState {
         }
     }
 
-    pub fn view<'a, 'b, T, F>(
+    pub fn view<'a, 'b, 'c, T, F>(
         &'a mut self,
         parent_path: FeaturePath,
         ability_scores: &'b AbilityScores,
+        classes: &'c Classes,
         f: &'a F,
     ) -> Column<'a, T>
     where
@@ -385,7 +388,11 @@ impl FeatureState {
         let mut child_elements = vec![];
         if !children.is_empty() {
             for child in children {
-                child_elements.push(child.view(this_path.clone(), ability_scores, f).padding(4))
+                child_elements.push(
+                    child
+                        .view(this_path.clone(), ability_scores, classes, f)
+                        .padding(4),
+                )
             }
         }
 
@@ -423,7 +430,11 @@ impl FeatureState {
             .clone();
 
         if (!rolls_state.is_empty()) {
-            column = column.push(FeatureState::rolls_view(rolls_state, ability_scores))
+            column = column.push(FeatureState::rolls_view(
+                rolls_state,
+                ability_scores,
+                classes,
+            ))
         }
 
         let child_element: Element<T> = match display_orientation {
@@ -442,16 +453,17 @@ impl FeatureState {
         column.width(Length::FillPortion(1))
     }
 
-    fn rolls_view<'a, 'b, T>(
+    fn rolls_view<'a, 'b, 'c, T>(
         rolls_states: &'a mut Vec<RollState>,
         ability_scores: &'b AbilityScores,
+        classes: &'c Classes,
     ) -> Column<'a, T>
     where
         T: Debug + Clone + 'a,
     {
         let mut column = Column::new();
         for roll_state in rolls_states {
-            column = column.push(Row::new().push(roll_state.view(ability_scores)))
+            column = column.push(Row::new().push(roll_state.view(ability_scores, classes)))
         }
 
         column

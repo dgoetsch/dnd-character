@@ -56,7 +56,7 @@ impl Rollable {
     }
 
     pub fn view<'a, T>(&self) -> Element<'a, T> {
-        let dice = Some(
+        let dice: Option<String> = Some(
             self.dice()
                 .into_iter()
                 .map(|d| d.to_string())
@@ -72,8 +72,9 @@ impl Rollable {
             vec![dice, bonus]
                 .into_iter()
                 .flatten()
+                .filter(|s| !s.is_empty())
                 .collect::<Vec<String>>()
-                .join("+"),
+                .join(""),
         )
         .filter(|b| !b.is_empty());
 

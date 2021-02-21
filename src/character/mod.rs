@@ -211,6 +211,7 @@ impl Application for Character {
                 let features = features.view(
                     FeaturePath::empty(),
                     &modified_ability_scores.ability_scores(),
+                    classes,
                     &Message::Feature,
                 );
 

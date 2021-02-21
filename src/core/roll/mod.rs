@@ -1,4 +1,4 @@
-use crate::character::class::Classes;
+use crate::character::class::{Class, Classes};
 use crate::core::ability_score::{Ability, AbilityScores, ModifiedAbilityScores};
 use crate::core::effect::Effect;
 use crate::core::feature::Feature;
@@ -86,6 +86,7 @@ pub enum RollBonus {
     Advantage(Advantage),
     Modifier(isize),
     Roll(Roll),
+    Proficiency,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
@@ -119,10 +120,11 @@ pub struct RollState {
     external_bonuses: Vec<RollBonus>,
 }
 
-fn rollable<'a, 'b>(
+fn rollable<'a, 'b, 'c>(
     roll: &'a Roll,
     external_bonuses: &'a Vec<RollBonus>,
     ability_scores: &'b AbilityScores,
+    classes: &'c Classes,
 ) -> Rollable {
     let Roll {
         name,
@@ -154,13 +156,14 @@ fn rollable<'a, 'b>(
             },
             RollBonus::Modifier(more) => modifier = more + modifier,
             RollBonus::Roll(roll) => children.push(roll),
+            RollBonus::Proficiency => modifier = modifier + classes.proficiency_bonus(),
         }
     }
 
     let mut result = Rollable::from(dice, reroll, advantage_count, modifier);
 
     for roll in children {
-        let other = rollable(&roll, &vec![], ability_scores);
+        let other = rollable(&roll, &vec![], ability_scores, classes);
         result.merge(other);
     }
 
@@ -240,7 +243,11 @@ impl RollState {
         }
     }
 
-    pub fn view<'a, 'b, T>(&'a mut self, ability_scores: &'b AbilityScores) -> Column<'a, T>
+    pub fn view<'a, 'b, 'c, T>(
+        &'a mut self,
+        ability_scores: &'b AbilityScores,
+        classes: &'c Classes,
+    ) -> Column<'a, T>
     where
         T: Debug + Clone + 'a,
     {
@@ -249,7 +256,7 @@ impl RollState {
             external_bonuses,
         } = self;
 
-        let rollable = rollable(roll, external_bonuses, ability_scores);
+        let rollable = rollable(roll, external_bonuses, ability_scores, classes);
 
         let Roll {
             name,

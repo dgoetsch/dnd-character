@@ -264,6 +264,25 @@
   },
   "features": [
     {
+      "name": "Spellcasting",
+      "description": null,
+      "slot": null,
+      "children": [],
+      "rolls": [
+        {
+          "name": "Attack",
+          "type": ["Attack", "Spellcasting" ],
+          "dice":[ { "count":  1, "sides": 20 } ],
+          "ability": "Charisma",
+          "bonuses": [
+            {
+              "type": "Proficiency"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "Font of Magic",
       "description": null,
       "slot": null,
