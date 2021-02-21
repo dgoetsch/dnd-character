@@ -1,7 +1,7 @@
 use crate::core::ability_score::{Ability, AbilityScoreBonus};
 use crate::core::roll::check::{CheckBonus, CheckRollType};
 use crate::core::roll::damage::{Damage, DamageRollScope};
-use crate::core::roll::Dice;
+use crate::core::roll::{Dice, RollBonus, RollScope};
 use crate::resources::skill::SkillName;
 use crate::util::format_modifier;
 use iced::{Column, Element, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
@@ -93,6 +93,10 @@ pub enum Effect {
         damage: Damage,
         scope: DamageRollScope,
     },
+    Roll {
+        bonus: RollBonus,
+        scope: RollScope,
+    },
 }
 
 impl Effect {
@@ -128,6 +132,9 @@ impl Display for Effect {
                 scope: roll,
             } => {
                 write!(f, "{} to {}", damage.to_string(), roll.to_string())
+            }
+            Effect::Roll { bonus, scope } => {
+                write!(f, "{:?} to {:?}", bonus, scope)
             }
         }
     }
