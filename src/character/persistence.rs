@@ -1,4 +1,3 @@
-use super::spell_slot::SpellSlot;
 use super::State;
 use crate::character::class::{Class, Classes};
 use crate::character::description::Description;
@@ -7,8 +6,6 @@ use crate::character::inventory::Inventory;
 use crate::character::name::Name;
 use crate::character::proficiencies::Proficiencies;
 use crate::character::saving_throw::SavingThrows;
-use crate::character::spell_slot::SpellSlotsState;
-use crate::character::spellcasting::{Spellcasting, SpellcastingsState};
 use crate::core::ability_score::AbilityScores;
 use crate::core::feature::{Feature, FeatureState, FeaturesState};
 use crate::resources::{ResourceError, Resources};
@@ -45,13 +42,10 @@ impl LoadData {
             hit_points,
             proficiencies,
             saving_throws,
-            spellcasting,
-            spell_slots,
             inventory,
             features,
         } = self.character;
         let classes = Classes::from(classes);
-        let spellcasting = SpellcastingsState::from(spellcasting, classes.clone());
         State {
             name: name,
             description: description,
@@ -61,8 +55,6 @@ impl LoadData {
             hit_points: hit_points.to_state(),
             saving_throws: saving_throws,
             proficiencies: proficiencies,
-            spellcasting: spellcasting,
-            spell_slots: SpellSlotsState::from(spell_slots),
             inventory: inventory.to_state(),
             features: FeaturesState::from(features),
             resources: self.resources,
@@ -110,8 +102,6 @@ pub struct CharacterPersistence {
     hit_points: HitPoints,
     saving_throws: SavingThrows,
     proficiencies: Proficiencies,
-    spellcasting: Vec<Spellcasting>,
-    spell_slots: Vec<SpellSlot>,
     inventory: Inventory,
     features: Vec<Feature>,
     config: CharacterPersistenceConfig,
@@ -126,8 +116,6 @@ impl CharacterPersistence {
         hit_points: HitPoints,
         saving_throws: SavingThrows,
         proficiencies: Proficiencies,
-        spellcasting: Vec<Spellcasting>,
-        spell_slots: Vec<SpellSlot>,
         inventory: Inventory,
         features: Vec<Feature>,
         config: CharacterPersistenceConfig,
@@ -140,8 +128,6 @@ impl CharacterPersistence {
             hit_points,
             saving_throws,
             proficiencies,
-            spellcasting,
-            spell_slots,
             inventory,
             features,
             config,

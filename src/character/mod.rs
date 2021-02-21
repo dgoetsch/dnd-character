@@ -10,11 +10,9 @@ use name::Name;
 use persistence::{CharacterPersistence, CharacterPersistenceConfig, LoadError};
 use proficiencies::Proficiencies;
 use saving_throw::SavingThrows;
-use spell_slot::SpellSlotsState;
 
 use crate::character::inventory::InventoryState;
 use crate::character::persistence::LoadData;
-use crate::character::spellcasting::{Spellcasting, SpellcastingsState};
 use crate::core::ability_score::{AbilityScores, AbilityScoresState};
 use crate::core::feature;
 use crate::core::feature::{FeatureMessage, FeatureState, FeaturesState};
@@ -30,8 +28,6 @@ pub mod persistence;
 pub mod proficiencies;
 pub mod saving_throw;
 pub mod skill;
-pub mod spell_slot;
-pub mod spellcasting;
 //TODO experience, ac, attack
 
 #[derive(Debug)]
@@ -51,8 +47,6 @@ pub struct State {
     hit_points: HitPointState,
     saving_throws: SavingThrows,
     proficiencies: Proficiencies,
-    spellcasting: SpellcastingsState,
-    spell_slots: SpellSlotsState,
     inventory: InventoryState,
     features: FeaturesState,
     saving: bool,
@@ -70,8 +64,6 @@ impl State {
             self.hit_points.persistable(),
             self.saving_throws.clone(),
             self.proficiencies.clone(),
-            self.spellcasting.persistable(),
-            self.spell_slots.persistable(),
             self.inventory.persistable(),
             self.features.persistable(),
             self.config.clone(),
@@ -84,7 +76,6 @@ pub enum Message {
     Loaded(Result<LoadData, LoadError>),
     Saved(Result<(), LoadError>),
     HitPoint(hitpoints::HitPointMessage),
-    SpellSlot(spell_slot::SpellSlotMessage),
     Feature(feature::FeatureMessage),
     ResetEffects,
 }
@@ -135,7 +126,6 @@ impl Application for Character {
                         active_effects.extend(state.inventory.effects_from_equipped());
 
                         state.ability_scores.apply_all(&active_effects);
-                        state.spellcasting.apply_all(&active_effects);
                         state.inventory.apply_all(&active_effects);
                         state.features.apply_effects(&active_effects);
                     }
@@ -145,9 +135,6 @@ impl Application for Character {
                     }
                     Message::HitPoint(hit_point_message) => {
                         state.dirty = state.hit_points.update(hit_point_message)
-                    }
-                    Message::SpellSlot(spell_slot_message) => {
-                        state.dirty = state.spell_slots.update(spell_slot_message);
                     }
                     Message::Feature(feature_message) => {
                         state.dirty = state.features.update(feature_message);
@@ -179,8 +166,6 @@ impl Application for Character {
                 hit_points,
                 saving_throws,
                 proficiencies,
-                spellcasting,
-                spell_slots,
                 inventory,
                 features,
                 saving,
@@ -206,8 +191,6 @@ impl Application for Character {
                     classes.clone(),
                     modified_ability_scores.clone(),
                 );
-
-                let spellcasting = spellcasting.view(modified_ability_scores.clone());
 
                 let features = features.view(
                     FeaturePath::empty(),
@@ -235,13 +218,6 @@ impl Application for Character {
                     .padding(20)
                     .width(Length::FillPortion(1));
 
-                let spell_slot_view = spell_slots
-                    .view()
-                    .max_width(800)
-                    .spacing(20)
-                    .padding(20)
-                    .width(Length::FillPortion(2));
-
                 let layout = Column::new()
                     .align_items(Align::Start)
                     .push(Row::new().push(name))
@@ -266,15 +242,9 @@ impl Application for Character {
                     .push(
                         Row::new()
                             .spacing(8)
-                            .push(
-                                Column::new()
-                                    .push(spellcasting)
-                                    .push(spell_slot_view)
-                                    .width(Length::FillPortion(1)),
-                            )
+                            .push(inventory.width(Length::FillPortion(1)))
                             .push(skill_view.width(Length::FillPortion(1))),
                     )
-                    .push(inventory)
                     .push(features);
 
                 Scrollable::new(scroll)
