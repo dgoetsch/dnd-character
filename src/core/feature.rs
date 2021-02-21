@@ -36,9 +36,11 @@ pub struct Feature {
     name: String,
     description: Option<String>,
     slot: Option<Slot>,
+    #[serde(default)]
     children: Vec<Feature>,
     show_reset_chidren: Option<bool>,
     child_display_orientation: Option<DisplayOrientation>,
+    #[serde(default)]
     effects: Vec<Effect>,
     #[serde(default)]
     rolls: Vec<Roll>,
@@ -449,7 +451,7 @@ impl FeatureState {
     {
         let mut column = Column::new();
         for roll_state in rolls_states {
-            column = column.push(Row::new().push(roll_state.view(12, ability_scores)))
+            column = column.push(Row::new().push(roll_state.view(ability_scores)))
         }
 
         column

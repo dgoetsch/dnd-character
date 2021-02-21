@@ -53,10 +53,12 @@ impl Display for Range {
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 pub struct Roll {
     name: String,
+    #[serde(default)]
     types: Vec<String>,
     ability: Option<Ability>,
     range: Option<Range>,
     dice: Vec<Dice>,
+    #[serde(default)]
     bonuses: Vec<RollBonus>,
 }
 
@@ -238,11 +240,7 @@ impl RollState {
         }
     }
 
-    pub fn view<'a, 'b, T>(
-        &'a mut self,
-        size: u16,
-        ability_scores: &'b AbilityScores,
-    ) -> Column<'a, T>
+    pub fn view<'a, 'b, T>(&'a mut self, ability_scores: &'b AbilityScores) -> Column<'a, T>
     where
         T: Debug + Clone + 'a,
     {
@@ -272,22 +270,17 @@ impl RollState {
 
         let mut column = Column::new().push(
             Row::new()
-                .spacing(size)
-                .push(Text::new(format!("{}", name)).size(size * 3))
-                .push(Text::new(types_text).size(size * 2)),
+                .push(Text::new(format!("{}", name)))
+                .push(Text::new(types_text)),
         );
 
         match ability {
-            Some(ability) => {
-                column = column.push(Row::new().push(Text::new(ability.to_string()).size(size * 2)))
-            }
+            Some(ability) => column = column.push(Row::new().push(Text::new(ability.to_string()))),
             None => {}
         }
 
         match range {
-            Some(range) => {
-                column = column.push(Row::new().push(Text::new(range.to_string()).size(size)))
-            }
+            Some(range) => column = column.push(Row::new().push(Text::new(range.to_string()))),
             None => {}
         }
 

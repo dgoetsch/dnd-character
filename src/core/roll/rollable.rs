@@ -60,6 +60,7 @@ impl Rollable {
             self.dice()
                 .into_iter()
                 .map(|d| d.to_string())
+                .filter(|s| !s.is_empty())
                 .collect::<Vec<String>>()
                 .join("+"),
         )

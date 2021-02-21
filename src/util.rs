@@ -5,6 +5,8 @@ use std::fmt::Debug;
 pub fn format_modifier(value: isize) -> String {
     if value < 0 {
         format!("{}", value)
+    } else if value == 0 {
+        "".to_string()
     } else {
         format!("+{}", value)
     }

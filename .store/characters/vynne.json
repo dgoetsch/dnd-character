@@ -334,7 +334,11 @@
           "children": [],
           "show_reset_chidren": null,
           "child_display_orientation": null,
-          "effects": []
+          "effects": [],
+          "rolls": [{
+            "name": "Wild Magic",
+            "dice": [{ "count":  1, "sides":  100 }]
+          }]
         },
         {
           "name": "Tides of chaos",
