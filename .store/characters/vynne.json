@@ -245,6 +245,19 @@
                 "roll": {
                   "type": "SpellAttack"
                 }
+              },
+              {
+                "type": "Roll",
+                "bonus": {
+                  "type": "Modifier",
+                  "value": 2
+                },
+                "scope": {
+                  "path": {
+                    "path": [ "Spellcasting" ],
+                    "include_children": true
+                  }
+                }
               }
             ]
           },
@@ -271,7 +284,7 @@
       "rolls": [
         {
           "name": "Attack",
-          "type": ["Attack", "Spellcasting" ],
+          "types": ["Attack", "Spellcasting" ],
           "dice":[ { "count":  1, "sides": 20 } ],
           "ability": "Charisma",
           "bonuses": [

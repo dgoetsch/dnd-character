@@ -139,6 +139,13 @@ impl FeaturesState {
         }
         result
     }
+
+    pub fn apply_effects<'a, 'b>(&'a mut self, effects: &'b Vec<Effect>) {
+        let FeaturesState { feature_state } = self;
+        for state in feature_state {
+            state.apply_effects(effects)
+        }
+    }
     pub fn is_empty(&self) -> bool {
         self.feature_state.is_empty()
     }
@@ -190,6 +197,12 @@ impl FeaturesState {
 }
 
 impl FeatureState {
+    pub fn apply_effects<'a, 'b>(&'a mut self, effects: &'b Vec<Effect>) {
+        for effect in effects {
+            self.apply_effect(effect)
+        }
+    }
+
     pub fn apply_effect<'a, 'b>(&'a mut self, effect: &'b Effect) {
         let FeatureState {
             feature,
@@ -203,7 +216,10 @@ impl FeatureState {
                 let (matches, scope) = scope.matches(feature);
                 if (matches) {
                     for roll_state in rolls_state {
-                        roll_state.apply(effect)
+                        roll_state.apply(&Effect::Roll {
+                            bonus: bonus.clone(),
+                            scope: scope.clone(),
+                        })
                     }
                     for child in children {
                         child.apply_effect(effect)
