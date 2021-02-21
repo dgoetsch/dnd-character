@@ -116,7 +116,7 @@ impl InventoryState {
     pub fn view(
         &mut self,
         items: Vec<Item>,
-        ability_scores: ModifiedAbilityScores,
+        ability_scores: &ModifiedAbilityScores,
         proficiencies: &Proficiencies,
         classes: &Classes,
     ) -> Column<Message> {
@@ -144,7 +144,7 @@ impl InventoryState {
             };
             column = column.padding(8).push(item.view(
                 inventory_item,
-                ability_scores.clone(),
+                ability_scores,
                 proficiency_modifier,
             ))
         }
@@ -162,7 +162,7 @@ impl InventoryState {
             };
             column = column.padding(8).push(item.view(
                 inventory_item,
-                ability_scores.clone(),
+                ability_scores,
                 proficiency_modifier,
             ))
         }
@@ -217,10 +217,10 @@ impl InventoryItemState {
         self.item.clone()
     }
 
-    fn view<'a>(
+    fn view<'a, 'b>(
         &'a mut self,
         item: Option<Item>,
-        ability_scores: ModifiedAbilityScores,
+        ability_scores: &'b ModifiedAbilityScores,
         proficiency_modifier: isize,
     ) -> Column<'a, Message> {
         let item_resource = item;
@@ -243,7 +243,7 @@ impl InventoryItemState {
         match item_resource {
             Some(item) => {
                 column = column.push(item.clone().view());
-                for attack in item.attacks(ability_scores).unwrap_or(vec![]) {
+                for attack in item.attacks(ability_scores.clone()).unwrap_or(vec![]) {
                     let mut attack = attack.clone();
                     for (path, damage) in damage_bonus.clone() {
                         match attack.matches(path) {
@@ -269,9 +269,11 @@ impl InventoryItemState {
         }
         match feature_state {
             Some(features) => {
-                column = column.push(
-                    features.view(FeaturePath::of(vec![item.name.clone()]), &Message::Feature),
-                )
+                column = column.push(features.view(
+                    FeaturePath::of(vec![item.name.clone()]),
+                    &ability_scores.ability_scores(),
+                    &Message::Feature,
+                ))
             }
             None => {}
         }

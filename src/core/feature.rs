@@ -1,5 +1,7 @@
 use super::feature_path::FeaturePath;
+use crate::core::ability_score::AbilityScores;
 use crate::core::effect::{Effect, EffectState, EffectsState};
+use crate::core::roll::{Roll, RollScope, RollState};
 use crate::core::slot::{FromSlotCommand, Slot, SlotCommand, SlotState};
 use iced::futures::StreamExt;
 use iced::{button, Button, Column, Element, Length, Row, Text};
@@ -19,6 +21,7 @@ pub struct FeatureState {
     slot_state: Option<SlotState>,
     children: Vec<FeatureState>,
     effects_state: EffectsState,
+    rolls_state: Vec<RollState>,
 }
 
 type IsDirty = bool;
@@ -37,6 +40,8 @@ pub struct Feature {
     show_reset_chidren: Option<bool>,
     child_display_orientation: Option<DisplayOrientation>,
     effects: Vec<Effect>,
+    #[serde(default)]
+    rolls: Vec<Roll>,
 }
 
 impl Feature {
@@ -49,7 +54,12 @@ impl Feature {
             show_reset_chidren: None,
             child_display_orientation: None,
             effects: vec![],
+            rolls: vec![],
         }
+    }
+
+    pub fn matches(&self, path: FeaturePath) -> (bool, FeaturePath) {
+        path.matches(self.name.clone())
     }
 
     pub fn with_description<T: Into<String>>(&self, description: T) -> Feature {
@@ -119,6 +129,7 @@ impl FeaturesState {
             effects_state,
             slot_state,
             children,
+            rolls_state,
         } in feature_state
         {
             result.extend(effects_state.effect())
@@ -152,7 +163,12 @@ impl FeaturesState {
         dirty
     }
 
-    pub fn view<'a, T, F>(&'a mut self, root_path: FeaturePath, f: &'a F) -> Column<'a, T>
+    pub fn view<'a, 'b, T, F>(
+        &'a mut self,
+        root_path: FeaturePath,
+        ability_scores: &'b AbilityScores,
+        f: &'a F,
+    ) -> Column<'a, T>
     where
         T: Debug + Clone + 'a,
         F: Fn(FeatureMessage) -> T + 'a + Copy,
@@ -162,7 +178,7 @@ impl FeaturesState {
         let FeaturesState { feature_state } = self;
 
         for state in feature_state {
-            column = column.push(state.view(root_path.clone(), f));
+            column = column.push(state.view(root_path.clone(), ability_scores, f));
         }
 
         column
@@ -170,12 +186,37 @@ impl FeaturesState {
 }
 
 impl FeatureState {
+    pub fn apply_effect<'a, 'b>(&'a mut self, effect: &'b Effect) {
+        let FeatureState {
+            feature,
+            rolls_state,
+            children,
+            ..
+        } = self;
+
+        match effect.clone() {
+            Effect::Roll { bonus, scope } => {
+                let (matches, scope) = scope.matches(feature);
+                if (matches) {
+                    for roll_state in rolls_state {
+                        roll_state.apply(effect)
+                    }
+                    for child in children {
+                        child.apply_effect(effect)
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+
     pub fn persistable(&self) -> Feature {
         let FeatureState {
             feature,
             slot_state,
             children,
             effects_state,
+            rolls_state,
         } = self;
         let mut feature = feature.clone();
         feature.children = vec![];
@@ -189,6 +230,11 @@ impl FeatureState {
         }
 
         feature.effects = effects_state.persistable();
+
+        feature.rolls = vec![];
+        for roll in rolls_state {
+            feature.rolls.push(roll.persistable())
+        }
 
         feature
     }
@@ -204,7 +250,13 @@ impl FeatureState {
                 .map(FeatureState::from)
                 .collect(),
             slot_state,
-            effects_state: EffectsState::from(feature.effects),
+            effects_state: EffectsState::from(feature.effects.clone()),
+            rolls_state: feature
+                .rolls
+                .clone()
+                .into_iter()
+                .map(RollState::from)
+                .collect(),
         }
     }
 
@@ -259,6 +311,7 @@ impl FeatureState {
                     slot_state,
                     children,
                     effects_state,
+                    rolls_state,
                 } = self;
                 for child in children {
                     dirty_children = child.apply_all(&apply_to_children) || dirty_children;
@@ -280,6 +333,7 @@ impl FeatureState {
             slot_state,
             children,
             effects_state,
+            rolls_state,
         } = self;
         let mut path = path.clone();
         match path.matches(feature.name.clone()) {
@@ -306,7 +360,12 @@ impl FeatureState {
         }
     }
 
-    pub fn view<'a, T, F>(&'a mut self, parent_path: FeaturePath, f: &'a F) -> Column<'a, T>
+    pub fn view<'a, 'b, T, F>(
+        &'a mut self,
+        parent_path: FeaturePath,
+        ability_scores: &'b AbilityScores,
+        f: &'a F,
+    ) -> Column<'a, T>
     where
         T: Debug + Clone + 'a,
         F: Fn(FeatureMessage) -> T + 'a + Copy,
@@ -316,6 +375,7 @@ impl FeatureState {
             slot_state,
             children,
             effects_state,
+            rolls_state,
         } = self;
 
         let this_path = parent_path.with_child(feature.name.clone());
@@ -323,7 +383,7 @@ impl FeatureState {
         let mut child_elements = vec![];
         if !children.is_empty() {
             for child in children {
-                child_elements.push(child.view(this_path.clone(), f).padding(4))
+                child_elements.push(child.view(this_path.clone(), ability_scores, f).padding(4))
             }
         }
 
@@ -335,6 +395,7 @@ impl FeatureState {
             show_reset_chidren,
             child_display_orientation,
             effects,
+            rolls,
         } = feature;
         let slot_path = this_path.clone();
         let mut header_row: Row<'a, T> = Row::new()
@@ -359,6 +420,10 @@ impl FeatureState {
             .unwrap_or(&DisplayOrientation::Rows)
             .clone();
 
+        if (!rolls_state.is_empty()) {
+            column = column.push(FeatureState::rolls_view(rolls_state, ability_scores))
+        }
+
         let child_element: Element<T> = match display_orientation {
             DisplayOrientation::Columns => child_elements
                 .into_iter()
@@ -373,6 +438,21 @@ impl FeatureState {
         column = column.push(child_element);
 
         column.width(Length::FillPortion(1))
+    }
+
+    fn rolls_view<'a, 'b, T>(
+        rolls_states: &'a mut Vec<RollState>,
+        ability_scores: &'b AbilityScores,
+    ) -> Column<'a, T>
+    where
+        T: Debug + Clone + 'a,
+    {
+        let mut column = Column::new();
+        for roll_state in rolls_states {
+            column = column.push(Row::new().push(roll_state.view(12, ability_scores)))
+        }
+
+        column
     }
 
     fn slot_view<'a, 'b, T, F>(

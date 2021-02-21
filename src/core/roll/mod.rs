@@ -1,6 +1,7 @@
 use crate::character::class::Classes;
 use crate::core::ability_score::{Ability, AbilityScores, ModifiedAbilityScores};
 use crate::core::effect::Effect;
+use crate::core::feature::Feature;
 use crate::core::feature_path::FeaturePath;
 use crate::core::roll::check::{Advantage, CheckRoll};
 use crate::core::roll::damage::DamageRoll;
@@ -59,23 +60,21 @@ pub struct Roll {
     bonuses: Vec<RollBonus>,
 }
 
-impl Roll {}
-
-fn isNoneOr<T>(option: Option<T>, compare_to: &T) -> bool
+fn isNoneOr<'a, 'b, T>(option: &'a Option<T>, compare_to: &'b T) -> bool
 where
     T: PartialEq,
 {
     match option {
         None => true,
-        Some(thing) => &thing == compare_to,
+        Some(thing) => thing == compare_to,
     }
 }
 
-fn isNoneOrOpt<T>(option: Option<T>, compare_to: &Option<T>) -> bool
+fn isNoneOrOpt<'a, 'b, T>(option: &'a Option<T>, compare_to: &'b Option<T>) -> bool
 where
     T: PartialEq,
 {
-    option.is_none() || &option == compare_to
+    option.is_none() || option == compare_to
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
@@ -94,6 +93,22 @@ pub struct RollScope {
     types: Option<Vec<String>>,
     ability: Option<Ability>,
     range: Option<Range>,
+}
+
+impl RollScope {
+    pub fn matches<'a, 'b>(&'a self, feature: &'b Feature) -> (bool, RollScope) {
+        let mut result = self.clone();
+        match result.path.clone() {
+            None => (true, result),
+            Some(path) => {
+                let (matches, remaining) = feature.matches(path);
+                if (matches) {
+                    result.path = Some(remaining)
+                }
+                (matches, result)
+            }
+        }
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -155,7 +170,17 @@ fn rollable<'a, 'b>(
 }
 
 impl RollState {
-    fn apply(&mut self, effect: Effect) {
+    pub fn persistable(&self) -> Roll {
+        self.roll.clone()
+    }
+
+    pub fn from(roll: Roll) -> RollState {
+        RollState {
+            roll: roll,
+            external_bonuses: vec![],
+        }
+    }
+    pub fn apply<'a, 'b>(&'a mut self, effect: &'b Effect) {
         match effect {
             Effect::Roll { bonus, scope } => {
                 let RollState {
@@ -171,36 +196,53 @@ impl RollState {
                     bonuses,
                 } = roll;
 
-                let (path_matches, sub_path) = match scope.path {
+                let roll_name = name;
+                let roll_types = types;
+                let roll_ability = ability;
+                let roll_range = range;
+
+                let RollScope {
+                    name,
+                    types,
+                    path,
+                    ability,
+                    range,
+                } = scope;
+
+                let (path_matches, sub_path) = match path {
                     None => (true, None),
                     Some(path) => {
-                        let (matches, remaining_path) = path.matches(name.clone());
+                        let (matches, remaining_path) = path.matches(roll_name.clone());
                         (matches, Some(remaining_path))
                     }
                 };
 
-                let roll_type_matches = match scope.types {
+                let roll_type_matches = match types {
                     None => true,
                     Some(scoped_types) => scoped_types
                         .into_iter()
-                        .all(|scoped_type| types.contains(&scoped_type)),
+                        .all(|scoped_type| roll_types.contains(scoped_type)),
                 };
 
                 let is_matching = path_matches
                     && roll_type_matches
-                    && isNoneOr(scope.name, name)
-                    && isNoneOrOpt(scope.ability, ability)
-                    && isNoneOrOpt(scope.range, range);
+                    && isNoneOr(name, roll_name)
+                    && isNoneOrOpt(ability, roll_ability)
+                    && isNoneOrOpt(range, roll_range);
 
                 if (is_matching) {
-                    external_bonuses.push(bonus)
+                    external_bonuses.push(bonus.clone())
                 }
             }
             _ => {}
         }
     }
 
-    fn view<'a, 'b, T>(&'a mut self, size: u16, ability_scores: &'b AbilityScores) -> Column<'a, T>
+    pub fn view<'a, 'b, T>(
+        &'a mut self,
+        size: u16,
+        ability_scores: &'b AbilityScores,
+    ) -> Column<'a, T>
     where
         T: Debug + Clone + 'a,
     {

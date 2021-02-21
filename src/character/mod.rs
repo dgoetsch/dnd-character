@@ -186,7 +186,7 @@ impl Application for Character {
                 dirty,
                 scroll,
             }) => {
-                let modified_ability_scores = ability_scores.modified();
+                let modified_ability_scores = &ability_scores.modified();
 
                 let name = name.view().padding(4);
                 let description = description.view().padding(4);
@@ -207,6 +207,12 @@ impl Application for Character {
                 );
 
                 let spellcasting = spellcasting.view(modified_ability_scores.clone());
+
+                let features = features.view(
+                    FeaturePath::empty(),
+                    &modified_ability_scores.ability_scores(),
+                    &Message::Feature,
+                );
 
                 let ability_scores = ability_scores.view().padding(4);
 
@@ -233,8 +239,6 @@ impl Application for Character {
                     .spacing(20)
                     .padding(20)
                     .width(Length::FillPortion(2));
-
-                let features = features.view(FeaturePath::empty(), &Message::Feature);
 
                 let layout = Column::new()
                     .align_items(Align::Start)

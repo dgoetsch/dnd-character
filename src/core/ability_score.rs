@@ -109,6 +109,17 @@ impl ModifiedAbilityScores {
             Ability::Charisma => self.charisma.clone(),
         }
     }
+
+    pub fn ability_scores(&self) -> AbilityScores {
+        AbilityScores {
+            strength: self.strength.score.clone(),
+            dexterity: self.dexterity.score.clone(),
+            constitution: self.constitution.score.clone(),
+            intelligence: self.intelligence.score.clone(),
+            wisdom: self.wisdom.score.clone(),
+            charisma: self.charisma.score.clone(),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Default)]
