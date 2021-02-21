@@ -214,15 +214,16 @@ impl FeatureState {
         match effect.clone() {
             Effect::Roll { bonus, scope } => {
                 let (matches, scope) = scope.matches(feature);
+                let effect = Effect::Roll {
+                    bonus: bonus.clone(),
+                    scope: scope.clone(),
+                };
                 if (matches) {
                     for roll_state in rolls_state {
-                        roll_state.apply(&Effect::Roll {
-                            bonus: bonus.clone(),
-                            scope: scope.clone(),
-                        })
+                        roll_state.apply(&effect)
                     }
                     for child in children {
-                        child.apply_effect(effect)
+                        child.apply_effect(&effect)
                     }
                 }
             }

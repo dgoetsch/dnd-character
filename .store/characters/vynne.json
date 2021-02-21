@@ -153,51 +153,8 @@
       }
     ]
   },
-  "spellcasting": [
-    {
-      "class": "Sorcerer",
-      "ability": "Charisma",
-      "additional_modifiers": {},
-      "additional_save_modifiers": {}
-    }
-  ],
-  "spell_slots": [
-    {
-      "level": 1,
-      "available": 4,
-      "max": 4
-    },
-    {
-      "level": 2,
-      "available": 3,
-      "max": 3
-    },
-    {
-      "level": 3,
-      "available": 3,
-      "max": 3
-    },
-    {
-      "level": 4,
-      "available": 2,
-      "max": 3
-    },
-    {
-      "level": 5,
-      "available": 2,
-      "max": 2
-    },
-    {
-      "level": 6,
-      "available": 1,
-      "max": 1
-    },
-    {
-      "level": 7,
-      "available": 1,
-      "max": 1
-    }
-  ],
+  "spellcasting": [],
+  "spell_slots": [],
   "inventory": {
     "equipped": [
       {
@@ -254,7 +211,7 @@
                 },
                 "scope": {
                   "path": {
-                    "path": [ "Spellcasting" ],
+                    "path": [ "Spellcasting", "Attack" ],
                     "include_children": true
                   }
                 }
@@ -280,16 +237,75 @@
       "name": "Spellcasting",
       "description": null,
       "slot": null,
-      "children": [],
-      "rolls": [
+      "child_display_orientation": "Columns",
+      "children": [
         {
-          "name": "Attack",
-          "types": ["Attack", "Spellcasting" ],
-          "dice":[ { "count":  1, "sides": 20 } ],
-          "ability": "Charisma",
-          "bonuses": [
+          "name": "Spell Slots",
+          "children": [
             {
-              "type": "Proficiency"
+              "name": "Level 1",
+              "slot": {
+                "current": 4,
+                "max": 4
+              }
+            },
+            {
+              "name": "Level 2",
+              "slot": {
+                "current": 3,
+                "max": 3
+              }
+            },
+            {
+              "name": "Level 3",
+              "slot": {
+                "current": 3,
+                "max": 3
+              }
+            },
+            {
+              "name": "Level 4",
+              "slot": {
+                "current": 3,
+                "max": 3
+              }
+            },
+            {
+              "name": "Level 5",
+              "slot": {
+                "current": 2,
+                "max": 2
+              }
+            },
+            {
+              "name": "Level 6",
+              "slot": {
+                "current": 1,
+                "max": 1
+              }
+            },
+            {
+              "name": "Level 7",
+              "slot": {
+                "current": 1,
+                "max": 1
+              }
+            }
+          ]
+        },
+        {
+         "name": "Attack",
+          "rolls": [
+            {
+              "name": "Attack",
+              "types": ["Ranged", "Melee", "Spellcasting" ],
+              "dice":[ { "count":  1, "sides": 20 } ],
+              "ability": "Charisma",
+              "bonuses": [
+                {
+                  "type": "Proficiency"
+                }
+              ]
             }
           ]
         }
