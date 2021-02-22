@@ -1,13 +1,10 @@
 use crate::core::ability_score::{Ability, AbilityScoreBonus};
-use crate::core::roll::damage::{Damage, DamageRollScope};
 use crate::core::roll::{Dice, RollBonus, RollScope};
 use crate::resources::skill::SkillName;
 use crate::util::format_modifier;
 use iced::{Column, Element, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
 use serde::{Deserialize, Serialize};
 use std::fmt::{Debug, Display, Formatter};
-
-pub type DamageType = String;
 
 #[derive(Debug, Clone, Default)]
 pub struct EffectsState {

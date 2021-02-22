@@ -3,7 +3,6 @@ use crate::core::ability_score::{Ability, AbilityScores, ModifiedAbilityScores};
 use crate::core::effect::Effect;
 use crate::core::feature::Feature;
 use crate::core::feature_path::FeaturePath;
-use crate::core::roll::damage::DamageRoll;
 use crate::core::roll::rollable::Rollable;
 use iced::{Column, Element, Row, Text};
 use serde::export::fmt::Debug;
@@ -11,7 +10,6 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
 use std::fmt::{Display, Formatter};
 
-pub mod damage;
 pub mod rollable;
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
