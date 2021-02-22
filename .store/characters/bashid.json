@@ -133,12 +133,6 @@
       }
     ]
   },
-  "spellcasting": [],
-  "spell_slots": [],
-  "inventory": {
-    "equipped": [],
-    "on_person": []
-  },
   "features": [
     {
       "name": "Equipment",

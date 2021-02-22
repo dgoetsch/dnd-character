@@ -2,7 +2,6 @@ use super::State;
 use crate::character::class::{Class, Classes};
 use crate::character::description::Description;
 use crate::character::hitpoints::HitPoints;
-use crate::character::inventory::Inventory;
 use crate::character::name::Name;
 use crate::character::proficiencies::Proficiencies;
 use crate::character::saving_throw::SavingThrows;
@@ -42,7 +41,6 @@ impl LoadData {
             hit_points,
             proficiencies,
             saving_throws,
-            inventory,
             features,
         } = self.character;
         let classes = Classes::from(classes);
@@ -55,7 +53,6 @@ impl LoadData {
             hit_points: hit_points.to_state(),
             saving_throws: saving_throws,
             proficiencies: proficiencies,
-            inventory: inventory.to_state(),
             features: FeaturesState::from(features),
             resources: self.resources,
             ..State::default()
@@ -102,7 +99,6 @@ pub struct CharacterPersistence {
     hit_points: HitPoints,
     saving_throws: SavingThrows,
     proficiencies: Proficiencies,
-    inventory: Inventory,
     features: Vec<Feature>,
     config: CharacterPersistenceConfig,
 }
@@ -116,7 +112,6 @@ impl CharacterPersistence {
         hit_points: HitPoints,
         saving_throws: SavingThrows,
         proficiencies: Proficiencies,
-        inventory: Inventory,
         features: Vec<Feature>,
         config: CharacterPersistenceConfig,
     ) -> CharacterPersistence {
@@ -128,7 +123,6 @@ impl CharacterPersistence {
             hit_points,
             saving_throws,
             proficiencies,
-            inventory,
             features,
             config,
         }

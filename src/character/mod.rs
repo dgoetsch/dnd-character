@@ -11,7 +11,6 @@ use persistence::{CharacterPersistence, CharacterPersistenceConfig, LoadError};
 use proficiencies::Proficiencies;
 use saving_throw::SavingThrows;
 
-use crate::character::inventory::InventoryState;
 use crate::character::persistence::LoadData;
 use crate::core::ability_score::{AbilityScores, AbilityScoresState};
 use crate::core::feature;
@@ -22,7 +21,6 @@ use crate::resources::Resources;
 pub mod class;
 pub mod description;
 pub mod hitpoints;
-pub mod inventory;
 pub mod name;
 pub mod persistence;
 pub mod proficiencies;
@@ -47,7 +45,6 @@ pub struct State {
     hit_points: HitPointState,
     saving_throws: SavingThrows,
     proficiencies: Proficiencies,
-    inventory: InventoryState,
     features: FeaturesState,
     saving: bool,
     dirty: bool,
@@ -64,7 +61,6 @@ impl State {
             self.hit_points.persistable(),
             self.saving_throws.clone(),
             self.proficiencies.clone(),
-            self.inventory.persistable(),
             self.features.persistable(),
             self.config.clone(),
         )
@@ -123,10 +119,8 @@ impl Application for Character {
                 match message {
                     Message::ResetEffects => {
                         let mut active_effects = state.features.effects();
-                        active_effects.extend(state.inventory.effects_from_equipped());
 
                         state.ability_scores.apply_all(&active_effects);
-                        state.inventory.apply_all(&active_effects);
                         state.features.apply_effects(&active_effects);
                     }
                     Message::Loaded(_) => {}
@@ -166,7 +160,6 @@ impl Application for Character {
                 hit_points,
                 saving_throws,
                 proficiencies,
-                inventory,
                 features,
                 saving,
                 dirty,
@@ -200,13 +193,6 @@ impl Application for Character {
                 );
 
                 let ability_scores = ability_scores.view().padding(4);
-
-                let inventory = inventory.view(
-                    resources.items().clone(),
-                    modified_ability_scores,
-                    proficiencies,
-                    classes,
-                );
 
                 let proficiencies = proficiencies.view().padding(4);
                 let classes = classes.view().padding(4);
@@ -242,7 +228,6 @@ impl Application for Character {
                     .push(
                         Row::new()
                             .spacing(8)
-                            .push(inventory.width(Length::FillPortion(1)))
                             .push(skill_view.width(Length::FillPortion(1))),
                     )
                     .push(features);
