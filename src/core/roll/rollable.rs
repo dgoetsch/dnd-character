@@ -1,4 +1,4 @@
-use crate::core::roll::check::Advantage;
+use crate::core::roll::Advantage;
 use crate::core::roll::{Dice, Roll};
 use crate::util::format_modifier;
 use iced::{Element, HorizontalAlignment, Length, Text, VerticalAlignment};

@@ -1,5 +1,4 @@
 use crate::core::effect::Effect;
-use crate::core::roll::check::{Advantage, CheckBonus, CheckRoll, CheckRollType};
 use crate::core::roll::rollable::Rollable;
 use crate::core::roll::{Dice, Roll};
 use crate::util::format_modifier;
@@ -204,16 +203,14 @@ impl AbilityScoresState {
 pub struct AbilityScoreState {
     ability_score: AbilityScore,
     value_modifiers: Vec<AbilityScoreBonus>,
-    bonus_modifiers: Vec<CheckBonus>,
 }
 
 impl AbilityScoreState {
     pub fn reset(&mut self) {
         self.value_modifiers = vec![];
-        self.bonus_modifiers = vec![];
     }
     pub fn view<T: Debug + Clone>(&mut self, name: &str) -> Row<T> {
-        let ModifiedAbilityScore { score, modifier } = self.modified();
+        let ModifiedAbilityScore { score } = self.modified();
 
         let modified_score = score;
 
@@ -238,21 +235,17 @@ impl AbilityScoreState {
             .vertical_alignment(VerticalAlignment::Bottom)
             .width(Length::FillPortion(1));
 
-        let bonus_cell = modifier.with_extra_bonus(modified_score.modifier()).view();
-
         Row::new()
             .width(Length::Fill)
             .spacing(4)
             .push(name_cell)
             .push(value_cell)
-            .push(bonus_cell)
     }
 
     fn modified(&self) -> ModifiedAbilityScore {
         let AbilityScoreState {
             ability_score,
             value_modifiers,
-            bonus_modifiers,
         } = self;
 
         let mut become_value: Option<isize> = None;
@@ -278,15 +271,12 @@ impl AbilityScoreState {
             None => AbilityScore::of(ability_score.value + score_modifier_total),
         };
 
-        let modifier = CheckRoll::from(bonus_modifiers.clone());
-
-        ModifiedAbilityScore { score, modifier }
+        ModifiedAbilityScore { score }
     }
 }
 #[derive(Debug, Clone)]
 pub struct ModifiedAbilityScore {
     score: AbilityScore,
-    modifier: CheckRoll,
 }
 
 impl ModifiedAbilityScore {

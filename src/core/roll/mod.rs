@@ -3,7 +3,6 @@ use crate::core::ability_score::{Ability, AbilityScores, ModifiedAbilityScores};
 use crate::core::effect::Effect;
 use crate::core::feature::Feature;
 use crate::core::feature_path::FeaturePath;
-use crate::core::roll::check::{Advantage, CheckRoll};
 use crate::core::roll::damage::DamageRoll;
 use crate::core::roll::rollable::Rollable;
 use iced::{Column, Element, Row, Text};
@@ -87,6 +86,21 @@ pub enum RollBonus {
     Modifier(isize),
     Roll(Roll),
     Proficiency,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+pub enum Advantage {
+    Advantage,
+    Disadvantage,
+}
+
+impl Display for Advantage {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Advantage::Advantage => write!(f, "Advantage"),
+            Advantage::Disadvantage => write!(f, "Disadvantage"),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]

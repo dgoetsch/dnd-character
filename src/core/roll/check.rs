@@ -1,6 +1,6 @@
 use crate::core::ability_score::Ability;
 use crate::core::feature_path::FeaturePath;
-use crate::core::roll::Dice;
+use crate::core::roll::{Advantage, Dice};
 use crate::resources::skill::SkillName;
 use crate::util::format_modifier;
 use iced::{Column, Element, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
@@ -31,21 +31,6 @@ use std::fmt::{Debug, Display, Formatter};
 //     Feature(FeaturePath),
 //     Damage(DamageType)
 // }
-
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
-pub enum Advantage {
-    Advantage,
-    Disadvantage,
-}
-
-impl Display for Advantage {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Advantage::Advantage => write!(f, "Advantage"),
-            Advantage::Disadvantage => write!(f, "Disadvantage"),
-        }
-    }
-}
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(tag = "type", content = "value")]
