@@ -136,91 +136,7 @@
   "spellcasting": [],
   "spell_slots": [],
   "inventory": {
-    "equipped": [
-      {
-        "name": "Dragon slayer",
-        "item_name": "Longsword",
-        "features": [
-          {
-            "name": "+1",
-            "description": null,
-            "slot": null,
-            "children": [],
-            "show_reset_chidren": null,
-            "child_display_orientation": null,
-            "effects": [
-              {
-                "type": "Check",
-                "bonus": {
-                  "type": "Modifier",
-                  "value": 1
-                },
-                "roll": {
-                  "type": "Feature",
-                  "value": {
-                    "path": [
-                      "Dragon slayer"
-                    ],
-                    "include_children": true
-                  }
-                }
-              },
-              {
-                "type": "Damage",
-                "damage": {
-                  "dice": {
-                    "count": 0,
-                    "sides": 0
-                  },
-                  "additional": 1,
-                  "damage_type": "Magical"
-                },
-                "scope": {
-                  "type": "Feature",
-                  "value": {
-                    "path": [
-                      "Dragon slayer"
-                    ],
-                    "include_children": true
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "Dragons",
-            "description": null,
-            "slot": null,
-            "children": [],
-            "show_reset_chidren": null,
-            "child_display_orientation": null,
-            "effects": [
-              {
-                "type": "Damage",
-                "damage": {
-                  "dice": {
-                    "count": 3,
-                    "sides": 6
-                  },
-                  "additional": null,
-                  "damage_type": "Magical"
-                },
-                "scope": {
-                  "type": "Feature",
-                  "value": {
-                    "path": [
-                      "Dragon slayer",
-                      "Dragons"
-                    ],
-                    "include_children": true
-                  }
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ],
+    "equipped": [],
     "on_person": []
   },
   "features": [
@@ -229,7 +145,56 @@
       "children": [
         {
           "name": "Dragon Slayer",
-          "rolls": []
+          "rolls": [
+            {
+              "name": "Attack",
+              "types": ["Melee", "Attack", "Long Sword"],
+              "ability": "Strength",
+              "range": {
+                "type": "Melee"
+              },
+              "dice": [ { "sides": 20, "count": 1 }],
+              "bonuses": [
+                {
+                  "type": "Proficiency"
+                },
+                {
+                  "type": "Modifier",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "name": "Damage",
+              "types": ["Melee", "Damage", "Long Sword"],
+              "ability": "Strength",
+              "range": {
+                "type": "Melee"
+              },
+              "dice": [ { "sides": 8, "count": 1 }],
+              "bonuses": [
+                {
+                  "type": "Modifier",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "name": "Damage against Dragaons",
+              "types": ["Melee", "Damage", "Long Sword", "Dragon"],
+              "ability": "Strength",
+              "range": {
+                "type": "Melee"
+              },
+              "dice": [ { "sides": 8, "count": 1 }, { "sides":  6, "count":  3 } ],
+              "bonuses": [
+                {
+                  "type": "Modifier",
+                  "value": 1
+                }
+              ]
+            }
+          ]
         },
         {
           "name": "Bel of Fire Giant Strength",
