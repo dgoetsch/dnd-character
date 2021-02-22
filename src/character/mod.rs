@@ -206,21 +206,19 @@ impl Application for Character {
 
                 let layout = Column::new()
                     .align_items(Align::Start)
-                    .push(Row::new().push(name))
                     .push(
                         Row::new()
                             .spacing(8)
                             .push(
                                 Column::new()
-                                    .push(description)
-                                    .push(classes)
+                                    .push(name)
                                     .push(ability_scores)
                                     .width(Length::FillPortion(1)),
                             )
                             .push(
                                 Column::new()
-                                    .push(proficiencies)
-                                    .push(saving_throws)
+                                    .push(classes)
+                                    .push(description)
                                     .width(Length::FillPortion(1)),
                             ),
                     )
@@ -228,7 +226,13 @@ impl Application for Character {
                     .push(
                         Row::new()
                             .spacing(8)
-                            .push(skill_view.width(Length::FillPortion(1))),
+                            .push(skill_view.width(Length::FillPortion(1)))
+                            .push(
+                                Column::new()
+                                    .push(proficiencies)
+                                    .push(saving_throws)
+                                    .width(Length::FillPortion(1)),
+                            ),
                     )
                     .push(features);
 
