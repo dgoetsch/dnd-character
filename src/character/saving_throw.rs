@@ -9,21 +9,8 @@ use iced::{Column, Length, Row, Text};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
-pub struct ModifiedSavingThrows {
-    strength: ModifiedSavingThrow,
-    dexterity: ModifiedSavingThrow,
-    constitution: ModifiedSavingThrow,
-    intelligence: ModifiedSavingThrow,
-    wisdom: ModifiedSavingThrow,
-    charisma: ModifiedSavingThrow,
-}
-
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct SavingThrow {
-    additional_modifiers: HashMap<String, isize>,
-}
-
-pub struct ModifiedSavingThrow {
     additional_modifiers: HashMap<String, isize>,
 }
 
