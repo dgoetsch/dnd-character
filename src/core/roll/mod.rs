@@ -11,7 +11,6 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
 use std::fmt::{Display, Formatter};
 
-pub mod check;
 pub mod damage;
 pub mod rollable;
 

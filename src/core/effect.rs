@@ -1,5 +1,4 @@
 use crate::core::ability_score::{Ability, AbilityScoreBonus};
-use crate::core::roll::check::{CheckBonus, CheckRollType};
 use crate::core::roll::damage::{Damage, DamageRollScope};
 use crate::core::roll::{Dice, RollBonus, RollScope};
 use crate::resources::skill::SkillName;

@@ -4,25 +4,10 @@ use crate::character::Message;
 use crate::core::ability_score::{
     Ability, AbilityScore, AbilityScores, ModifiedAbilityScore, ModifiedAbilityScores,
 };
-use crate::core::roll::check::CheckBonus;
 use crate::core::roll::rollable::Rollable;
 use iced::{Column, Length, Row, Text};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-
-pub struct SavingThrowsState {
-    saving_throws: SavingThrows,
-    strength: SavingThrowState,
-    dexterity: SavingThrowState,
-    constitution: SavingThrowState,
-    intelligence: SavingThrowState,
-    wisdom: SavingThrowState,
-    charisma: SavingThrowState,
-}
-
-pub struct SavingThrowState {
-    effect: Vec<CheckBonus>,
-}
 
 pub struct ModifiedSavingThrows {
     strength: ModifiedSavingThrow,
