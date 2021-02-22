@@ -255,7 +255,9 @@
           "rolls": [
             {
               "name": "Sorcerer",
-              "types": ["Ranged", "Melee", "Spellcasting" ],
+              "tags": {
+                "type": ["Spellcasting", "Attack"]
+              },
               "dice":[ { "count":  1, "sides": 20 } ],
               "ability": "Charisma",
               "bonuses": [

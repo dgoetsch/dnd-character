@@ -4,10 +4,10 @@ use crate::core::effect::Effect;
 use crate::core::feature::Feature;
 use crate::core::feature_path::FeaturePath;
 use crate::core::roll::rollable::Rollable;
-use iced::{Column, Element, Row, Text};
+use iced::{Column, Element, Length, Row, Text};
 use serde::export::fmt::Debug;
 use serde::{Deserialize, Serialize};
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::fmt::{Display, Formatter};
 
 pub mod rollable;
@@ -50,7 +50,7 @@ impl Display for Range {
 pub struct Roll {
     name: String,
     #[serde(default)]
-    types: Vec<String>,
+    tags: HashMap<String, Vec<String>>,
     ability: Option<Ability>,
     range: Option<Range>,
     dice: Vec<Dice>,
@@ -104,7 +104,7 @@ impl Display for Advantage {
 pub struct RollScope {
     name: Option<String>,
     path: Option<FeaturePath>,
-    types: Option<Vec<String>>,
+    tags: Option<HashMap<String, Vec<String>>>,
     ability: Option<Ability>,
     range: Option<Range>,
 }
@@ -139,7 +139,7 @@ fn rollable<'a, 'b, 'c>(
 ) -> Rollable {
     let Roll {
         name,
-        types,
+        tags,
         ability,
         range,
         dice,
@@ -205,7 +205,7 @@ impl RollState {
                 } = self;
                 let Roll {
                     name,
-                    types,
+                    tags,
                     ability,
                     range,
                     dice,
@@ -213,13 +213,13 @@ impl RollState {
                 } = roll;
 
                 let roll_name = name;
-                let roll_types = types;
+                let roll_tags = tags;
                 let roll_ability = ability;
                 let roll_range = range;
 
                 let RollScope {
                     name,
-                    types,
+                    tags,
                     path,
                     ability,
                     range,
@@ -233,15 +233,20 @@ impl RollState {
                     }
                 };
 
-                let roll_type_matches = match types {
+                let roll_tags_match = match tags {
                     None => true,
-                    Some(scoped_types) => scoped_types
-                        .into_iter()
-                        .all(|scoped_type| roll_types.contains(scoped_type)),
+                    Some(scoped_tags) => scoped_tags.into_iter().all(|(tag_name, tag_values)| {
+                        match roll_tags.get(tag_name) {
+                            None => false,
+                            Some(roll_tag_values) => {
+                                tag_values.into_iter().all(|v| roll_tag_values.contains(v))
+                            }
+                        }
+                    }),
                 };
 
                 let is_matching = path_matches
-                    && roll_type_matches
+                    && roll_tags_match
                     && isNoneOr(name, roll_name)
                     && isNoneOrOpt(ability, roll_ability)
                     && isNoneOrOpt(range, roll_range);
@@ -271,38 +276,47 @@ impl RollState {
 
         let Roll {
             name,
-            types,
+            tags,
             ability,
             range,
             dice,
             bonuses,
         } = roll;
 
-        let types_text = types.into_iter().fold("".to_string(), |s, next_type| {
-            if (s.is_empty()) {
-                next_type.trim().to_string()
-            } else {
-                format!("{}, {}", s, next_type)
-            }
-        });
+        let tags_text = tags
+            .into_iter()
+            .fold("".to_string(), |s, (tag_name, tag_values)| {
+                if (s.is_empty()) {
+                    format!("{}: {}", tag_name, tag_values.join(", "))
+                } else {
+                    format!("{}; {}: {}", s, tag_name, tag_values.join(", "))
+                }
+            });
 
-        let mut column = Column::new().push(
-            Row::new()
-                .push(Text::new(format!("{}", name)))
-                .push(Text::new(types_text)),
-        );
+        let mut row = Row::new().push(Text::new(format!("{}", name)).width(Length::FillPortion(1)));
 
         match ability {
-            Some(ability) => column = column.push(Row::new().push(Text::new(ability.to_string()))),
+            Some(ability) => {
+                row = row.push(Text::new(ability.to_string()).width(Length::FillPortion(1)))
+            }
             None => {}
         }
 
         match range {
-            Some(range) => column = column.push(Row::new().push(Text::new(range.to_string()))),
+            Some(range) => {
+                row = row.push(Text::new(range.to_string()).width(Length::FillPortion(1)))
+            }
             None => {}
         }
 
-        column = column.push(Row::new().push(rollable.view()));
+        row = row.push(
+            Row::new()
+                .push(rollable.view())
+                .width(Length::FillPortion(1)),
+        );
+
+        let mut column = Column::new().push(row);
+        column = column.push(Text::new(tags_text).size(12));
 
         column
     }

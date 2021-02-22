@@ -142,7 +142,10 @@
           "rolls": [
             {
               "name": "Attack",
-              "types": ["Melee", "Attack", "Long Sword"],
+              "tags": {
+                "weapon": ["Long Sword"],
+                "type": ["attack"]
+              },
               "ability": "Strength",
               "range": {
                 "type": "Melee"
@@ -160,7 +163,10 @@
             },
             {
               "name": "Damage",
-              "types": ["Melee", "Damage", "Long Sword"],
+              "tags": {
+                "weapon": ["Long Sword"],
+                "type": ["Damage"]
+              },
               "ability": "Strength",
               "range": {
                 "type": "Melee"
@@ -175,7 +181,11 @@
             },
             {
               "name": "Damage against Dragaons",
-              "types": ["Melee", "Damage", "Long Sword", "Dragon"],
+              "tags": {
+                "weapon": ["Long Sword"],
+                "type": ["Damage"],
+                "target": ["Dragons"]
+              },
               "ability": "Strength",
               "range": {
                 "type": "Melee"
