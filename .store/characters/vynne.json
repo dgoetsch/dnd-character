@@ -156,83 +156,46 @@
   "spellcasting": [],
   "spell_slots": [],
   "inventory": {
-    "equipped": [
-      {
-        "name": "Amulet of Health",
-        "item_name": "Amulet",
-        "features": [
-          {
-            "name": "Constitution Modifier",
-            "description": null,
-            "slot": null,
-            "children": [],
-            "show_reset_chidren": null,
-            "child_display_orientation": null,
-            "effects": [
-              {
-                "type": "Ability",
-                "bonus": {
-                  "type": "Become",
-                  "value": 19
-                },
-                "ability": "Constitution"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Wand of the War Mage",
-        "item_name": "Arcane Focus",
-        "features": [
-          {
-            "name": "Spell Attack Modifier",
-            "description": null,
-            "slot": null,
-            "children": [],
-            "show_reset_chidren": null,
-            "child_display_orientation": null,
-            "effects": [
-              {
-                "type": "Check",
-                "bonus": {
-                  "type": "Modifier",
-                  "value": 2
-                },
-                "roll": {
-                  "type": "SpellAttack"
-                }
-              },
-              {
-                "type": "Roll",
-                "bonus": {
-                  "type": "Modifier",
-                  "value": 2
-                },
-                "scope": {
-                  "path": {
-                    "path": [ "Spellcasting", "Attack" ],
-                    "include_children": true
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "Improved Accuracy",
-            "description": "ignore half cover when making spell attack",
-            "slot": null,
-            "children": [],
-            "show_reset_chidren": null,
-            "child_display_orientation": null,
-            "effects": []
-          }
-        ]
-      }
-    ],
+    "equipped": [],
     "on_person": []
   },
   "features": [
+    {
+      "name": "Equipment",
+      "children": [
+        {
+          "name": "Wand of the war mage",
+          "effects": [
+            {
+              "type": "Roll",
+              "bonus": {
+                "type": "Modifier",
+                "value": 2
+              },
+              "scope": {
+                "path": {
+                  "path": [ "Spellcasting", "Attack" ],
+                  "include_children": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Amulet of Health",
+          "effects": [
+            {
+              "type": "Ability",
+              "bonus": {
+                "type": "Become",
+                "value": 19
+              },
+              "ability": "Constitution"
+            }
+          ]
+        }
+      ]
+    },
     {
       "name": "Spellcasting",
       "description": null,
@@ -297,7 +260,7 @@
          "name": "Attack",
           "rolls": [
             {
-              "name": "Attack",
+              "name": "Sorcerer",
               "types": ["Ranged", "Melee", "Spellcasting" ],
               "dice":[ { "count":  1, "sides": 20 } ],
               "ability": "Charisma",
