@@ -127,15 +127,8 @@ impl FeaturesState {
     pub fn effects(&self) -> Vec<Effect> {
         let FeaturesState { feature_state } = self;
         let mut result = vec![];
-        for FeatureState {
-            feature,
-            effects_state,
-            slot_state,
-            children,
-            rolls_state,
-        } in feature_state
-        {
-            result.extend(effects_state.effect())
+        for state in feature_state {
+            result.extend(state.effects())
         }
         result
     }
@@ -197,6 +190,20 @@ impl FeaturesState {
 }
 
 impl FeatureState {
+    pub fn effects(&self) -> Vec<Effect> {
+        let FeatureState {
+            effects_state,
+            children,
+            ..
+        } = self;
+        let mut effects = vec![];
+        effects.extend(effects_state.effect());
+        for child in children {
+            effects.extend(child.effects())
+        }
+        effects
+    }
+
     pub fn apply_effects<'a, 'b>(&'a mut self, effects: &'b Vec<Effect>) {
         for effect in effects {
             self.apply_effect(effect)

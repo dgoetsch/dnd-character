@@ -219,35 +219,33 @@
             ]
           }
         ]
-      },
-      {
-        "name": "Belt of Fire Giant Strength",
-        "item_name": "Belt",
-        "features": [
-          {
-            "name": "Strength Modifier",
-            "description": null,
-            "slot": null,
-            "children": [],
-            "show_reset_chidren": null,
-            "child_display_orientation": null,
-            "effects": [
-              {
-                "type": "Ability",
-                "bonus": {
-                  "type": "Become",
-                  "value": 25
-                },
-                "ability": "Strength"
-              }
-            ]
-          }
-        ]
       }
     ],
     "on_person": []
   },
   "features": [
+    {
+      "name": "Equipment",
+      "children": [
+        {
+          "name": "Dragon Slayer",
+          "rolls": []
+        },
+        {
+          "name": "Bel of Fire Giant Strength",
+          "effects": [
+            {
+              "type": "Ability",
+              "bonus": {
+                "type": "Become",
+                "value": 25
+              },
+              "ability": "Strength"
+            }
+          ]
+        }
+      ]
+    },
     {
       "name": "Second Wind",
       "description": "regain 1d10 + fighter level hitpoiints on my turn (bonus action)",
