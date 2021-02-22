@@ -4,7 +4,8 @@ use crate::character::Message;
 use crate::core::ability_score::{
     Ability, AbilityScore, AbilityScores, ModifiedAbilityScore, ModifiedAbilityScores,
 };
-use crate::core::roll::check::{CheckBonus, CheckRoll};
+use crate::core::roll::check::CheckBonus;
+use crate::core::roll::rollable::Rollable;
 use iced::{Column, Length, Row, Text};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -126,10 +127,11 @@ impl SavingThrow {
         self,
         ability_score: ModifiedAbilityScore,
         proficiency_modifier: isize,
-    ) -> CheckRoll {
-        ability_score
-            .roll()
-            .with_extra_bonus(proficiency_modifier)
-            .with_extra_bonus(self.additional_modifiers.values().sum::<isize>())
+    ) -> Rollable {
+        let mut rollable = ability_score.roll();
+
+        rollable.add_bonus(proficiency_modifier);
+        rollable.add_bonus(self.additional_modifiers.values().sum::<isize>());
+        rollable
     }
 }

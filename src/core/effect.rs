@@ -85,14 +85,6 @@ pub enum Effect {
         bonus: AbilityScoreBonus,
         ability: Ability,
     },
-    Check {
-        bonus: CheckBonus,
-        roll: CheckRollType,
-    },
-    Damage {
-        damage: Damage,
-        scope: DamageRollScope,
-    },
     Roll {
         bonus: RollBonus,
         scope: RollScope,
@@ -116,23 +108,6 @@ impl Display for Effect {
                     write!(f, "{:?} becomes {}", ability, value)
                 }
             },
-            Effect::Check { bonus, roll } => match bonus {
-                CheckBonus::Advantage(advantage) => {
-                    write!(f, "{} on {}", advantage.to_string(), roll.to_string())
-                }
-                CheckBonus::Modifier(modifier) => {
-                    write!(f, "{} to {}", bonus.to_string(), roll.to_string())
-                }
-                CheckBonus::Dice(dice) => {
-                    write!(f, "{} to {}", bonus.to_string(), roll.to_string())
-                }
-            },
-            Effect::Damage {
-                damage,
-                scope: roll,
-            } => {
-                write!(f, "{} to {}", damage.to_string(), roll.to_string())
-            }
             Effect::Roll { bonus, scope } => {
                 write!(f, "{:?} to {:?}", bonus, scope)
             }

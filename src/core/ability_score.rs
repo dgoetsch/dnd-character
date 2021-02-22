@@ -1,10 +1,12 @@
 use crate::core::effect::Effect;
 use crate::core::roll::check::{Advantage, CheckBonus, CheckRoll, CheckRollType};
-use crate::core::roll::Dice;
+use crate::core::roll::rollable::Rollable;
+use crate::core::roll::{Dice, Roll};
 use crate::util::format_modifier;
 use iced::{Column, Element, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
 use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
+use std::collections::HashSet;
 use std::fmt::{Debug, Display};
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
@@ -178,13 +180,6 @@ impl AbilityScoresState {
                 let score = self.get_mut(ability.clone());
                 score.value_modifiers.push(bonus);
             }
-            Effect::Check { bonus, roll } => match roll {
-                CheckRollType::Ability(ability) => {
-                    let mut score = self.get_mut(ability.clone());
-                    score.bonus_modifiers.push(bonus);
-                }
-                _ => {}
-            },
             _ => {}
         };
     }
@@ -295,8 +290,8 @@ pub struct ModifiedAbilityScore {
 }
 
 impl ModifiedAbilityScore {
-    pub fn roll(&self) -> CheckRoll {
-        self.modifier.with_extra_bonus(self.score.modifier())
+    pub fn roll(&self) -> Rollable {
+        Rollable::from(vec![], HashSet::new(), 0, self.score.modifier())
     }
     pub fn score(&self) -> AbilityScore {
         self.score.clone()

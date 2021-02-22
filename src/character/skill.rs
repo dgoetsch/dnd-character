@@ -2,7 +2,7 @@ use crate::character::class::Classes;
 use crate::character::proficiencies::{Proficiency, ProficiencyType};
 use crate::character::Message;
 use crate::core::ability_score::{Ability, AbilityScores, ModifiedAbilityScores};
-use crate::core::roll::check::CheckRoll;
+use crate::core::roll::rollable::Rollable;
 use crate::resources::skill::Skill;
 use crate::util::{format_modifier, three_column_row, three_element_row};
 use iced::{Column, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
@@ -54,11 +54,10 @@ fn modifier(
     proficiency: ProficiencyType,
     class: Classes,
     ability_scores: ModifiedAbilityScores,
-) -> CheckRoll {
-    ability_scores
-        .get(skill.ability())
-        .roll()
-        .with_extra_bonus(proficiency.modifier(class))
+) -> Rollable {
+    let mut rollable = ability_scores.get(skill.ability()).roll();
+    rollable.add_bonus(proficiency.modifier(class));
+    rollable
 }
 
 #[cfg(test)]
@@ -100,7 +99,6 @@ mod test {
                 assert_eq!(no_proficiency_modifier, expected_ability_score_modifier,
                            "Expected {} {} to be {} composed of {}({:?} {}) +0 (no proficiency level {})",
                            skill.name().clone(), no_proficiency_modifier, expected_ability_score_modifier, expected_ability_score_modifier, skill.ability().clone(), score, level);
-
                 let half_proficiency = ProficiencyType::Half;
                 let half_proficiency_modifier = super::modifier(skill.clone(), half_proficiency, class.clone(), ability_scores.clone());
                 assert_eq!(half_proficiency_modifier, ability_score_modifier(score) + class.proficiency_bonus() / 2,
