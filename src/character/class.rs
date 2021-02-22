@@ -71,9 +71,9 @@ impl Classes {
         let total_level = self.total_level();
         if total_level < 5 {
             2
-        } else if total_level < 10 {
+        } else if total_level < 9 {
             3
-        } else if total_level < 14 {
+        } else if total_level < 13 {
             4
         } else if total_level < 17 {
             5
