@@ -3,6 +3,7 @@ use crate::core::ability_score::{Ability, AbilityScores, ModifiedAbilityScores};
 use crate::core::effect::Effect;
 use crate::core::feature::Feature;
 use crate::core::feature_path::FeaturePath;
+use crate::core::overlay::Overlay;
 use crate::core::roll::rollable::Rollable;
 use iced::{Column, Element, Length, Row, Text};
 use serde::export::fmt::Debug;
@@ -56,6 +57,74 @@ pub struct Roll {
     dice: Vec<Dice>,
     #[serde(default)]
     bonuses: Vec<RollBonus>,
+}
+
+impl Overlay for Roll {
+    fn overlay_by(&self) -> String {
+        self.name.clone()
+    }
+
+    fn overlay(&self, overlay: &Roll) -> Roll {
+        let Roll {
+            name,
+            tags,
+            ability,
+            range,
+            dice,
+            bonuses,
+        } = overlay;
+
+        let overlay_name = name;
+        let overlay_tags = tags;
+        let overlay_ability = ability;
+        let overlay_range = range;
+        let overlay_dice = dice;
+        let overlay_bonuses = bonuses;
+
+        let Roll {
+            name,
+            tags,
+            ability,
+            range,
+            dice,
+            bonuses,
+        } = self;
+
+        let mut keys = overlay_tags.keys().collect::<HashSet<&String>>();
+        keys.extend(tags.keys().collect::<HashSet<&String>>());
+
+        let mut merged_tags = HashMap::new();
+        for key in keys {
+            match (tags.get(key), overlay_tags.get(key)) {
+                (Some(tags), Some(overlay)) => {
+                    let mut tags = tags.clone();
+                    tags.extend(overlay.clone());
+                    tags.dedup();
+                    merged_tags.insert(key.clone(), tags);
+                }
+                (Some(tags), None) => {
+                    merged_tags.insert(key.clone(), tags.clone());
+                }
+                (None, Some(tags)) => {
+                    merged_tags.insert(key.clone(), tags.clone());
+                }
+                (None, None) => {}
+            }
+        }
+
+        let mut dice = dice.clone();
+        dice.extend_from_slice(overlay_dice);
+        let mut bonuses = bonuses.clone();
+        bonuses.extend_from_slice(overlay_bonuses);
+        Roll {
+            name: overlay_name.clone(),
+            tags: merged_tags,
+            ability: overlay_ability.clone().or_else(|| ability.clone()),
+            range: overlay_range.clone().or_else(|| range.clone()),
+            dice: dice,
+            bonuses: bonuses,
+        }
+    }
 }
 
 fn isNoneOr<'a, 'b, T>(option: &'a Option<T>, compare_to: &'b T) -> bool

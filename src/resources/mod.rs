@@ -1,18 +1,24 @@
 use crate::core::ability_score::Ability;
 use crate::resources::skill::Skill;
+use crate::resources::template::Templates;
 use serde::{Deserialize, Serialize};
 
 mod persistence;
 pub mod skill;
+pub mod template;
 
 #[derive(Debug, Clone, Default)]
 pub struct Resources {
     skills: Vec<Skill>,
+    templates: Templates,
 }
 
 impl Resources {
     pub fn skills(&self) -> Vec<Skill> {
         self.skills.clone()
+    }
+    pub fn templates(&self) -> &Templates {
+        &self.templates
     }
 }
 

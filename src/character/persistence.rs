@@ -44,6 +44,8 @@ impl LoadData {
             features,
         } = self.character;
         let classes = Classes::from(classes);
+        let features_templates = self.resources.templates().features();
+
         State {
             name: name,
             description: description,
@@ -53,7 +55,7 @@ impl LoadData {
             hit_points: hit_points.to_state(),
             saving_throws: saving_throws,
             proficiencies: proficiencies,
-            features: FeaturesState::from(features),
+            features: FeaturesState::from(features, features_templates),
             resources: self.resources,
             ..State::default()
         }

@@ -1,8 +1,10 @@
+use crate::resources::template::Templates;
 use crate::resources::{ResourceError, Resources, Skill};
 use crate::store::Store;
 
 pub struct ResourcePersistence {
     skills: Vec<Skill>,
+    templates: Templates,
 }
 pub struct ResourcePersistenceConfig {
     storage_root: String,
@@ -18,8 +20,8 @@ impl ResourcePersistenceConfig {
 }
 
 impl ResourcePersistence {
-    pub fn from(skills: Vec<Skill>) -> ResourcePersistence {
-        ResourcePersistence { skills }
+    pub fn from(skills: Vec<Skill>, templates: Templates) -> ResourcePersistence {
+        ResourcePersistence { skills, templates }
     }
 
     pub async fn load(
@@ -36,12 +38,23 @@ impl ResourcePersistence {
                     .map_err(|e| ResourceError::Serialize(e.to_string()))
             })?;
 
-        Ok(ResourcePersistence { skills })
+        let template_key = "template.json".to_string();
+        let templates: Templates = store
+            .load(template_key)
+            .await
+            .map_err(ResourceError::Store)
+            .and_then(|content| {
+                serde_json::from_str(content.as_str())
+                    .map_err(|e| ResourceError::Serialize(e.to_string()))
+            })?;
+
+        Ok(ResourcePersistence { skills, templates })
     }
 
     pub fn resources(self) -> Resources {
         Resources {
             skills: self.skills,
+            templates: self.templates,
         }
     }
 }

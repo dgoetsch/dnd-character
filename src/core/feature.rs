@@ -2,6 +2,7 @@ use super::feature_path::FeaturePath;
 use crate::character::class::Classes;
 use crate::core::ability_score::AbilityScores;
 use crate::core::effect::{Effect, EffectState, EffectsState};
+use crate::core::overlay::{overlay_all, Overlay};
 use crate::core::roll::{Roll, RollScope, RollState};
 use crate::core::slot::{FromSlotCommand, Slot, SlotCommand, SlotState};
 use iced::futures::StreamExt;
@@ -9,6 +10,7 @@ use iced::{button, Button, Column, Element, Length, Row, Text};
 use serde::export::Formatter;
 use serde::{Deserialize, Serialize};
 use std::borrow::Borrow;
+use std::collections::{HashMap, HashSet};
 use std::fmt::{Debug, Display};
 
 #[derive(Debug, Clone, Default)]
@@ -45,6 +47,64 @@ pub struct Feature {
     effects: Vec<Effect>,
     #[serde(default)]
     rolls: Vec<Roll>,
+}
+
+impl Overlay for Feature {
+    fn overlay_by(&self) -> String {
+        self.name.clone()
+    }
+
+    fn overlay(&self, overlay: &Self) -> Self {
+        let Feature {
+            name,
+            description,
+            slot,
+            children,
+            show_reset_chidren,
+            child_display_orientation,
+            effects,
+            rolls,
+        } = overlay;
+        let overlay_name = name;
+        let overlay_descripion = description;
+        let overlay_slot = slot;
+        let overlay_children = children;
+        let overlay_show_reset_children = show_reset_chidren;
+        let overlay_child_display_orientation = child_display_orientation;
+        let overlay_effects = effects;
+        let overlay_rolls = rolls;
+
+        let Feature {
+            name,
+            description,
+            slot,
+            children,
+            show_reset_chidren,
+            child_display_orientation,
+            effects,
+            rolls,
+        } = self;
+
+        let mut effects = effects.clone();
+        effects.extend_from_slice(overlay_effects);
+
+        Feature {
+            name: Some(overlay_name.clone())
+                .filter(|n| !name.is_empty())
+                .unwrap_or(name.clone()),
+            description: overlay_descripion.clone().or_else(|| description.clone()),
+            slot: overlay_slot.clone().or_else(|| slot.clone()),
+            children: overlay_all(children, overlay_children),
+            show_reset_chidren: overlay_show_reset_children
+                .clone()
+                .or_else(|| show_reset_chidren.clone()),
+            child_display_orientation: overlay_child_display_orientation
+                .clone()
+                .or_else(|| child_display_orientation.clone()),
+            effects: effects,
+            rolls: overlay_all(rolls, overlay_rolls),
+        }
+    }
 }
 
 impl Feature {
@@ -151,9 +211,21 @@ impl FeaturesState {
             .collect()
     }
 
-    pub fn from(features: Vec<Feature>) -> FeaturesState {
+    pub fn from(
+        features: Vec<Feature>,
+        feature_templates: &HashMap<String, Feature>,
+    ) -> FeaturesState {
         FeaturesState {
-            feature_state: features.into_iter().map(FeatureState::from).collect(),
+            feature_state: features
+                .into_iter()
+                .map(|feature| {
+                    feature_templates
+                        .get(&feature.name)
+                        .map(|template| template.overlay(&feature))
+                        .unwrap_or(feature)
+                })
+                .map(FeatureState::from)
+                .collect(),
         }
     }
 

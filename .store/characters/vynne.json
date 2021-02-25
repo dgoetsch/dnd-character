@@ -49,7 +49,7 @@
     }
   ],
   "hit_points": {
-    "current_hit_points": 103,
+    "current_hit_points": 87,
     "max_hit_points": 103
   },
   "saving_throws": {
@@ -155,10 +155,20 @@
   },
   "features": [
     {
+      "name": "Skills"
+    },
+    {
       "name": "Equipment",
+      "description": null,
+      "slot": null,
       "children": [
         {
           "name": "Wand of the war mage",
+          "description": null,
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
           "effects": [
             {
               "type": "Roll",
@@ -167,16 +177,29 @@
                 "value": 2
               },
               "scope": {
+                "name": null,
                 "path": {
-                  "path": [ "Spellcasting", "Attack" ],
+                  "path": [
+                    "Spellcasting",
+                    "Attack"
+                  ],
                   "include_children": true
-                }
+                },
+                "tags": null,
+                "ability": null,
+                "range": null
               }
             }
-          ]
+          ],
+          "rolls": []
         },
         {
           "name": "Amulet of Health",
+          "description": null,
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
           "effects": [
             {
               "type": "Ability",
@@ -186,80 +209,147 @@
               },
               "ability": "Constitution"
             }
-          ]
+          ],
+          "rolls": []
         }
-      ]
+      ],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": [],
+      "rolls": []
     },
     {
       "name": "Spellcasting",
       "description": null,
       "slot": null,
-      "child_display_orientation": "Columns",
       "children": [
         {
           "name": "Spell Slots",
+          "description": null,
+          "slot": null,
           "children": [
             {
               "name": "Level 1",
+              "description": null,
               "slot": {
-                "current": 4,
+                "current": 3,
                 "max": 4
-              }
+              },
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": []
             },
             {
               "name": "Level 2",
+              "description": null,
               "slot": {
                 "current": 3,
                 "max": 3
-              }
+              },
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": []
             },
             {
               "name": "Level 3",
+              "description": null,
               "slot": {
-                "current": 3,
+                "current": 2,
                 "max": 3
-              }
+              },
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": []
             },
             {
               "name": "Level 4",
+              "description": null,
               "slot": {
                 "current": 3,
                 "max": 3
-              }
+              },
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": []
             },
             {
               "name": "Level 5",
+              "description": null,
               "slot": {
-                "current": 2,
+                "current": 1,
                 "max": 2
-              }
+              },
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": []
             },
             {
               "name": "Level 6",
+              "description": null,
               "slot": {
                 "current": 1,
                 "max": 1
-              }
+              },
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": []
             },
             {
               "name": "Level 7",
+              "description": null,
               "slot": {
                 "current": 1,
                 "max": 1
-              }
+              },
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": []
             }
-          ]
+          ],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": [],
+          "rolls": []
         },
         {
-         "name": "Attack",
+          "name": "Attack",
+          "description": null,
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": [],
           "rolls": [
             {
               "name": "Sorcerer",
               "tags": {
-                "type": ["Spellcasting", "Attack"]
+                "type": [
+                  "Spellcasting",
+                  "Attack"
+                ]
               },
-              "dice":[ { "count":  1, "sides": 20 } ],
               "ability": "Charisma",
+              "range": null,
+              "dice": [
+                {
+                  "count": 1,
+                  "sides": 20
+                }
+              ],
               "bonuses": [
                 {
                   "type": "Proficiency"
@@ -268,25 +358,29 @@
             }
           ]
         }
-      ]
+      ],
+      "show_reset_chidren": null,
+      "child_display_orientation": "Columns",
+      "effects": [],
+      "rolls": []
     },
     {
       "name": "Font of Magic",
       "description": null,
-      "child_display_orientation": "Columns",
       "slot": null,
       "children": [
         {
           "name": "Sorcery Points",
           "description": null,
           "slot": {
-            "current": 8,
+            "current": 7,
             "max": 13
           },
           "children": [],
           "show_reset_chidren": null,
           "child_display_orientation": null,
-          "effects": []
+          "effects": [],
+          "rolls": []
         },
         {
           "name": "Meta Magic",
@@ -300,7 +394,8 @@
               "children": [],
               "show_reset_chidren": null,
               "child_display_orientation": null,
-              "effects": []
+              "effects": [],
+              "rolls": []
             },
             {
               "name": "Quickened Spell",
@@ -309,7 +404,8 @@
               "children": [],
               "show_reset_chidren": null,
               "child_display_orientation": null,
-              "effects": []
+              "effects": [],
+              "rolls": []
             },
             {
               "name": "Twinned Spell",
@@ -318,15 +414,20 @@
               "children": [],
               "show_reset_chidren": null,
               "child_display_orientation": null,
-              "effects": []
+              "effects": [],
+              "rolls": []
             }
           ],
           "show_reset_chidren": null,
-          "effects": []
+          "child_display_orientation": null,
+          "effects": [],
+          "rolls": []
         }
       ],
       "show_reset_chidren": null,
-      "effects": []
+      "child_display_orientation": "Columns",
+      "effects": [],
+      "rolls": []
     },
     {
       "name": "Wild Magic",
@@ -341,10 +442,21 @@
           "show_reset_chidren": null,
           "child_display_orientation": null,
           "effects": [],
-          "rolls": [{
-            "name": "Wild Magic",
-            "dice": [{ "count":  1, "sides":  100 }]
-          }]
+          "rolls": [
+            {
+              "name": "Wild Magic",
+              "tags": {},
+              "ability": null,
+              "range": null,
+              "dice": [
+                {
+                  "count": 1,
+                  "sides": 100
+                }
+              ],
+              "bonuses": []
+            }
+          ]
         },
         {
           "name": "Tides of chaos",
@@ -356,7 +468,8 @@
           "children": [],
           "show_reset_chidren": null,
           "child_display_orientation": null,
-          "effects": []
+          "effects": [],
+          "rolls": []
         },
         {
           "name": "Bend Luck",
@@ -365,12 +478,14 @@
           "children": [],
           "show_reset_chidren": null,
           "child_display_orientation": null,
-          "effects": []
+          "effects": [],
+          "rolls": []
         }
       ],
       "show_reset_chidren": null,
       "child_display_orientation": null,
-      "effects": []
+      "effects": [],
+      "rolls": []
     }
   ],
   "config": {

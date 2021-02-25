@@ -1,0 +1,189 @@
+{
+  "features": {
+    "Skills": {
+      "name": "Skills",
+      "rolls": [
+        {
+          "name": "Acrobatics",
+          "ability": "Dexterity",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Animal Handling",
+          "ability": "Wisdom",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Arcana",
+          "ability": "Intelligence",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Athletics",
+          "ability": "Strength",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Deception",
+          "ability": "Charisma",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "History",
+          "ability": "Intelligence",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Insight",
+          "ability": "Wisdom",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Intimidation",
+          "ability": "Charisma",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Investigation",
+          "ability": "Intelligence",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Medicine",
+          "ability": "Wisdom",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Nature",
+          "ability": "Intelligence",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Perception",
+          "ability": "Wisdom",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Performance",
+          "ability": "Charisma",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Persuasion",
+          "ability": "Charisma",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Religion",
+          "ability": "Intelligence",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Sleight of Hand",
+          "ability": "Dexterity",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Stealth",
+          "ability": "Dexterity",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        },
+        {
+          "name": "Survival",
+          "ability": "Wisdom",
+          "dice": [
+            {
+              "count": 1,
+              "sides": 20
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
