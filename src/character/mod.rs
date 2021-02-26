@@ -9,7 +9,6 @@ use hitpoints::HitPointState;
 use name::Name;
 use persistence::{CharacterPersistence, CharacterPersistenceConfig, LoadError};
 use proficiencies::Proficiencies;
-use saving_throw::SavingThrows;
 
 use crate::character::persistence::LoadData;
 use crate::core::ability_score::{AbilityScores, AbilityScoresState};
@@ -24,8 +23,6 @@ pub mod hitpoints;
 pub mod name;
 pub mod persistence;
 pub mod proficiencies;
-pub mod saving_throw;
-pub mod skill;
 //TODO experience, ac, attack
 
 #[derive(Debug)]
@@ -43,7 +40,6 @@ pub struct State {
     ability_scores: AbilityScoresState,
     classes: Classes,
     hit_points: HitPointState,
-    saving_throws: SavingThrows,
     proficiencies: Proficiencies,
     features: FeaturesState,
     saving: bool,
@@ -59,7 +55,6 @@ impl State {
             self.ability_scores.persistable(),
             self.classes.persistable(),
             self.hit_points.persistable(),
-            self.saving_throws.clone(),
             self.proficiencies.clone(),
             self.features.persistable(),
             self.config.clone(),
@@ -158,7 +153,6 @@ impl Application for Character {
                 ability_scores,
                 classes,
                 hit_points,
-                saving_throws,
                 proficiencies,
                 features,
                 saving,
@@ -169,21 +163,6 @@ impl Application for Character {
 
                 let name = name.view().padding(4);
                 let description = description.view().padding(4);
-
-                let saving_throws = saving_throws
-                    .view(
-                        &modified_ability_scores,
-                        proficiencies.saving_throws(),
-                        classes.clone(),
-                    )
-                    .padding(4);
-
-                let skill_view = skill::view(
-                    resources.skills(),
-                    proficiencies.skills(),
-                    classes.clone(),
-                    modified_ability_scores.clone(),
-                );
 
                 let features = features.view(
                     FeaturePath::empty(),
@@ -224,15 +203,11 @@ impl Application for Character {
                     )
                     .push(Row::new().push(hp_view))
                     .push(
-                        Row::new()
-                            .spacing(8)
-                            .push(skill_view.width(Length::FillPortion(1)))
-                            .push(
-                                Column::new()
-                                    .push(proficiencies)
-                                    .push(saving_throws)
-                                    .width(Length::FillPortion(1)),
-                            ),
+                        Row::new().spacing(8).push(
+                            Column::new()
+                                .push(proficiencies)
+                                .width(Length::FillPortion(1)),
+                        ),
                     )
                     .push(features);
 

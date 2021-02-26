@@ -4,7 +4,6 @@ use crate::character::description::Description;
 use crate::character::hitpoints::HitPoints;
 use crate::character::name::Name;
 use crate::character::proficiencies::Proficiencies;
-use crate::character::saving_throw::SavingThrows;
 use crate::core::ability_score::AbilityScores;
 use crate::core::feature::{Feature, FeatureState, FeaturesState};
 use crate::resources::{ResourceError, Resources};
@@ -40,7 +39,6 @@ impl LoadData {
             classes,
             hit_points,
             proficiencies,
-            saving_throws,
             features,
         } = self.character;
         let classes = Classes::from(classes);
@@ -53,7 +51,6 @@ impl LoadData {
             config: config,
             classes: classes,
             hit_points: hit_points.to_state(),
-            saving_throws: saving_throws,
             proficiencies: proficiencies,
             features: FeaturesState::from(features, features_templates),
             resources: self.resources,
@@ -99,7 +96,6 @@ pub struct CharacterPersistence {
     ability_scores: AbilityScores,
     classes: Vec<Class>,
     hit_points: HitPoints,
-    saving_throws: SavingThrows,
     proficiencies: Proficiencies,
     features: Vec<Feature>,
     config: CharacterPersistenceConfig,
@@ -112,7 +108,6 @@ impl CharacterPersistence {
         ability_scores: AbilityScores,
         classes: Vec<Class>,
         hit_points: HitPoints,
-        saving_throws: SavingThrows,
         proficiencies: Proficiencies,
         features: Vec<Feature>,
         config: CharacterPersistenceConfig,
@@ -123,7 +118,6 @@ impl CharacterPersistence {
             ability_scores,
             classes,
             hit_points,
-            saving_throws,
             proficiencies,
             features,
             config,

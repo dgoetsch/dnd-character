@@ -1,189 +1,1313 @@
 {
-  "features": {
-    "Skills": {
-      "name": "Skills",
-      "rolls": [
-        {
-          "name": "Acrobatics",
-          "ability": "Dexterity",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+    "features": {
+        "Wisdom Saving Throw Proficiency": {
+            "name": "Wisdom Saving Throw Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Saving Throws",
+                                "Wisdom"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Animal Handling",
-          "ability": "Wisdom",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Strength Saving Throw Proficiency": {
+            "name": "Strength Saving Throw Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Saving Throws",
+                                "Strength"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Arcana",
-          "ability": "Intelligence",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Sling Proficiency": {
+            "name": "Sling Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": null,
+                        "tags": {
+                            "weapon": [
+                                "Sling"
+                            ]
+                        },
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Athletics",
-          "ability": "Strength",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Intimidation Proficiency": {
+            "name": "Intimidation Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Intimidation"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Deception",
-          "ability": "Charisma",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Animal Handling Proficiency": {
+            "name": "Animal Handling Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Animal Handling"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "History",
-          "ability": "Intelligence",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Survival Proficiency": {
+            "name": "Survival Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Survival"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Insight",
-          "ability": "Wisdom",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Religion Proficiency": {
+            "name": "Religion Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Religion"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Intimidation",
-          "ability": "Charisma",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Stealth Proficiency": {
+            "name": "Stealth Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Stealth"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Investigation",
-          "ability": "Intelligence",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Deception Proficiency": {
+            "name": "Deception Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Deception"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Medicine",
-          "ability": "Wisdom",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "All Armor Proficiency": {
+            "name": "All Armor Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": null,
+                        "tags": {
+                            "armor_class": [
+                                "All"
+                            ]
+                        },
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Nature",
-          "ability": "Intelligence",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Persuasion Proficiency": {
+            "name": "Persuasion Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Persuasion"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Perception",
-          "ability": "Wisdom",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Investigation Proficiency": {
+            "name": "Investigation Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Investigation"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Performance",
-          "ability": "Charisma",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Charisma Saving Throw Proficiency": {
+            "name": "Charisma Saving Throw Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Saving Throws",
+                                "Charisma"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Persuasion",
-          "ability": "Charisma",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Martial Weapon Proficiency": {
+            "name": "Martial Weapon Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": null,
+                        "tags": {
+                            "weapon_class": [
+                                "Martial Weapon"
+                            ]
+                        },
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Religion",
-          "ability": "Intelligence",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "History Proficiency": {
+            "name": "History Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "History"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Sleight of Hand",
-          "ability": "Dexterity",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Perception Proficiency": {
+            "name": "Perception Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Perception"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Stealth",
-          "ability": "Dexterity",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Simple Weapon Proficiency": {
+            "name": "Simple Weapon Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": null,
+                        "tags": {
+                            "weapon_class": [
+                                "Simple Weapon"
+                            ]
+                        },
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         },
-        {
-          "name": "Survival",
-          "ability": "Wisdom",
-          "dice": [
-            {
-              "count": 1,
-              "sides": 20
-            }
-          ]
+        "Dexterity Saving Throw Proficiency": {
+            "name": "Dexterity Saving Throw Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Saving Throws",
+                                "Dexterity"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Dagger Proficiency": {
+            "name": "Dagger Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": null,
+                        "tags": {
+                            "weapon": [
+                                "Dagger"
+                            ]
+                        },
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Intelligence Saving Throw Proficiency": {
+            "name": "Intelligence Saving Throw Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Saving Throws",
+                                "Intelligence"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Acrobatics Proficiency": {
+            "name": "Acrobatics Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Acrobatics"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Dart Proficiency": {
+            "name": "Dart Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": null,
+                        "tags": {
+                            "weapon": [
+                                "Dart"
+                            ]
+                        },
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Arcana Proficiency": {
+            "name": "Arcana Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Arcana"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Constitution Saving Throw Proficiency": {
+            "name": "Constitution Saving Throw Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Saving Throws",
+                                "Constitution"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Performance Proficiency": {
+            "name": "Performance Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Performance"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Skills": {
+            "name": "Skills",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [],
+            "rolls": [
+                {
+                    "name": "Acrobatics",
+                    "tags": {},
+                    "ability": "Dexterity",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Animal Handling",
+                    "tags": {},
+                    "ability": "Wisdom",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Arcana",
+                    "tags": {},
+                    "ability": "Intelligence",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Athletics",
+                    "tags": {},
+                    "ability": "Strength",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Deception",
+                    "tags": {},
+                    "ability": "Charisma",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "History",
+                    "tags": {},
+                    "ability": "Intelligence",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Insight",
+                    "tags": {},
+                    "ability": "Wisdom",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Intimidation",
+                    "tags": {},
+                    "ability": "Charisma",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Investigation",
+                    "tags": {},
+                    "ability": "Intelligence",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Medicine",
+                    "tags": {},
+                    "ability": "Wisdom",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Nature",
+                    "tags": {},
+                    "ability": "Intelligence",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Perception",
+                    "tags": {},
+                    "ability": "Wisdom",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Performance",
+                    "tags": {},
+                    "ability": "Charisma",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Persuasion",
+                    "tags": {},
+                    "ability": "Charisma",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Religion",
+                    "tags": {},
+                    "ability": "Intelligence",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Sleight of Hand",
+                    "tags": {},
+                    "ability": "Dexterity",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Stealth",
+                    "tags": {},
+                    "ability": "Dexterity",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                },
+                {
+                    "name": "Survival",
+                    "tags": {},
+                    "ability": "Wisdom",
+                    "range": null,
+                    "dice": [
+                        {
+                            "count": 1,
+                            "sides": 20
+                        }
+                    ],
+                    "bonuses": []
+                }
+            ],
+            "templates": []
+        },
+        "Medium Armor Proficiency": {
+            "name": "Medium Armor Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": null,
+                        "tags": {
+                            "armor_class": [
+                                "Medium"
+                            ]
+                        },
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Athletics Proficiency": {
+            "name": "Athletics Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Athletics"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Light Crossbow Proficiency": {
+            "name": "Light Crossbow Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": null,
+                        "tags": {
+                            "weapon": [
+                                "Light Crossbow"
+                            ]
+                        },
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Light Armor Proficiency": {
+            "name": "Light Armor Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": null,
+                        "tags": {
+                            "armor_class": [
+                                "Light"
+                            ]
+                        },
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Medicine Proficiency": {
+            "name": "Medicine Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Medicine"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Nature Proficiency": {
+            "name": "Nature Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Nature"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Quarterstaff Proficiency": {
+            "name": "Quarterstaff Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": null,
+                        "tags": {
+                            "weapon": [
+                                "Quarterstaff"
+                            ]
+                        },
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Heavy Armor Proficiency": {
+            "name": "Heavy Armor Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": null,
+                        "tags": {
+                            "armor_class": [
+                                "Heavy"
+                            ]
+                        },
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Sleight of Hand Proficiency": {
+            "name": "Sleight of Hand Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Sleight of Hand"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
+        },
+        "Insight Proficiency": {
+            "name": "Insight Proficiency",
+            "description": null,
+            "slot": null,
+            "children": [],
+            "show_reset_chidren": null,
+            "child_display_orientation": null,
+            "effects": [
+                {
+                    "type": "Roll",
+                    "bonus": {
+                        "type": "Proficiency"
+                    },
+                    "scope": {
+                        "name": null,
+                        "path": {
+                            "path": [
+                                "Skills",
+                                "Insight"
+                            ],
+                            "include_children": false
+                        },
+                        "tags": null,
+                        "ability": null,
+                        "range": null
+                    }
+                }
+            ],
+            "rolls": [],
+            "templates": []
         }
-      ]
     }
-  }
 }

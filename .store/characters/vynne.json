@@ -52,50 +52,9 @@
     "current_hit_points": 87,
     "max_hit_points": 103
   },
-  "saving_throws": {
-    "strength": {
-      "additional_modifiers": {}
-    },
-    "dexterity": {
-      "additional_modifiers": {}
-    },
-    "constitution": {
-      "additional_modifiers": {}
-    },
-    "intelligence": {
-      "additional_modifiers": {}
-    },
-    "wisdom": {
-      "additional_modifiers": {}
-    },
-    "charisma": {
-      "additional_modifiers": {}
-    }
-  },
   "proficiencies": {
     "armor": [],
-    "weapons": [
-      {
-        "name": "daggers",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "darts",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "slings",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "quarterstaffs",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "light crossbows",
-        "proficiency_type": "Full"
-      }
-    ],
+    "weapons": [],
     "tools": [
       {
         "name": "disguise kit",
@@ -121,41 +80,50 @@
       }
     ],
     "skills": [
-      {
-        "name": "Insight",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "Perception",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "Persuasion",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "Deception",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "Sleight of Hand",
-        "proficiency_type": "Full"
-      }
+
     ],
     "saving_throws": [
-      {
-        "name": "Constitution",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "Charisma",
-        "proficiency_type": "Full"
-      }
+
     ]
   },
   "features": [
     {
+      "name": "Proficiencies",
+      "children": [
+        {
+          "name": "Armor Proficiencies"
+        },
+        {
+          "name": "Weapon Proficiencies",
+          "templates": [
+            "Dagger Proficiency",
+            "Dart Proficiency",
+            "Sling Proficiency",
+            "Quarterstaff Proficiency",
+            "Light Crossbow Proficiency"
+          ]
+        },
+        {
+          "name": "Saving Throw Proficiencies",
+          "templates": ["Constitution Saving Throw Proficiency", "Charisma Saving Throw Proficiency"]
+        },
+        {
+          "name": "Skill Proficiencies",
+          "templates": [
+            "Insight Proficiency",
+            "Perception Proficiency",
+            "Persuasion Proficiency",
+            "Deception Proficiency",
+            "Sleight of Hand Proficiency"
+          ]
+        }
+      ]
+    },
+    {
       "name": "Skills"
+    },
+    {
+      "name": "Saving Throws"
     },
     {
       "name": "Equipment",

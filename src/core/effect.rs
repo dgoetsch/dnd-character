@@ -1,6 +1,5 @@
 use crate::core::ability_score::{Ability, AbilityScoreBonus};
 use crate::core::roll::{Dice, RollBonus, RollScope};
-use crate::resources::skill::SkillName;
 use crate::util::format_modifier;
 use iced::{Column, Element, HorizontalAlignment, Length, Row, Text, VerticalAlignment};
 use serde::{Deserialize, Serialize};

@@ -62,15 +62,11 @@ pub struct Proficiencies {
     tools: Vec<Proficiency>,
     languages: Vec<Proficiency>,
     skills: Vec<Proficiency>,
-    saving_throws: Vec<Proficiency>,
 }
 
 impl Proficiencies {
     pub fn skills(&self) -> Vec<Proficiency> {
         self.skills.clone()
-    }
-    pub fn saving_throws(&self) -> Vec<Proficiency> {
-        self.saving_throws.clone()
     }
     pub fn weapons(&self) -> Vec<Proficiency> {
         self.weapons.clone()
@@ -82,7 +78,6 @@ impl Proficiencies {
             tools,
             languages,
             skills,
-            saving_throws,
         } = self;
         Column::new()
             .push(Row::new().push(Text::new("Proficiences & Languages").size(24)))

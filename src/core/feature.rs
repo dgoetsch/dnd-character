@@ -47,6 +47,8 @@ pub struct Feature {
     effects: Vec<Effect>,
     #[serde(default)]
     rolls: Vec<Roll>,
+    #[serde(default)]
+    templates: Vec<String>,
 }
 
 impl Overlay for Feature {
@@ -64,6 +66,7 @@ impl Overlay for Feature {
             child_display_orientation,
             effects,
             rolls,
+            templates,
         } = overlay;
         let overlay_name = name;
         let overlay_descripion = description;
@@ -73,7 +76,7 @@ impl Overlay for Feature {
         let overlay_child_display_orientation = child_display_orientation;
         let overlay_effects = effects;
         let overlay_rolls = rolls;
-
+        let overlay_templates = templates;
         let Feature {
             name,
             description,
@@ -83,10 +86,15 @@ impl Overlay for Feature {
             child_display_orientation,
             effects,
             rolls,
+            templates,
         } = self;
 
         let mut effects = effects.clone();
         effects.extend_from_slice(overlay_effects);
+
+        let mut templates = templates.clone();
+        templates.extend_from_slice(overlay_templates);
+        templates.dedup();
 
         Feature {
             name: Some(overlay_name.clone())
@@ -103,71 +111,14 @@ impl Overlay for Feature {
                 .or_else(|| child_display_orientation.clone()),
             effects: effects,
             rolls: overlay_all(rolls, overlay_rolls),
+            templates: templates,
         }
     }
 }
 
 impl Feature {
-    pub fn new<T: Into<String>>(name: T) -> Feature {
-        Feature {
-            name: name.into(),
-            description: None,
-            slot: None,
-            children: vec![],
-            show_reset_chidren: None,
-            child_display_orientation: None,
-            effects: vec![],
-            rolls: vec![],
-        }
-    }
-
     pub fn matches(&self, path: FeaturePath) -> (bool, FeaturePath) {
         path.matches(self.name.clone())
-    }
-
-    pub fn with_description<T: Into<String>>(&self, description: T) -> Feature {
-        let mut new = self.clone();
-        new.description = Some(description.into());
-        new
-    }
-
-    pub fn with_slot(&self, current: isize, max: Option<isize>) -> Feature {
-        let mut new = self.clone();
-        new.slot = Some(Slot::new(current, max));
-        new
-    }
-
-    pub fn with_children(&self, children: Vec<Feature>) -> Feature {
-        let mut new = self.clone();
-        new.children = children;
-        new
-    }
-
-    pub fn add_children(&self, children: Vec<Feature>) -> Feature {
-        let mut new = self.clone();
-        new.children.extend(children);
-        new
-    }
-
-    pub fn enable_reset_children(&self) -> Feature {
-        let mut new = self.clone();
-        new.show_reset_chidren = Some(true);
-        new
-    }
-
-    pub fn disable_reset_children(&self) -> Feature {
-        let mut new = self.clone();
-        new.show_reset_chidren = Some(false);
-        new
-    }
-
-    pub fn with_child_display_orientation(
-        &self,
-        display_orientation: DisplayOrientation,
-    ) -> Feature {
-        let mut new = self.clone();
-        new.child_display_orientation = Some(display_orientation);
-        new
     }
 }
 
@@ -218,13 +169,7 @@ impl FeaturesState {
         FeaturesState {
             feature_state: features
                 .into_iter()
-                .map(|feature| {
-                    feature_templates
-                        .get(&feature.name)
-                        .map(|template| template.overlay(&feature))
-                        .unwrap_or(feature)
-                })
-                .map(FeatureState::from)
+                .map(|f| FeatureState::from(f, feature_templates))
                 .collect(),
         }
     }
@@ -339,7 +284,23 @@ impl FeatureState {
         feature
     }
 
-    pub fn from(feature: Feature) -> FeatureState {
+    pub fn from(feature: Feature, feature_templates: &HashMap<String, Feature>) -> FeatureState {
+        let feature = feature
+            .templates
+            .clone()
+            .iter()
+            .fold(feature, |overlay, template_name| {
+                feature_templates
+                    .get(template_name)
+                    .map(|template| template.overlay(&overlay))
+                    .unwrap_or(overlay)
+            });
+
+        let feature = feature_templates
+            .get(&feature.name)
+            .map(|template| template.overlay(&feature))
+            .unwrap_or(feature);
+
         let slot_state = feature.slot.clone().map(SlotState::from);
 
         FeatureState {
@@ -347,7 +308,7 @@ impl FeatureState {
             children: feature
                 .children
                 .into_iter()
-                .map(FeatureState::from)
+                .map(|f| FeatureState::from(f, feature_templates))
                 .collect(),
             slot_state,
             effects_state: EffectsState::from(feature.effects.clone()),
@@ -501,6 +462,7 @@ impl FeatureState {
             child_display_orientation,
             effects,
             rolls,
+            templates,
         } = feature;
         let slot_path = this_path.clone();
         let mut header_row: Row<'a, T> = Row::new()
@@ -511,6 +473,7 @@ impl FeatureState {
 
         let mut column = Column::new().push(header_row);
 
+        column = column.push(Row::new().push(Text::new(format!("With {}", templates.join(", ")))));
         match description {
             Some(description) => column = column.push(Text::new(description.clone()).size(16)),
             None => {}
@@ -579,5 +542,154 @@ impl FeatureState {
                 .view(&|command: SlotCommand| f(FeatureMessage::Slot(slot_path.clone(), command))),
             _ => Column::new(),
         }
+    }
+}
+#[cfg(test)]
+mod test {
+    use crate::core::ability_score::Ability;
+    use crate::core::effect::Effect;
+    use crate::core::feature::Feature;
+    use crate::core::feature_path::FeaturePath;
+    use crate::core::roll::{Dice, Roll, RollBonus, RollScope};
+    use serde::{Deserialize, Serialize};
+    use std::collections::HashMap;
+
+    fn emptyFeature() -> Feature {
+        Feature::default()
+    }
+    fn saving_throw_proficiency(ability: Ability) -> (String, Feature) {
+        let mut feature = Feature::default();
+        let mut scope = RollScope::default();
+        scope.path(FeaturePath::of(vec![
+            "Saving Throws".to_string(),
+            ability.to_string(),
+        ]));
+        feature.name = format!("{} Saving Throw Proficiency", ability);
+        feature.effects = vec![Effect::Roll {
+            bonus: RollBonus::Proficiency,
+            scope: scope,
+        }];
+
+        (feature.name.clone(), feature)
+    }
+
+    fn proficiency_on_tag(name: String, tag: String, values: Vec<String>) -> (String, Feature) {
+        let mut feature = Feature::default();
+        let mut scope = RollScope::default();
+        scope.tag(tag, values);
+        feature.name = name;
+        feature.effects = vec![Effect::Roll {
+            bonus: RollBonus::Proficiency,
+            scope: scope,
+        }];
+        (feature.name.clone(), feature)
+    }
+
+    fn weapon_proficiency(weapon_name: String) -> (String, Feature) {
+        proficiency_on_tag(
+            format!("{} Proficiency", weapon_name),
+            "weapon".to_string(),
+            vec![weapon_name],
+        )
+    }
+
+    fn weapon_class_proficiency(weapon_class: String) -> (String, Feature) {
+        proficiency_on_tag(
+            format!("{} Proficiency", weapon_class),
+            "weapon_class".to_string(),
+            vec![weapon_class],
+        )
+    }
+
+    fn armor_proficiency(armor_class: String) -> (String, Feature) {
+        proficiency_on_tag(
+            format!("{} Armor Proficiency", armor_class),
+            "armor_class".to_string(),
+            vec![armor_class],
+        )
+    }
+
+    fn skill_proficiency(skill: String) -> (String, Feature) {
+        let mut feature = Feature::default();
+        let mut scope = RollScope::default();
+        scope.path(FeaturePath::of(vec![
+            "Skills".to_string(),
+            skill.to_string(),
+        ]));
+        feature.name = format!("{} Proficiency", skill);
+        feature.effects = vec![Effect::Roll {
+            bonus: RollBonus::Proficiency,
+            scope: scope,
+        }];
+
+        (feature.name.clone(), feature)
+    }
+
+    fn skills_feature(skills: Vec<Skill>) -> (String, Feature) {
+        let mut feature = Feature::default();
+
+        feature.name = format!("Skills");
+        feature.rolls = skills
+            .into_iter()
+            .map(|skill| {
+                let mut roll = Roll::default();
+                roll.name(skill.name.clone());
+                roll.ability(skill.ability);
+                roll.dice(vec![Dice::new(1, 20)]);
+                roll
+            })
+            .collect();
+
+        (feature.name.clone(), feature)
+    }
+    #[derive(Debug, Clone, Serialize, Deserialize)]
+    struct Skill {
+        name: String,
+        ability: Ability,
+    }
+
+    #[test]
+    fn generate_saving_throws() {
+        let skills = serde_json::from_str::<Vec<Skill>>(
+            &std::fs::read_to_string("./.store/skills.json").unwrap(),
+        )
+        .unwrap();
+
+        let skillProficiencies = skills
+            .clone()
+            .iter()
+            .map(|skill| skill.name.clone())
+            .map(skill_proficiency)
+            .collect::<HashMap<String, Feature>>();
+
+        println!("{:?}", skillProficiencies);
+        let mut proficiencies = vec![
+            saving_throw_proficiency(Ability::Strength),
+            saving_throw_proficiency(Ability::Dexterity),
+            saving_throw_proficiency(Ability::Constitution),
+            saving_throw_proficiency(Ability::Intelligence),
+            saving_throw_proficiency(Ability::Wisdom),
+            saving_throw_proficiency(Ability::Charisma),
+            weapon_proficiency("Dagger".to_string()),
+            weapon_proficiency("Dart".to_string()),
+            weapon_proficiency("Sling".to_string()),
+            weapon_proficiency("Quarterstaff".to_string()),
+            weapon_proficiency("Light Crossbow".to_string()),
+            weapon_class_proficiency("Simple Weapon".to_string()),
+            weapon_class_proficiency("Martial Weapon".to_string()),
+            armor_proficiency("All".to_string()),
+            armor_proficiency("Light".to_string()),
+            armor_proficiency("Medium".to_string()),
+            armor_proficiency("Heavy".to_string()),
+            skills_feature(skills),
+        ]
+        .into_iter()
+        .collect::<HashMap<String, Feature>>();
+
+        proficiencies.extend(skillProficiencies);
+        println!(
+            "{}",
+            serde_json::to_string(&proficiencies).unwrap_or("".to_string())
+        );
     }
 }

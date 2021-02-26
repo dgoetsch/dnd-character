@@ -47,7 +47,7 @@ impl Display for Range {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Default)]
 pub struct Roll {
     name: String,
     #[serde(default)]
@@ -127,6 +127,19 @@ impl Overlay for Roll {
     }
 }
 
+impl Roll {
+    pub fn name(&mut self, name: String) {
+        self.name = name
+    }
+
+    pub fn ability(&mut self, ability: Ability) {
+        self.ability = Some(ability);
+    }
+    pub fn dice(&mut self, dice: Vec<Dice>) {
+        self.dice = dice;
+    }
+}
+
 fn isNoneOr<'a, 'b, T>(option: &'a Option<T>, compare_to: &'b T) -> bool
 where
     T: PartialEq,
@@ -169,7 +182,7 @@ impl Display for Advantage {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Default)]
 pub struct RollScope {
     name: Option<String>,
     path: Option<FeaturePath>,
@@ -189,6 +202,25 @@ impl RollScope {
                     result.path = Some(remaining)
                 }
                 (matches, result)
+            }
+        }
+    }
+
+    pub fn path(&mut self, path: FeaturePath) {
+        self.path = Some(path)
+    }
+
+    pub fn tag(&mut self, tag: String, value: Vec<String>) {
+        let mut tags = self.tags.clone();
+        match tags {
+            Some(mut tags) => {
+                tags.insert(tag, value);
+                self.tags = Some(tags);
+            }
+            None => {
+                let mut map = HashMap::new();
+                map.insert(tag, value);
+                self.tags = Some(map)
             }
         }
     }
