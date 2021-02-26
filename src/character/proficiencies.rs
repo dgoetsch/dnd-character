@@ -57,34 +57,15 @@ impl Proficiency {
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Proficiencies {
-    armor: Vec<Proficiency>,
-    weapons: Vec<Proficiency>,
     tools: Vec<Proficiency>,
     languages: Vec<Proficiency>,
-    skills: Vec<Proficiency>,
 }
 
 impl Proficiencies {
-    pub fn skills(&self) -> Vec<Proficiency> {
-        self.skills.clone()
-    }
-    pub fn weapons(&self) -> Vec<Proficiency> {
-        self.weapons.clone()
-    }
     pub fn view(&mut self) -> Column<Message> {
-        let Proficiencies {
-            armor,
-            weapons,
-            tools,
-            languages,
-            skills,
-        } = self;
+        let Proficiencies { tools, languages } = self;
         Column::new()
             .push(Row::new().push(Text::new("Proficiences & Languages").size(24)))
-            .push(Row::new().push(Text::new("Armor").size(20)))
-            .push(Proficiencies::proficiency_list_row(armor.clone()))
-            .push(Row::new().push(Text::new("Weapons").size(20)))
-            .push(Proficiencies::proficiency_list_row(weapons.clone()))
             .push(Row::new().push(Text::new("Tools").size(20)))
             .push(Proficiencies::proficiency_list_row(tools.clone()))
             .push(Row::new().push(Text::new("Languages").size(20)))

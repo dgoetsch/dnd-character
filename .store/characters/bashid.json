@@ -52,47 +52,7 @@
     "current_hit_points": 79,
     "max_hit_points": 119
   },
-  "saving_throws": {
-    "strength": {
-      "additional_modifiers": {}
-    },
-    "dexterity": {
-      "additional_modifiers": {}
-    },
-    "constitution": {
-      "additional_modifiers": {}
-    },
-    "intelligence": {
-      "additional_modifiers": {}
-    },
-    "wisdom": {
-      "additional_modifiers": {}
-    },
-    "charisma": {
-      "additional_modifiers": {}
-    }
-  },
   "proficiencies": {
-    "armor": [
-      {
-        "name": "all armor",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "shields",
-        "proficiency_type": "Full"
-      }
-    ],
-    "weapons": [
-      {
-        "name": "simple weapons",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "martial weapons",
-        "proficiency_type": "Full"
-      }
-    ],
     "tools": [],
     "languages": [
       {
@@ -103,37 +63,41 @@
         "name": "Draconic",
         "proficiency_type": "Full"
       }
-    ],
-    "skills": [
-      {
-        "name": "Insight",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "Perception",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "Intimidation",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "Animal Handling",
-        "proficiency_type": "Full"
-      }
-    ],
-    "saving_throws": [
-      {
-        "name": "Constitution",
-        "proficiency_type": "Full"
-      },
-      {
-        "name": "Strength",
-        "proficiency_type": "Full"
-      }
     ]
   },
   "features": [
+    {
+      "name": "Proficiencies",
+      "children": [
+        {
+          "name": "Armor Proficiencies",
+          "templates": ["All Armor Proficiency"]
+        },
+        {
+          "name": "Weapon Proficiencies",
+          "templates": ["Simple Weapon Proficiency", "Martial Weapon Proficiency"]
+        },
+        {
+          "name": "Skill Proficiencies",
+          "templates": [
+            "Insight Proficiency",
+            "Perception Proficiency",
+            "Intimidation Proficiency",
+            "Animal Handling Proficiency"
+          ]
+        },
+        {
+          "name": "Saving Throw Proficiencies",
+          "templates": ["Constitution Saving Throw Proficiency", "Strength Saving Throw Proficiency"]
+        }
+      ]
+    },
+    {
+      "name": "Skills"
+    },
+    {
+      "name": "Saving Throws"
+    },
     {
       "name": "Equipment",
       "description": null,
@@ -151,11 +115,14 @@
             {
               "name": "Attack",
               "tags": {
+                "weapon_class": [
+                  "Martial Weapon"
+                ],
                 "weapon": [
                   "Long Sword"
                 ],
                 "type": [
-                  "attack"
+                  "Attack"
                 ]
               },
               "ability": "Strength",
@@ -170,9 +137,6 @@
               ],
               "bonuses": [
                 {
-                  "type": "Proficiency"
-                },
-                {
                   "type": "Modifier",
                   "value": 1
                 }
@@ -186,6 +150,9 @@
                 ],
                 "type": [
                   "Damage"
+                ],
+                "weapon_class": [
+                  "Martial Weapon"
                 ]
               },
               "ability": "Strength",
@@ -216,6 +183,9 @@
                 ],
                 "weapon": [
                   "Long Sword"
+                ],
+                "weapon_class": [
+                  "Martial Weapon"
                 ]
               },
               "ability": "Strength",

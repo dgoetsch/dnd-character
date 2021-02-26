@@ -585,19 +585,38 @@ mod test {
         (feature.name.clone(), feature)
     }
 
+    fn proficiency_on_tags(name: String, tags: HashMap<String, Vec<String>>) -> (String, Feature) {
+        let mut feature = Feature::default();
+        let mut scope = RollScope::default();
+        scope.tags(tags);
+        feature.name = name;
+        feature.effects = vec![Effect::Roll {
+            bonus: RollBonus::Proficiency,
+            scope: scope,
+        }];
+        (feature.name.clone(), feature)
+    }
     fn weapon_proficiency(weapon_name: String) -> (String, Feature) {
-        proficiency_on_tag(
+        proficiency_on_tags(
             format!("{} Proficiency", weapon_name),
-            "weapon".to_string(),
-            vec![weapon_name],
+            vec![
+                ("weapon".to_string(), vec![weapon_name]),
+                ("type".to_string(), vec!["Attack".to_string()]),
+            ]
+            .into_iter()
+            .collect::<HashMap<String, Vec<String>>>(),
         )
     }
 
     fn weapon_class_proficiency(weapon_class: String) -> (String, Feature) {
-        proficiency_on_tag(
+        proficiency_on_tags(
             format!("{} Proficiency", weapon_class),
-            "weapon_class".to_string(),
-            vec![weapon_class],
+            vec![
+                ("weapon_class".to_string(), vec![weapon_class]),
+                ("type".to_string(), vec!["Attack".to_string()]),
+            ]
+            .into_iter()
+            .collect(),
         )
     }
 
@@ -642,6 +661,31 @@ mod test {
 
         (feature.name.clone(), feature)
     }
+
+    fn saving_throws_feature() -> (String, Feature) {
+        let mut feature = Feature::default();
+
+        feature.name = format!("Saving Throws");
+        feature.rolls = vec![
+            Ability::Strength,
+            Ability::Dexterity,
+            Ability::Constitution,
+            Ability::Intelligence,
+            Ability::Wisdom,
+            Ability::Charisma,
+        ]
+        .into_iter()
+        .map(|ability| {
+            let mut roll = Roll::default();
+            roll.name(ability.to_string());
+            roll.ability(ability);
+            roll.dice(vec![Dice::new(1, 20)]);
+            roll
+        })
+        .collect();
+
+        (feature.name.clone(), feature)
+    }
     #[derive(Debug, Clone, Serialize, Deserialize)]
     struct Skill {
         name: String,
@@ -682,6 +726,7 @@ mod test {
             armor_proficiency("Medium".to_string()),
             armor_proficiency("Heavy".to_string()),
             skills_feature(skills),
+            saving_throws_feature(),
         ]
         .into_iter()
         .collect::<HashMap<String, Feature>>();

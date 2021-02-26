@@ -224,6 +224,10 @@ impl RollScope {
             }
         }
     }
+
+    pub fn tags(&mut self, tags: HashMap<String, Vec<String>>) {
+        self.tags = Some(tags);
+    }
 }
 
 #[derive(Debug, Clone)]
