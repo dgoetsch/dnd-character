@@ -21,6 +21,7 @@ pub struct FeaturesState {
 #[derive(Debug, Clone, Default)]
 pub struct FeatureState {
     feature: Feature,
+    overlayed_feature: Feature,
     slot_state: Option<SlotState>,
     children: Vec<FeatureState>,
     effects_state: EffectsState,
@@ -262,6 +263,7 @@ impl FeatureState {
             children,
             effects_state,
             rolls_state,
+            overlayed_feature,
         } = self;
         let mut feature = feature.clone();
         feature.children = vec![];
@@ -274,45 +276,49 @@ impl FeatureState {
             None => {}
         }
 
-        feature.effects = effects_state.persistable();
+        // feature.effects = effects_state.persistable();
 
-        feature.rolls = vec![];
-        for roll in rolls_state {
-            feature.rolls.push(roll.persistable())
-        }
+        // feature.rolls = vec![];
+        // for roll in rolls_state {
+        //     feature.rolls.push(roll.persistable())
+        // }
 
         feature
     }
 
     pub fn from(feature: Feature, feature_templates: &HashMap<String, Feature>) -> FeatureState {
-        let feature = feature
-            .templates
-            .clone()
-            .iter()
-            .fold(feature, |overlay, template_name| {
-                feature_templates
-                    .get(template_name)
-                    .map(|template| template.overlay(&overlay))
-                    .unwrap_or(overlay)
-            });
+        let original_feature = feature.clone();
+        let overlayed_feature =
+            feature
+                .templates
+                .clone()
+                .iter()
+                .fold(feature, |overlay, template_name| {
+                    feature_templates
+                        .get(template_name)
+                        .map(|template| template.overlay(&overlay))
+                        .unwrap_or(overlay)
+                });
 
-        let feature = feature_templates
-            .get(&feature.name)
-            .map(|template| template.overlay(&feature))
-            .unwrap_or(feature);
+        let overlayed_feature = feature_templates
+            .get(&overlayed_feature.name)
+            .map(|template| template.overlay(&overlayed_feature))
+            .unwrap_or(overlayed_feature);
 
-        let slot_state = feature.slot.clone().map(SlotState::from);
+        let slot_state = overlayed_feature.slot.clone().map(SlotState::from);
 
         FeatureState {
-            feature: feature.clone(),
-            children: feature
+            feature: original_feature,
+            overlayed_feature: overlayed_feature.clone(),
+            children: overlayed_feature
                 .children
+                .clone()
                 .into_iter()
                 .map(|f| FeatureState::from(f, feature_templates))
                 .collect(),
             slot_state,
-            effects_state: EffectsState::from(feature.effects.clone()),
-            rolls_state: feature
+            effects_state: EffectsState::from(overlayed_feature.effects.clone()),
+            rolls_state: overlayed_feature
                 .rolls
                 .clone()
                 .into_iter()
@@ -369,6 +375,7 @@ impl FeatureState {
             if (!apply_to_children.is_empty()) {
                 let FeatureState {
                     feature,
+                    overlayed_feature,
                     slot_state,
                     children,
                     effects_state,
@@ -391,11 +398,13 @@ impl FeatureState {
     {
         let FeatureState {
             feature,
+            overlayed_feature,
             slot_state,
             children,
             effects_state,
             rolls_state,
         } = self;
+
         let mut path = path.clone();
         match path.matches(feature.name.clone()) {
             (true, remaining) => {
@@ -434,6 +443,7 @@ impl FeatureState {
     {
         let FeatureState {
             feature,
+            overlayed_feature,
             slot_state,
             children,
             effects_state,
