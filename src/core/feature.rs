@@ -266,9 +266,17 @@ impl FeatureState {
             overlayed_feature,
         } = self;
         let mut feature = feature.clone();
+        let child_names = feature
+            .children
+            .clone()
+            .into_iter()
+            .map(|f| f.name)
+            .collect::<HashSet<String>>();
         feature.children = vec![];
         for child in children {
-            feature.children.push(child.persistable())
+            if child_names.contains(&child.feature.name) {
+                feature.children.push(child.persistable())
+            }
         }
 
         match slot_state {
