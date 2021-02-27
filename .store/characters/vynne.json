@@ -53,8 +53,6 @@
     "max_hit_points": 103
   },
   "proficiencies": {
-    "armor": [],
-    "weapons": [],
     "tools": [
       {
         "name": "disguise kit",
@@ -78,23 +76,34 @@
         "name": "Dwarvish",
         "proficiency_type": "Full"
       }
-    ],
-    "skills": [
-
-    ],
-    "saving_throws": [
-
     ]
   },
   "features": [
     {
       "name": "Proficiencies",
+      "description": null,
+      "slot": null,
       "children": [
         {
-          "name": "Armor Proficiencies"
+          "name": "Armor Proficiencies",
+          "description": null,
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": [],
+          "rolls": [],
+          "templates": []
         },
         {
           "name": "Weapon Proficiencies",
+          "description": null,
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": [],
+          "rolls": [],
           "templates": [
             "Dagger Proficiency",
             "Dart Proficiency",
@@ -105,10 +114,27 @@
         },
         {
           "name": "Saving Throw Proficiencies",
-          "templates": ["Constitution Saving Throw Proficiency", "Charisma Saving Throw Proficiency"]
+          "description": null,
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": [],
+          "rolls": [],
+          "templates": [
+            "Constitution Saving Throw Proficiency",
+            "Charisma Saving Throw Proficiency"
+          ]
         },
         {
           "name": "Skill Proficiencies",
+          "description": null,
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": [],
+          "rolls": [],
           "templates": [
             "Insight Proficiency",
             "Perception Proficiency",
@@ -117,13 +143,34 @@
             "Sleight of Hand Proficiency"
           ]
         }
-      ]
+      ],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": [],
+      "rolls": [],
+      "templates": []
     },
     {
-      "name": "Skills"
+      "name": "Skills",
+      "description": null,
+      "slot": null,
+      "children": [],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": [],
+      "rolls": [],
+      "templates": []
     },
     {
-      "name": "Saving Throws"
+      "name": "Saving Throws",
+      "description": null,
+      "slot": null,
+      "children": [],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": [],
+      "rolls": [],
+      "templates": []
     },
     {
       "name": "Equipment",
@@ -159,7 +206,8 @@
               }
             }
           ],
-          "rolls": []
+          "rolls": [],
+          "templates": []
         },
         {
           "name": "Amulet of Health",
@@ -178,13 +226,15 @@
               "ability": "Constitution"
             }
           ],
-          "rolls": []
+          "rolls": [],
+          "templates": []
         }
       ],
       "show_reset_chidren": null,
       "child_display_orientation": null,
       "effects": [],
-      "rolls": []
+      "rolls": [],
+      "templates": []
     },
     {
       "name": "Spellcasting",
@@ -200,14 +250,15 @@
               "name": "Level 1",
               "description": null,
               "slot": {
-                "current": 3,
+                "current": 2,
                 "max": 4
               },
               "children": [],
               "show_reset_chidren": null,
               "child_display_orientation": null,
               "effects": [],
-              "rolls": []
+              "rolls": [],
+              "templates": []
             },
             {
               "name": "Level 2",
@@ -220,7 +271,8 @@
               "show_reset_chidren": null,
               "child_display_orientation": null,
               "effects": [],
-              "rolls": []
+              "rolls": [],
+              "templates": []
             },
             {
               "name": "Level 3",
@@ -233,20 +285,22 @@
               "show_reset_chidren": null,
               "child_display_orientation": null,
               "effects": [],
-              "rolls": []
+              "rolls": [],
+              "templates": []
             },
             {
               "name": "Level 4",
               "description": null,
               "slot": {
-                "current": 3,
+                "current": 2,
                 "max": 3
               },
               "children": [],
               "show_reset_chidren": null,
               "child_display_orientation": null,
               "effects": [],
-              "rolls": []
+              "rolls": [],
+              "templates": []
             },
             {
               "name": "Level 5",
@@ -259,7 +313,8 @@
               "show_reset_chidren": null,
               "child_display_orientation": null,
               "effects": [],
-              "rolls": []
+              "rolls": [],
+              "templates": []
             },
             {
               "name": "Level 6",
@@ -272,7 +327,8 @@
               "show_reset_chidren": null,
               "child_display_orientation": null,
               "effects": [],
-              "rolls": []
+              "rolls": [],
+              "templates": []
             },
             {
               "name": "Level 7",
@@ -285,13 +341,15 @@
               "show_reset_chidren": null,
               "child_display_orientation": null,
               "effects": [],
-              "rolls": []
+              "rolls": [],
+              "templates": []
             }
           ],
           "show_reset_chidren": null,
           "child_display_orientation": null,
           "effects": [],
-          "rolls": []
+          "rolls": [],
+          "templates": []
         },
         {
           "name": "Attack",
@@ -324,13 +382,15 @@
                 }
               ]
             }
-          ]
+          ],
+          "templates": []
         }
       ],
       "show_reset_chidren": null,
       "child_display_orientation": "Columns",
       "effects": [],
-      "rolls": []
+      "rolls": [],
+      "templates": []
     },
     {
       "name": "Font of Magic",
@@ -341,14 +401,15 @@
           "name": "Sorcery Points",
           "description": null,
           "slot": {
-            "current": 7,
+            "current": 5,
             "max": 13
           },
           "children": [],
           "show_reset_chidren": null,
           "child_display_orientation": null,
           "effects": [],
-          "rolls": []
+          "rolls": [],
+          "templates": []
         },
         {
           "name": "Meta Magic",
@@ -363,7 +424,8 @@
               "show_reset_chidren": null,
               "child_display_orientation": null,
               "effects": [],
-              "rolls": []
+              "rolls": [],
+              "templates": []
             },
             {
               "name": "Quickened Spell",
@@ -373,7 +435,8 @@
               "show_reset_chidren": null,
               "child_display_orientation": null,
               "effects": [],
-              "rolls": []
+              "rolls": [],
+              "templates": []
             },
             {
               "name": "Twinned Spell",
@@ -383,19 +446,22 @@
               "show_reset_chidren": null,
               "child_display_orientation": null,
               "effects": [],
-              "rolls": []
+              "rolls": [],
+              "templates": []
             }
           ],
           "show_reset_chidren": null,
           "child_display_orientation": null,
           "effects": [],
-          "rolls": []
+          "rolls": [],
+          "templates": []
         }
       ],
       "show_reset_chidren": null,
       "child_display_orientation": "Columns",
       "effects": [],
-      "rolls": []
+      "rolls": [],
+      "templates": []
     },
     {
       "name": "Wild Magic",
@@ -424,7 +490,8 @@
               ],
               "bonuses": []
             }
-          ]
+          ],
+          "templates": []
         },
         {
           "name": "Tides of chaos",
@@ -437,7 +504,8 @@
           "show_reset_chidren": null,
           "child_display_orientation": null,
           "effects": [],
-          "rolls": []
+          "rolls": [],
+          "templates": []
         },
         {
           "name": "Bend Luck",
@@ -447,13 +515,15 @@
           "show_reset_chidren": null,
           "child_display_orientation": null,
           "effects": [],
-          "rolls": []
+          "rolls": [],
+          "templates": []
         }
       ],
       "show_reset_chidren": null,
       "child_display_orientation": null,
       "effects": [],
-      "rolls": []
+      "rolls": [],
+      "templates": []
     }
   ],
   "config": {
