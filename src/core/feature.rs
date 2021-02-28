@@ -578,10 +578,8 @@ mod test {
     fn saving_throw_proficiency(ability: Ability) -> (String, Feature) {
         let mut feature = Feature::default();
         let mut scope = RollScope::default();
-        scope.path(FeaturePath::of(vec![
-            "Saving Throws".to_string(),
-            ability.to_string(),
-        ]));
+        scope.ability(ability.clone());
+        scope.tag("type".to_string(), vec!["Saving Throw".to_string()]);
         feature.name = format!("{} Saving Throw Proficiency", ability);
         feature.effects = vec![Effect::Roll {
             bonus: RollBonus::Proficiency,
@@ -649,10 +647,8 @@ mod test {
     fn skill_proficiency(skill: String) -> (String, Feature) {
         let mut feature = Feature::default();
         let mut scope = RollScope::default();
-        scope.path(FeaturePath::of(vec![
-            "Skills".to_string(),
-            skill.to_string(),
-        ]));
+        scope.name(skill.clone());
+        scope.tag("type".to_string(), vec!["Skill".to_string()]);
         feature.name = format!("{} Proficiency", skill);
         feature.effects = vec![Effect::Roll {
             bonus: RollBonus::Proficiency,
@@ -672,6 +668,11 @@ mod test {
                 let mut roll = Roll::default();
                 roll.name(skill.name.clone());
                 roll.ability(skill.ability);
+                roll.tags(
+                    vec![("type".to_string(), vec!["Skill".to_string()])]
+                        .into_iter()
+                        .collect(),
+                );
                 roll.dice(vec![Dice::new(1, 20)]);
                 roll
             })
@@ -697,6 +698,11 @@ mod test {
             let mut roll = Roll::default();
             roll.name(ability.to_string());
             roll.ability(ability);
+            roll.tags(
+                vec![("type".to_string(), vec!["Saving Throw".to_string()])]
+                    .into_iter()
+                    .collect(),
+            );
             roll.dice(vec![Dice::new(1, 20)]);
             roll
         })

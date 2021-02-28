@@ -11,9 +11,8 @@ use persistence::{CharacterPersistence, CharacterPersistenceConfig, LoadError};
 use proficiencies::Proficiencies;
 
 use crate::character::persistence::LoadData;
-use crate::core::ability_score::{AbilityScores, AbilityScoresState};
-use crate::core::feature;
-use crate::core::feature::{FeatureMessage, FeatureState, FeaturesState};
+use crate::core::ability_score::AbilityScoresState;
+use crate::core::feature::{FeatureMessage, FeaturesState};
 use crate::core::feature_path::FeaturePath;
 use crate::resources::Resources;
 
@@ -67,7 +66,7 @@ pub enum Message {
     Loaded(Result<LoadData, LoadError>),
     Saved(Result<(), LoadError>),
     HitPoint(hitpoints::HitPointMessage),
-    Feature(feature::FeatureMessage),
+    Feature(FeatureMessage),
     ResetEffects,
 }
 

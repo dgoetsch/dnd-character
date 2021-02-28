@@ -90,6 +90,27 @@ impl Overlay for Roll {
             bonuses,
         } = self;
 
+        let merged_tags = Roll::merge_tags(tags, overlay_tags);
+        let mut dice = dice.clone();
+        dice.extend_from_slice(overlay_dice);
+        let mut bonuses = bonuses.clone();
+        bonuses.extend_from_slice(overlay_bonuses);
+        Roll {
+            name: overlay_name.clone(),
+            tags: merged_tags,
+            ability: overlay_ability.clone().or_else(|| ability.clone()),
+            range: overlay_range.clone().or_else(|| range.clone()),
+            dice: dice,
+            bonuses: bonuses,
+        }
+    }
+}
+
+impl Roll {
+    fn merge_tags(
+        tags: &HashMap<String, Vec<String>>,
+        overlay_tags: &HashMap<String, Vec<String>>,
+    ) -> HashMap<String, Vec<String>> {
         let mut keys = overlay_tags.keys().collect::<HashSet<&String>>();
         keys.extend(tags.keys().collect::<HashSet<&String>>());
 
@@ -112,22 +133,8 @@ impl Overlay for Roll {
             }
         }
 
-        let mut dice = dice.clone();
-        dice.extend_from_slice(overlay_dice);
-        let mut bonuses = bonuses.clone();
-        bonuses.extend_from_slice(overlay_bonuses);
-        Roll {
-            name: overlay_name.clone(),
-            tags: merged_tags,
-            ability: overlay_ability.clone().or_else(|| ability.clone()),
-            range: overlay_range.clone().or_else(|| range.clone()),
-            dice: dice,
-            bonuses: bonuses,
-        }
+        merged_tags
     }
-}
-
-impl Roll {
     pub fn name(&mut self, name: String) {
         self.name = name
     }
@@ -137,6 +144,10 @@ impl Roll {
     }
     pub fn dice(&mut self, dice: Vec<Dice>) {
         self.dice = dice;
+    }
+
+    pub fn tags(&mut self, tags: HashMap<String, Vec<String>>) {
+        self.tags = Roll::merge_tags(&self.tags, &tags);
     }
 }
 
@@ -206,6 +217,14 @@ impl RollScope {
         }
     }
 
+    pub fn name(&mut self, name: String) {
+        self.name = Some(name)
+    }
+
+    pub fn ability(&mut self, ability: Ability) {
+        self.ability = Some(ability)
+    }
+
     pub fn path(&mut self, path: FeaturePath) {
         self.path = Some(path)
     }
@@ -226,7 +245,10 @@ impl RollScope {
     }
 
     pub fn tags(&mut self, tags: HashMap<String, Vec<String>>) {
-        self.tags = Some(tags);
+        match &self.tags {
+            Some(existing_tags) => self.tags = Some(Roll::merge_tags(existing_tags, &tags)),
+            None => self.tags = Some(tags),
+        }
     }
 }
 
