@@ -104,7 +104,7 @@ impl Display for Effect {
                 }
             },
             Effect::Roll { bonus, scope } => {
-                write!(f, "{:?} to {:?}", bonus, scope)
+                write!(f, "{:?} to {}", bonus, scope.to_string())
             }
         }
     }

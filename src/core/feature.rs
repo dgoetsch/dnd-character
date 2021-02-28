@@ -491,7 +491,7 @@ impl FeatureState {
 
         let mut column = Column::new().push(header_row);
 
-        column = column.push(Row::new().push(Text::new(format!("With {}", templates.join(", ")))));
+        // column = column.push(Row::new().push(Text::new(format!("With {}", templates.join(", ")))));
         match description {
             Some(description) => column = column.push(Text::new(description.clone()).size(16)),
             None => {}
@@ -612,6 +612,7 @@ mod test {
         }];
         (feature.name.clone(), feature)
     }
+
     fn weapon_proficiency(weapon_name: String) -> (String, Feature) {
         proficiency_on_tags(
             format!("{} Proficiency", weapon_name),

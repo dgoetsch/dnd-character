@@ -42,7 +42,7 @@ impl Display for Range {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
             Range::Melee => write!(f, "Melee"),
-            Range::Ranged { normal, long } => write!(f, "{} / {}", normal, long),
+            Range::Ranged { normal, long } => write!(f, "Ranged ({}/{})", normal, long),
         }
     }
 }
@@ -252,6 +252,73 @@ impl RollScope {
     }
 }
 
+impl Display for RollScope {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let RollScope {
+            name,
+            path,
+            tags,
+            ability,
+            range,
+        } = self;
+
+        let prefix = vec![
+            range.clone().map(|r| r.to_string()),
+            ability.clone().map(|a| a.to_string()),
+            tags.clone()
+                .map(|tags| {
+                    tags.iter().map(|(_, values)| values.join(" ")).fold(
+                        "".to_string(),
+                        |prev, next| {
+                            if (prev.is_empty()) {
+                                next
+                            } else {
+                                format!("{} {}", prev, next)
+                            }
+                        },
+                    )
+                })
+                .filter(|s| !s.is_empty()),
+        ]
+        .iter()
+        .flatten()
+        .fold("".to_string(), |prev, next| {
+            if (prev.is_empty()) {
+                next.clone()
+            } else {
+                format!("{} {}", prev, next)
+            }
+        });
+
+        let suffix = vec![
+            name.clone().map(|n| format!("named {}", n)),
+            path.clone().map(|p| format!("at path {}", p.to_string())),
+        ]
+        .iter()
+        .flatten()
+        .fold("".to_string(), |prev, next| {
+            if (prev.is_empty()) {
+                next.clone()
+            } else {
+                format!("{} {}", prev, next)
+            }
+        });
+
+        let text = vec![prefix, "rolls".to_string(), suffix]
+            .iter()
+            .filter(|s| !s.is_empty())
+            .fold("".to_string(), |prev, next| {
+                if (prev.is_empty()) {
+                    next.clone()
+                } else {
+                    format!("{} {}", prev, next)
+                }
+            });
+
+        write!(f, "{}", text)
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct RollState {
     roll: Roll,
@@ -410,15 +477,15 @@ impl RollState {
             bonuses,
         } = roll;
 
-        let tags_text = tags
-            .into_iter()
-            .fold("".to_string(), |s, (tag_name, tag_values)| {
-                if (s.is_empty()) {
-                    format!("{}: {}", tag_name, tag_values.join(", "))
-                } else {
-                    format!("{}; {}: {}", s, tag_name, tag_values.join(", "))
-                }
-            });
+        // let tags_text = tags
+        //     .into_iter()
+        //     .fold("".to_string(), |s, (tag_name, tag_values)| {
+        //         if (s.is_empty()) {
+        //             format!("{}: {}", tag_name, tag_values.join(", "))
+        //         } else {
+        //             format!("{}; {}: {}", s, tag_name, tag_values.join(", "))
+        //         }
+        //     });
 
         let mut row = Row::new().push(Text::new(format!("{}", name)).width(Length::FillPortion(1)));
 
@@ -443,7 +510,7 @@ impl RollState {
         );
 
         let mut column = Column::new().push(row);
-        column = column.push(Text::new(tags_text).size(12));
+        // column = column.push(Text::new(tags_text).size(12));
 
         column
     }
