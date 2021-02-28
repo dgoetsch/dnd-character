@@ -49,7 +49,7 @@
     }
   ],
   "hit_points": {
-    "current_hit_points": 79,
+    "current_hit_points": 28,
     "max_hit_points": 119
   },
   "proficiencies": {
@@ -68,17 +68,45 @@
   "features": [
     {
       "name": "Proficiencies",
+      "description": null,
+      "slot": null,
       "children": [
         {
           "name": "Armor Proficiencies",
-          "templates": ["All Armor Proficiency"]
+          "description": null,
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": [],
+          "rolls": [],
+          "templates": [
+            "All Armor Proficiency"
+          ]
         },
         {
           "name": "Weapon Proficiencies",
-          "templates": ["Simple Weapon Proficiency", "Martial Weapon Proficiency"]
+          "description": null,
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": [],
+          "rolls": [],
+          "templates": [
+            "Simple Weapon Proficiency",
+            "Martial Weapon Proficiency"
+          ]
         },
         {
           "name": "Skill Proficiencies",
+          "description": null,
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": [],
+          "rolls": [],
           "templates": [
             "Insight Proficiency",
             "Perception Proficiency",
@@ -88,15 +116,46 @@
         },
         {
           "name": "Saving Throw Proficiencies",
-          "templates": ["Constitution Saving Throw Proficiency", "Strength Saving Throw Proficiency"]
+          "description": null,
+          "slot": null,
+          "children": [],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": [],
+          "rolls": [],
+          "templates": [
+            "Constitution Saving Throw Proficiency",
+            "Strength Saving Throw Proficiency"
+          ]
         }
-      ]
+      ],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": [],
+      "rolls": [],
+      "templates": []
     },
     {
-      "name": "Skills"
+      "name": "Skills",
+      "description": null,
+      "slot": null,
+      "children": [],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": [],
+      "rolls": [],
+      "templates": []
     },
     {
-      "name": "Saving Throws"
+      "name": "Saving Throws",
+      "description": null,
+      "slot": null,
+      "children": [],
+      "show_reset_chidren": null,
+      "child_display_orientation": null,
+      "effects": [],
+      "rolls": [],
+      "templates": []
     },
     {
       "name": "Equipment",
@@ -115,14 +174,14 @@
             {
               "name": "Attack",
               "tags": {
-                "weapon_class": [
-                  "Martial Weapon"
+                "type": [
+                  "Attack"
                 ],
                 "weapon": [
                   "Long Sword"
                 ],
-                "type": [
-                  "Attack"
+                "weapon_class": [
+                  "Martial Weapon"
                 ]
               },
               "ability": "Strength",
@@ -148,11 +207,11 @@
                 "weapon": [
                   "Long Sword"
                 ],
-                "type": [
-                  "Damage"
-                ],
                 "weapon_class": [
                   "Martial Weapon"
+                ],
+                "type": [
+                  "Damage"
                 ]
               },
               "ability": "Strength",
@@ -209,7 +268,8 @@
                 }
               ]
             }
-          ]
+          ],
+          "templates": []
         },
         {
           "name": "Bel of Fire Giant Strength",
@@ -228,13 +288,15 @@
               "ability": "Strength"
             }
           ],
-          "rolls": []
+          "rolls": [],
+          "templates": []
         }
       ],
       "show_reset_chidren": null,
       "child_display_orientation": null,
       "effects": [],
-      "rolls": []
+      "rolls": [],
+      "templates": []
     },
     {
       "name": "Second Wind",
@@ -247,7 +309,8 @@
       "show_reset_chidren": null,
       "child_display_orientation": null,
       "effects": [],
-      "rolls": []
+      "rolls": [],
+      "templates": []
     },
     {
       "name": "Action Surge",
@@ -260,20 +323,22 @@
       "show_reset_chidren": null,
       "child_display_orientation": null,
       "effects": [],
-      "rolls": []
+      "rolls": [],
+      "templates": []
     },
     {
       "name": "Indominable",
       "description": "reroll 1 failed save / long rest. must use re-roll",
       "slot": {
-        "current": 1,
+        "current": 0,
         "max": 1
       },
       "children": [],
       "show_reset_chidren": null,
       "child_display_orientation": null,
       "effects": [],
-      "rolls": []
+      "rolls": [],
+      "templates": []
     },
     {
       "name": "Extra Attack (x2)",
@@ -283,7 +348,8 @@
       "show_reset_chidren": null,
       "child_display_orientation": null,
       "effects": [],
-      "rolls": []
+      "rolls": [],
+      "templates": []
     },
     {
       "name": "Fighting Style",
@@ -298,13 +364,15 @@
           "show_reset_chidren": null,
           "child_display_orientation": null,
           "effects": [],
-          "rolls": []
+          "rolls": [],
+          "templates": []
         }
       ],
       "show_reset_chidren": null,
       "child_display_orientation": null,
       "effects": [],
-      "rolls": []
+      "rolls": [],
+      "templates": []
     },
     {
       "name": "Martial Archetype: Battle Master",
@@ -320,14 +388,15 @@
               "name": "Superiority Dice",
               "description": null,
               "slot": {
-                "current": 3,
+                "current": 1,
                 "max": 7
               },
               "children": [],
               "show_reset_chidren": null,
               "child_display_orientation": null,
               "effects": [],
-              "rolls": []
+              "rolls": [],
+              "templates": []
             },
             {
               "name": "Maneuvers",
@@ -342,7 +411,8 @@
                   "show_reset_chidren": null,
                   "child_display_orientation": null,
                   "effects": [],
-                  "rolls": []
+                  "rolls": [],
+                  "templates": []
                 },
                 {
                   "name": "Disarming Attack",
@@ -352,7 +422,8 @@
                   "show_reset_chidren": null,
                   "child_display_orientation": null,
                   "effects": [],
-                  "rolls": []
+                  "rolls": [],
+                  "templates": []
                 },
                 {
                   "name": "Distracting Strike",
@@ -362,7 +433,8 @@
                   "show_reset_chidren": null,
                   "child_display_orientation": null,
                   "effects": [],
-                  "rolls": []
+                  "rolls": [],
+                  "templates": []
                 },
                 {
                   "name": "Goading Attack",
@@ -372,7 +444,8 @@
                   "show_reset_chidren": null,
                   "child_display_orientation": null,
                   "effects": [],
-                  "rolls": []
+                  "rolls": [],
+                  "templates": []
                 },
                 {
                   "name": "Pushing Attack",
@@ -382,7 +455,8 @@
                   "show_reset_chidren": null,
                   "child_display_orientation": null,
                   "effects": [],
-                  "rolls": []
+                  "rolls": [],
+                  "templates": []
                 },
                 {
                   "name": "Riposte",
@@ -392,7 +466,8 @@
                   "show_reset_chidren": null,
                   "child_display_orientation": null,
                   "effects": [],
-                  "rolls": []
+                  "rolls": [],
+                  "templates": []
                 },
                 {
                   "name": "Precision Attack",
@@ -402,19 +477,22 @@
                   "show_reset_chidren": null,
                   "child_display_orientation": null,
                   "effects": [],
-                  "rolls": []
+                  "rolls": [],
+                  "templates": []
                 }
               ],
               "show_reset_chidren": null,
               "child_display_orientation": null,
               "effects": [],
-              "rolls": []
+              "rolls": [],
+              "templates": []
             }
           ],
           "show_reset_chidren": null,
           "child_display_orientation": null,
           "effects": [],
-          "rolls": []
+          "rolls": [],
+          "templates": []
         },
         {
           "name": "Know Your Enemy",
@@ -424,13 +502,15 @@
           "show_reset_chidren": null,
           "child_display_orientation": null,
           "effects": [],
-          "rolls": []
+          "rolls": [],
+          "templates": []
         }
       ],
       "show_reset_chidren": null,
       "child_display_orientation": null,
       "effects": [],
-      "rolls": []
+      "rolls": [],
+      "templates": []
     }
   ],
   "config": {
