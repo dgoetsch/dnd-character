@@ -80,15 +80,74 @@
   },
   "features": [
     {
-      "name": "Proficiencies",
-      "description": null,
-      "slot": null,
+      "name": "Proficiencies & Checks",
+      "child_display_orientation": "Columns",
       "children": [
         {
-          "name": "Armor Proficiencies",
+          "name": "Proficiencies",
           "description": null,
           "slot": null,
-          "children": [],
+          "children": [
+            {
+              "name": "Armor Proficiencies",
+              "description": null,
+              "slot": null,
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": [],
+              "templates": []
+            },
+            {
+              "name": "Weapon Proficiencies",
+              "description": null,
+              "slot": null,
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": [],
+              "templates": [
+                "Dagger Proficiency",
+                "Dart Proficiency",
+                "Sling Proficiency",
+                "Quarterstaff Proficiency",
+                "Light Crossbow Proficiency"
+              ]
+            },
+            {
+              "name": "Saving Throw Proficiencies",
+              "description": null,
+              "slot": null,
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": [],
+              "templates": [
+                "Constitution Saving Throw Proficiency",
+                "Charisma Saving Throw Proficiency"
+              ]
+            },
+            {
+              "name": "Skill Proficiencies",
+              "description": null,
+              "slot": null,
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": [],
+              "templates": [
+                "Insight Proficiency",
+                "Perception Proficiency",
+                "Persuasion Proficiency",
+                "Deception Proficiency",
+                "Sleight of Hand Proficiency"
+              ]
+            }
+          ],
           "show_reset_chidren": null,
           "child_display_orientation": null,
           "effects": [],
@@ -96,81 +155,33 @@
           "templates": []
         },
         {
-          "name": "Weapon Proficiencies",
-          "description": null,
-          "slot": null,
-          "children": [],
-          "show_reset_chidren": null,
-          "child_display_orientation": null,
-          "effects": [],
-          "rolls": [],
-          "templates": [
-            "Dagger Proficiency",
-            "Dart Proficiency",
-            "Sling Proficiency",
-            "Quarterstaff Proficiency",
-            "Light Crossbow Proficiency"
-          ]
-        },
-        {
-          "name": "Saving Throw Proficiencies",
-          "description": null,
-          "slot": null,
-          "children": [],
-          "show_reset_chidren": null,
-          "child_display_orientation": null,
-          "effects": [],
-          "rolls": [],
-          "templates": [
-            "Constitution Saving Throw Proficiency",
-            "Charisma Saving Throw Proficiency"
-          ]
-        },
-        {
-          "name": "Skill Proficiencies",
-          "description": null,
-          "slot": null,
-          "children": [],
-          "show_reset_chidren": null,
-          "child_display_orientation": null,
-          "effects": [],
-          "rolls": [],
-          "templates": [
-            "Insight Proficiency",
-            "Perception Proficiency",
-            "Persuasion Proficiency",
-            "Deception Proficiency",
-            "Sleight of Hand Proficiency"
+          "name": "Skills + Saving Throws",
+          "children": [
+            {
+              "name": "Skills",
+              "description": null,
+              "slot": null,
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": [],
+              "templates": []
+            },
+            {
+              "name": "Saving Throws",
+              "description": null,
+              "slot": null,
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": [],
+              "templates": []
+            }
           ]
         }
-      ],
-      "show_reset_chidren": null,
-      "child_display_orientation": null,
-      "effects": [],
-      "rolls": [],
-      "templates": []
-    },
-    {
-      "name": "Skills",
-      "description": null,
-      "slot": null,
-      "children": [],
-      "show_reset_chidren": null,
-      "child_display_orientation": null,
-      "effects": [],
-      "rolls": [],
-      "templates": []
-    },
-    {
-      "name": "Saving Throws",
-      "description": null,
-      "slot": null,
-      "children": [],
-      "show_reset_chidren": null,
-      "child_display_orientation": null,
-      "effects": [],
-      "rolls": [],
-      "templates": []
+      ]
     },
     {
       "name": "Equipment",
