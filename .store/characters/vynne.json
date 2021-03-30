@@ -45,12 +45,12 @@
   "classes": [
     {
       "name": "Sorcerer",
-      "level": 13
+      "level": 15
     }
   ],
   "hit_points": {
-    "current_hit_points": 77,
-    "max_hit_points": 103
+    "current_hit_points": 93,
+    "max_hit_points": 119
   },
   "proficiencies": {
     "tools": [
@@ -81,7 +81,8 @@
   "features": [
     {
       "name": "Proficiencies & Checks",
-      "child_display_orientation": "Columns",
+      "description": null,
+      "slot": null,
       "children": [
         {
           "name": "Proficiencies",
@@ -156,6 +157,8 @@
         },
         {
           "name": "Skills + Saving Throws",
+          "description": null,
+          "slot": null,
           "children": [
             {
               "name": "Skills",
@@ -179,9 +182,19 @@
               "rolls": [],
               "templates": []
             }
-          ]
+          ],
+          "show_reset_chidren": null,
+          "child_display_orientation": null,
+          "effects": [],
+          "rolls": [],
+          "templates": []
         }
-      ]
+      ],
+      "show_reset_chidren": null,
+      "child_display_orientation": "Columns",
+      "effects": [],
+      "rolls": [],
+      "templates": []
     },
     {
       "name": "Equipment",
@@ -275,7 +288,7 @@
               "name": "Level 2",
               "description": null,
               "slot": {
-                "current": 3,
+                "current": 0,
                 "max": 3
               },
               "children": [],
@@ -331,7 +344,7 @@
               "name": "Level 6",
               "description": null,
               "slot": {
-                "current": 0,
+                "current": 1,
                 "max": 1
               },
               "children": [],
@@ -345,7 +358,21 @@
               "name": "Level 7",
               "description": null,
               "slot": {
-                "current": 1,
+                "current": 0,
+                "max": 1
+              },
+              "children": [],
+              "show_reset_chidren": null,
+              "child_display_orientation": null,
+              "effects": [],
+              "rolls": [],
+              "templates": []
+            },
+            {
+              "name": "Level 8",
+              "description": null,
+              "slot": {
+                "current": 0,
                 "max": 1
               },
               "children": [],
@@ -413,7 +440,7 @@
           "description": null,
           "slot": {
             "current": 1,
-            "max": 13
+            "max": 15
           },
           "children": [],
           "show_reset_chidren": null,
@@ -508,7 +535,7 @@
           "name": "Tides of chaos",
           "description": "Starting at 1st level, you can manipulate the forces of chance and chaos to gain advantage on one attack roll, ability check, or saving throw. Once you do so, you must finish a long rest before you can use this feature again.\n\nAny time before you regain the use of this feature, the DM can have you roll on the Wild Magic Surge table immediately after you cast a sorcerer spell of 1st level or higher. You then regain the use of this feature.",
           "slot": {
-            "current": 1,
+            "current": 0,
             "max": 1
           },
           "children": [],
