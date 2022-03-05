@@ -2,9 +2,14 @@
 
 Helps you organize and track your character stats.
 
+This is a toy UI written in rust, and the data model in this application is largely a predecesor to [dnd-cli](https://github.com/dgoetsch/dnd-cli).
+
 ## Execute
 
 ```
+## built in options are bashid & vynne; 
+## create additional characters in ~/.store/characters/ to extend
+export CHARACTER_NAME="bashid" 
 cargo run
 ```
 
